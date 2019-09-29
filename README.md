@@ -1,2 +1,2 @@
 # Mall
-A shopping-mall base on SpringBoot and Vue.js
+A shopping-mall based on SpringBoot and Vue.js
