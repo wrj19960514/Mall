@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.BrandMapper;
 import com.cskaoyan.mall.mapper.IssueMapper;
+import com.cskaoyan.mall.mapper.KeywordMapper;
 import com.cskaoyan.mall.mapper.OrderGoodsMapper;
 import com.cskaoyan.mall.mapper.OrderMapper;
 import com.cskaoyan.mall.mapper.RegionMapper;
@@ -11,6 +12,7 @@ import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
 import com.cskaoyan.mall.vo.mallManage.BrandInfoVo;
 import com.cskaoyan.mall.vo.mallManage.IssueListVo;
+import com.cskaoyan.mall.vo.mallManage.KeywordListVo;
 import com.cskaoyan.mall.vo.mallManage.OrderDetailedVo;
 import com.cskaoyan.mall.vo.mallManage.OrderListVo;
 import com.cskaoyan.mall.vo.mallManage.Question;
@@ -41,6 +43,9 @@ public class MallManageServiceImpl implements MallManageService {
 
     @Autowired
     IssueMapper issueMapper;
+
+    @Autowired
+    KeywordMapper keywordMapper;
 
     @Override
     public List getRegionList(int i, int i2) {
@@ -166,13 +171,59 @@ public class MallManageServiceImpl implements MallManageService {
         issue.setDeleted(true);
         IssueExample issueExample = new IssueExample();
         issueExample.createCriteria().andIdEqualTo(issue.getId());
-        issueMapper.updateByExample(issue,issueExample);
+        issueMapper.updateByExample(issue, issueExample);
     }
 
     @Override
     public void updateIssue(Issue issue) {
         IssueExample issueExample = new IssueExample();
         issueExample.createCriteria().andIdEqualTo(issue.getId());
-        issueMapper.updateByExample(issue,issueExample);
+        issueMapper.updateByExample(issue, issueExample);
+    }
+
+    @Override
+    public List getKeywordList(KeywordListVo keywordListVo) {
+        KeywordExample keywordExample = new KeywordExample();
+        KeywordExample.Criteria criteria = keywordExample.createCriteria();
+        if (keywordListVo.getKeyword() == null) {
+            keywordListVo.setKeyword("%%");
+        } else {
+            String s = keywordListVo.getKeyword();
+            keywordListVo.setKeyword("%" + s + "%");
+        }
+        if (keywordListVo.getUrl() == null) {
+            keywordListVo.setUrl("%%");
+        } else {
+            String s = keywordListVo.getUrl();
+            keywordListVo.setUrl("%" + s + "%");
+        }
+        criteria.andUrlLike(keywordListVo.getUrl());
+        criteria.andKeywordLike(keywordListVo.getKeyword());
+        List<Keyword> keywords = keywordMapper.selectByExample(keywordExample);
+        return keywords;
+    }
+
+    @Override
+    public void createKeyword(Keyword keyword) {
+        keyword.setSortOrder(100);
+        keyword.setAddTime(new Date());
+        keyword.setDeleted(false);
+        keywordMapper.insert(keyword);
+    }
+
+    @Override
+    public void updateKeyword(Keyword keyword) {
+        KeywordExample keywordExample = new KeywordExample();
+        keywordExample.createCriteria().andIdEqualTo(keyword.getId());
+        keyword.setUpdateTime(new Date());
+        keywordMapper.updateByExample(keyword, keywordExample);
+    }
+
+    @Override
+    public void deleteKeyword(Keyword keyword) {
+        keyword.setDeleted(true);
+        KeywordExample keywordExample = new KeywordExample();
+        keywordExample.createCriteria().andIdEqualTo(keyword.getId());
+        keywordMapper.updateByExample(keyword,keywordExample);
     }
 }
