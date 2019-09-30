@@ -4,7 +4,6 @@ import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.bean.GoodsExample;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.vo.ListBean;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
