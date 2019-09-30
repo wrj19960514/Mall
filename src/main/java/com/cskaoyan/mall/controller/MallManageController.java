@@ -1,13 +1,16 @@
 package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.Brand;
+import com.cskaoyan.mall.bean.Issue;
 import com.cskaoyan.mall.service.MallManageService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
 import com.cskaoyan.mall.vo.mallManage.BrandInfoVo;
 import com.cskaoyan.mall.vo.mallManage.BrandListBean;
+import com.cskaoyan.mall.vo.mallManage.IssueListVo;
 import com.cskaoyan.mall.vo.mallManage.OrderDetailedVo;
 import com.cskaoyan.mall.vo.mallManage.OrderListVo;
+import com.cskaoyan.mall.vo.mallManage.Question;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,9 +101,48 @@ public class MallManageController {
         return respVo;
     }
 
-    @RequestMapping("/admin/issue")
-    public BaseRespVo issue() {
+    @RequestMapping("/admin/issue/list")
+    public BaseRespVo issue(IssueListVo issueListVo) {
+        PageHelper.startPage(issueListVo.getPage(), issueListVo.getLimit());
+        BrandListBean brandListBean = new BrandListBean();
+        List brandList = mallManageService.getIssueList(issueListVo);
+        PageInfo brandPageInfo = new PageInfo<>(brandList);
+        brandListBean.setItems(brandList);
+        brandListBean.setTotal(brandPageInfo.getTotal());
         BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(brandListBean);
+        return respVo;
+    }
+
+    @RequestMapping("/admin/issue/create")
+    public BaseRespVo issueCreate(@RequestBody Question question) {
+        mallManageService.createissue(question);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
+        return respVo;
+    }
+
+    @RequestMapping("/admin/issue/delete")
+    public BaseRespVo issueDelete(@RequestBody Issue issue) {
+        mallManageService.deleteIssue(issue);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
+        return respVo;
+    }
+
+    @RequestMapping("/admin/issue/update")
+    public BaseRespVo issueUpdate(@RequestBody Issue issue) {
+        mallManageService.updateIssue(issue);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
         return respVo;
     }
 

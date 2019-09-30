@@ -1,14 +1,8 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.Brand;
-import com.cskaoyan.mall.bean.BrandExample;
-import com.cskaoyan.mall.bean.Order;
-import com.cskaoyan.mall.bean.OrderExample;
-import com.cskaoyan.mall.bean.OrderGoods;
-import com.cskaoyan.mall.bean.Region;
-import com.cskaoyan.mall.bean.RegionExample;
-import com.cskaoyan.mall.bean.User;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.BrandMapper;
+import com.cskaoyan.mall.mapper.IssueMapper;
 import com.cskaoyan.mall.mapper.OrderGoodsMapper;
 import com.cskaoyan.mall.mapper.OrderMapper;
 import com.cskaoyan.mall.mapper.RegionMapper;
@@ -16,8 +10,10 @@ import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
 import com.cskaoyan.mall.vo.mallManage.BrandInfoVo;
+import com.cskaoyan.mall.vo.mallManage.IssueListVo;
 import com.cskaoyan.mall.vo.mallManage.OrderDetailedVo;
 import com.cskaoyan.mall.vo.mallManage.OrderListVo;
+import com.cskaoyan.mall.vo.mallManage.Question;
 import com.cskaoyan.mall.vo.mallManage.RegionListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,6 +38,9 @@ public class MallManageServiceImpl implements MallManageService {
 
     @Autowired
     OrderGoodsMapper orderGoodsMapper;
+
+    @Autowired
+    IssueMapper issueMapper;
 
     @Override
     public List getRegionList(int i, int i2) {
@@ -111,7 +110,7 @@ public class MallManageServiceImpl implements MallManageService {
         if (orderListVo.getUserId() != 0) {
             criteria.andUserIdEqualTo((int) orderListVo.getUserId());
         }
-        if("".equals(orderListVo.getOrderSn())){
+        if ("".equals(orderListVo.getOrderSn())) {
             BaseRespVo.error(null);
         }
         if (orderListVo.getOrderSn() != null) {
@@ -135,5 +134,45 @@ public class MallManageServiceImpl implements MallManageService {
         user.setNickname("Username1");
         orderDetailedVo.setUser(user);
         return orderDetailedVo;
+    }
+
+    @Override
+    public List getIssueList(IssueListVo issueListVo) {
+        IssueExample example = new IssueExample();
+        IssueExample.Criteria criteria = example.createCriteria();
+        if (issueListVo.getQuestion() == null) {
+            issueListVo.setQuestion("%%");
+        } else {
+            String s = issueListVo.getQuestion();
+            issueListVo.setQuestion("%" + s + "%");
+        }
+        criteria.andQuestionLike(issueListVo.getQuestion());
+        List<Issue> issues = issueMapper.selectByExample(example);
+        return issues;
+    }
+
+    @Override
+    public void createissue(Question question) {
+        Issue issue = new Issue();
+        issue.setDeleted(false);
+        issue.setQuestion(question.getQuestion());
+        issue.setAddTime(new Date());
+        issue.setAnswer(question.getAnswer());
+        issueMapper.insert(issue);
+    }
+
+    @Override
+    public void deleteIssue(Issue issue) {
+        issue.setDeleted(true);
+        IssueExample issueExample = new IssueExample();
+        issueExample.createCriteria().andIdEqualTo(issue.getId());
+        issueMapper.updateByExample(issue,issueExample);
+    }
+
+    @Override
+    public void updateIssue(Issue issue) {
+        IssueExample issueExample = new IssueExample();
+        issueExample.createCriteria().andIdEqualTo(issue.getId());
+        issueMapper.updateByExample(issue,issueExample);
     }
 }
