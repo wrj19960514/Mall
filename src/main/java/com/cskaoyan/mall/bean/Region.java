@@ -50,4 +50,15 @@ public class Region {
     public void setCode(Integer code) {
         this.code = code;
     }
+
+    @Override
+    public String toString() {
+        return "Region{" +
+                "id=" + id +
+                ", pid=" + pid +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", code=" + code +
+                '}';
+    }
 }
