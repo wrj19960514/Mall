@@ -1,6 +1,6 @@
 package com.cskaoyan.mall.bean;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class User {
     private Integer id;
