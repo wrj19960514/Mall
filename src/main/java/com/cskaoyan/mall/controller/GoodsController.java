@@ -21,8 +21,8 @@ public class GoodsController {
     GoodsService goodsService;
 
     @RequestMapping("/list")
-    public BaseRespVo getGoodsList(int page, int limit, String sort, String order) {
-        ListBean goods = goodsService.getGoodsList(page, limit, sort, order);
+    public BaseRespVo getGoodsList(int page, int limit, String sort, String order, String goodsSn, String name) {
+        ListBean goods = goodsService.getGoodsList(page, limit, sort, order, goodsSn, name);
         BaseRespVo ok = BaseRespVo.ok(goods);
         return ok;
     }

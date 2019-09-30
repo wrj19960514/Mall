@@ -20,11 +20,19 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     GoodsMapper goodsMapper;
     @Override
-    public ListBean getGoodsList(int page, int limit, String sort, String order) {
+    public ListBean getGoodsList(int page, int limit, String sort, String order, String goodsSn, String name) {
         PageHelper.startPage(page, limit);
         GoodsExample goodsExample = new GoodsExample();
         // 根据sort的字段,升序或降序排列
         goodsExample.setOrderByClause(sort+ " " + order);
+        // 商品id精确查询
+        if (goodsSn != null && !("".equals(goodsSn.trim())) ) {
+            goodsExample.createCriteria().andGoodsSnEqualTo(goodsSn);
+        }
+        // 商品名称模糊查询
+        if (name != null && !("".equals(name.trim()))) {
+            goodsExample.createCriteria().andNameLike("%" + name + "%");
+        }
         List<Goods> goods = goodsMapper.selectByExample(goodsExample);
         PageInfo<Goods> userPageInfo = new PageInfo<>(goods);
         long total = userPageInfo.getTotal();

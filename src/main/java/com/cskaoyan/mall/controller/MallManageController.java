@@ -1,14 +1,22 @@
 package com.cskaoyan.mall.controller;
 
+import com.cskaoyan.mall.service.MallManageService;
 import com.cskaoyan.mall.vo.BaseRespVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class MallManageController {
-    @RequestMapping("/admin/region")
+    @Autowired
+    MallManageService mallManageService;
+
+    @RequestMapping("/admin/region/list")
     public BaseRespVo region() {
         BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(mallManageService.getRegionList());
         return respVo;
     }
 
