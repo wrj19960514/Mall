@@ -1,9 +1,7 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.vo.ListBean;
 
-import java.util.List;
 
 /**
  * @author adore
