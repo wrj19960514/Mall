@@ -18,8 +18,8 @@ public class PromoteServiceImpl implements PromoteService {
     AdMapper adMapper;
 
     @Override
-    public ListBean getAdList(int pag, int limit, String sort, String order) {
-        PageHelper.startPage(pag, limit);
+    public ListBean getAdList(int page, int limit, String sort, String order) {
+        PageHelper.startPage(page, limit);
         AdExample adExample = new AdExample();
         //根据sort的字段来升序或者降序排列
         adExample.setOrderByClause(sort + " " + order);

@@ -13,9 +13,9 @@ public class PromoteController {
     @Autowired
     PromoteService promoteService;
 
-    @RequestMapping("admin/ad/list")
-    public BaseRespVo getAdList(int pag, int limit, String sort, String order) {
-        ListBean adList = promoteService.getAdList(pag, limit, sort, order);
+    @RequestMapping("/admin/ad/list")
+    public BaseRespVo getAdList(int page, int limit, String sort, String order) {
+        ListBean adList = promoteService.getAdList(page, limit, sort, order);
         BaseRespVo ok = BaseRespVo.ok(adList);
         return ok;
     }
