@@ -10,31 +10,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author adore
  * @date 2019/9/30 14:33
  */
 @RestController
-@RequestMapping("/admin/goods")
+@RequestMapping("/admin")
 public class GoodsController {
     @Autowired
     GoodsService goodsService;
 
-    @RequestMapping("/list")
+    @RequestMapping("/goods/list")
     public BaseRespVo getGoodsList(int page, int limit, String sort, String order, String goodsSn, String name) {
         ListBean goods = goodsService.getGoodsList(page, limit, sort, order, goodsSn, name);
         BaseRespVo ok = BaseRespVo.ok(goods);
         return ok;
     }
 
-    @RequestMapping("/catAndBrand")
+    @RequestMapping("/goods/catAndBrand")
     public BaseRespVo catAndBrand() {
         CatAndBrand catAndBrand = goodsService.catAndBrand();
         BaseRespVo ok = BaseRespVo.ok(catAndBrand);
         return ok;
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping("/goods/delete")
     public BaseRespVo delete(@RequestBody Goods goods) {
         boolean delete = goodsService.delete(goods);
         BaseRespVo ok = BaseRespVo.ok(null);
@@ -47,6 +49,13 @@ public class GoodsController {
 //        BaseRespVo ok = BaseRespVo.ok(null);
 //        return ok;
 //    }
+
+    @RequestMapping("/comment/list")
+    public BaseRespVo commentList(@RequestBody int page, int limit, String sort, String order, String userId, String valueId) {
+        ListBean comments = goodsService.commentList(page, limit, sort, order, userId, valueId);
+        BaseRespVo ok = BaseRespVo.ok(comments);
+        return ok;
+    }
 }
 
 

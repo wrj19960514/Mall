@@ -32,4 +32,15 @@ public interface GoodsService {
      * @return boolean
      */
     boolean delete(Goods goods);
+
+    /**获取评论列表
+     * @param page 当前页
+     * @param limit 页面条目数
+     * @param sort 排序字段
+     * @param order 升序/降序
+     * @param userId 搜索的用户id
+     * @param valueId 搜索的商品id
+     * @return 评论列表
+     */
+    ListBean commentList(int page, int limit, String sort, String order, String userId, String valueId);
 }
