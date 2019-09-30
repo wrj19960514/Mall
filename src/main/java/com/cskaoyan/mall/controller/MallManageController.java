@@ -6,6 +6,8 @@ import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
 import com.cskaoyan.mall.vo.mallManage.BrandInfoVo;
 import com.cskaoyan.mall.vo.mallManage.BrandListBean;
+import com.cskaoyan.mall.vo.mallManage.OrderDetailedVo;
+import com.cskaoyan.mall.vo.mallManage.OrderListVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +68,27 @@ public class MallManageController {
     }
 
     @RequestMapping("/admin/order/list")
-    public BaseRespVo order() {
+    public BaseRespVo order(OrderListVo orderListVo) {
+        PageHelper.startPage(orderListVo.getPage(), orderListVo.getLimit());
+        BrandListBean brandListBean = new BrandListBean();
+        List brandList = mallManageService.getOrderList(orderListVo);
+        PageInfo brandPageInfo = new PageInfo<>(brandList);
+        brandListBean.setItems(brandList);
+        brandListBean.setTotal(brandPageInfo.getTotal());
         BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(brandListBean);
+        return respVo;
+    }
+
+    @RequestMapping("/admin/order/detail")
+    public BaseRespVo orderDetail(int id) {
+        OrderDetailedVo orderDetailed = mallManageService.getOrderDetailed(id);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(orderDetailed);
         return respVo;
     }
 
