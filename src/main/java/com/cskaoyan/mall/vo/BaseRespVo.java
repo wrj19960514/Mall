@@ -40,4 +40,12 @@ public class BaseRespVo<T> {
         baseRespVo.setErrno(0);
         return baseRespVo;
     }
+
+    public static BaseRespVo error(Object data) {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setData(data);
+        baseRespVo.setErrmsg("错误");
+        baseRespVo.setErrno(-1);
+        return baseRespVo;
+    }
 }
