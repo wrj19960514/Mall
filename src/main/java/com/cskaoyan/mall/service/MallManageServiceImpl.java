@@ -16,54 +16,23 @@ public class MallManageServiceImpl implements MallManageService {
     RegionMapper regionMapper;
 
     @Override
-    public List getRegionList() {
-        RegionExample example = new RegionExample();
-        RegionExample.Criteria criteria = example.createCriteria();
-        criteria.andCodeBetween(11, 65);
-        List<Region> regions = regionMapper.selectByExample(example);
-        ArrayList<RegionListVo> regionListVos = new ArrayList<>();
-        for (Region region : regions) {
-            RegionListVo vo = new RegionListVo();
-            vo.setCode(region.getCode());
-            vo.setId(region.getId());
-            vo.setType(region.getType());
-            vo.setName(region.getName());
-            vo.setChildren(getRegionList2(region.getCode()));
-            regionListVos.add(vo);
+    public List getRegionList(int i, int i2) {
+        if (i > 700000) {
+            return null;
         }
-        return regionListVos;
-    }
-
-    private List getRegionList2(Integer code) {
         RegionExample example = new RegionExample();
         RegionExample.Criteria criteria = example.createCriteria();
-        criteria.andCodeBetween(code * 100, code * 100 + 99);
+        criteria.andCodeBetween(i, i2);
         List<Region> regions = regionMapper.selectByExample(example);
         ArrayList<RegionListVo> regionListVos = new ArrayList<>();
         for (Region region : regions) {
+            Integer lowNum = region.getCode();
             RegionListVo vo = new RegionListVo();
             vo.setCode(region.getCode());
             vo.setId(region.getId());
             vo.setType(region.getType());
             vo.setName(region.getName());
-            vo.setChildren(getRegionList3(region.getCode()));
-            regionListVos.add(vo);
-        }
-        return regionListVos;
-    }
-
-    private List getRegionList3(Integer code) {
-        RegionExample example = new RegionExample();
-        RegionExample.Criteria criteria = example.createCriteria();
-        criteria.andCodeBetween(code * 100, code * 100 + 99);
-        List<Region> regions = regionMapper.selectByExample(example);
-        ArrayList<RegionListVo> regionListVos = new ArrayList<>();
-        for (Region region : regions) {
-            RegionListVo vo = new RegionListVo();
-            vo.setCode(region.getCode());
-            vo.setId(region.getId());
-            vo.setType(region.getType());
-            vo.setName(region.getName());
+            vo.setChildren(getRegionList(lowNum * 100, lowNum * 100 + 99));
             regionListVos.add(vo);
         }
         return regionListVos;
