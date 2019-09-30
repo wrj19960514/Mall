@@ -1,12 +1,15 @@
-package com.cskaoyan.mall.vo;
+package com.cskaoyan.mall.vo.goodsManage;
+
+import java.util.List;
 
 /**
  * @author adore
- * @date 2019/9/30 18:17
+ * @date 2019/9/30 19:48
  */
-public class Label {
+public class CategoryList {
     String value;
     String label;
+    List<Label> children;
 
     public String getValue() {
         return value;
@@ -22,5 +25,13 @@ public class Label {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public List<Label> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Label> children) {
+        this.children = children;
     }
 }

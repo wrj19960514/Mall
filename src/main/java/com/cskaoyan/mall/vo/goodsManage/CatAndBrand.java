@@ -1,7 +1,4 @@
-package com.cskaoyan.mall.vo;
-
-import com.cskaoyan.mall.bean.Brand;
-import com.cskaoyan.mall.bean.Category;
+package com.cskaoyan.mall.vo.goodsManage;
 
 import java.util.List;
 

@@ -4,10 +4,9 @@ import com.cskaoyan.mall.bean.Category;
 import com.cskaoyan.mall.bean.CategoryExample;
 import java.util.List;
 
-import com.cskaoyan.mall.vo.CategoryList;
-import com.cskaoyan.mall.vo.Label;
+import com.cskaoyan.mall.vo.goodsManage.CategoryList;
+import com.cskaoyan.mall.vo.goodsManage.Label;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 public interface CategoryMapper {
     long countByExample(CategoryExample example);

@@ -2,7 +2,7 @@ package com.cskaoyan.mall.service;
 
 
 import com.cskaoyan.mall.bean.Goods;
-import com.cskaoyan.mall.vo.CatAndBrand;
+import com.cskaoyan.mall.vo.goodsManage.CatAndBrand;
 import com.cskaoyan.mall.vo.ListBean;
 
 
