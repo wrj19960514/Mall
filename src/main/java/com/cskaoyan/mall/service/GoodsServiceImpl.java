@@ -1,8 +1,12 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.Goods;
-import com.cskaoyan.mall.bean.GoodsExample;
+import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.mapper.BrandMapper;
+import com.cskaoyan.mall.mapper.CategoryMapper;
 import com.cskaoyan.mall.mapper.GoodsMapper;
+import com.cskaoyan.mall.vo.CatAndBrand;
+import com.cskaoyan.mall.vo.CategoryList;
+import com.cskaoyan.mall.vo.Label;
 import com.cskaoyan.mall.vo.ListBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,6 +23,10 @@ import java.util.List;
 public class GoodsServiceImpl implements GoodsService {
     @Autowired
     GoodsMapper goodsMapper;
+    @Autowired
+    CategoryMapper categoryMapper;
+    @Autowired
+    BrandMapper brandMapper;
     @Override
     public ListBean getGoodsList(int page, int limit, String sort, String order, String goodsSn, String name) {
         PageHelper.startPage(page, limit);
@@ -40,5 +48,29 @@ public class GoodsServiceImpl implements GoodsService {
         listBean.setItems(goods);
         listBean.setTotal(total);
         return listBean;
+    }
+
+    @Override
+    public CatAndBrand catAndBrand() {
+        List<CategoryList> categoryList = categoryMapper.queryCategoryLabel();
+        for (CategoryList categories : categoryList) {
+            String id = categories.getValue();
+            List<Label> children = categoryMapper.queryCategoryChildren(id);
+            categories.setChildren(children);
+        }
+        List<Label> brands = brandMapper.queryBrandLabel();
+        CatAndBrand catAndBrand = new CatAndBrand();
+        catAndBrand.setBrandList(brands);
+        catAndBrand.setCategoryList(categoryList);
+        return catAndBrand;
+    }
+
+    @Override
+    public boolean delete(Goods goods) {
+        int i = goodsMapper.deleteByPrimaryKey(goods.getId());
+        if (i == 1) {
+            return true;
+        }
+        return false;
     }
 }

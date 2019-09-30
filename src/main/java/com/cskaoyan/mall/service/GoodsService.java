@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.Goods;
+import com.cskaoyan.mall.vo.CatAndBrand;
 import com.cskaoyan.mall.vo.ListBean;
 
 import java.util.List;
@@ -20,4 +21,15 @@ public interface GoodsService {
      * @return 商品列表
      */
     ListBean getGoodsList(int page, int limit, String sort, String order, String goodsSn, String name);
+
+    /**添加商品时, 获取商品类型和生产商
+     * @return 类型和生产商
+     */
+    CatAndBrand catAndBrand();
+
+    /** 删除商品
+     * @param goods 商品
+     * @return boolean
+     */
+    boolean delete(Goods goods);
 }
