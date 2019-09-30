@@ -1,9 +1,11 @@
 package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.Issue;
+import com.cskaoyan.mall.bean.Keyword;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
 import com.cskaoyan.mall.vo.mallManage.BrandInfoVo;
 import com.cskaoyan.mall.vo.mallManage.IssueListVo;
+import com.cskaoyan.mall.vo.mallManage.KeywordListVo;
 import com.cskaoyan.mall.vo.mallManage.OrderDetailedVo;
 import com.cskaoyan.mall.vo.mallManage.OrderListVo;
 import com.cskaoyan.mall.vo.mallManage.Question;
@@ -30,4 +32,12 @@ public interface MallManageService {
     void deleteIssue(Issue issue);
 
     void updateIssue(Issue issue);
+
+    List getKeywordList(KeywordListVo keywordListVo);
+
+    void createKeyword(Keyword keyword);
+
+    void updateKeyword(Keyword keyword);
+
+    void deleteKeyword(Keyword keyword);
 }

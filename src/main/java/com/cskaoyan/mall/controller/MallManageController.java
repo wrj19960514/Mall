@@ -2,12 +2,14 @@ package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.Brand;
 import com.cskaoyan.mall.bean.Issue;
+import com.cskaoyan.mall.bean.Keyword;
 import com.cskaoyan.mall.service.MallManageService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
 import com.cskaoyan.mall.vo.mallManage.BrandInfoVo;
 import com.cskaoyan.mall.vo.mallManage.BrandListBean;
 import com.cskaoyan.mall.vo.mallManage.IssueListVo;
+import com.cskaoyan.mall.vo.mallManage.KeywordListVo;
 import com.cskaoyan.mall.vo.mallManage.OrderDetailedVo;
 import com.cskaoyan.mall.vo.mallManage.OrderListVo;
 import com.cskaoyan.mall.vo.mallManage.Question;
@@ -146,9 +148,48 @@ public class MallManageController {
         return respVo;
     }
 
-    @RequestMapping("/admin/keyword")
-    public BaseRespVo keyword() {
+    @RequestMapping("/admin/keyword/list")
+    public BaseRespVo keywordList(KeywordListVo keywordListVo) {
+        PageHelper.startPage(keywordListVo.getPage(), keywordListVo.getLimit());
+        BrandListBean brandListBean = new BrandListBean();
+        List brandList = mallManageService.getKeywordList(keywordListVo);
+        PageInfo brandPageInfo = new PageInfo<>(brandList);
+        brandListBean.setItems(brandList);
+        brandListBean.setTotal(brandPageInfo.getTotal());
         BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(brandListBean);
+        return respVo;
+    }
+
+    @RequestMapping("/admin/keyword/create")
+    public BaseRespVo keywordCreate(@RequestBody Keyword keyword) {
+        mallManageService.createKeyword(keyword);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
+        return respVo;
+    }
+
+    @RequestMapping("/admin/keyword/update")
+    public BaseRespVo keywordUpdate(@RequestBody Keyword keyword) {
+        mallManageService.updateKeyword(keyword);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
+        return respVo;
+    }
+
+    @RequestMapping("/admin/keyword/delete")
+    public BaseRespVo keywordDelete(@RequestBody Keyword keyword) {
+        mallManageService.deleteKeyword(keyword);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
         return respVo;
     }
 }
