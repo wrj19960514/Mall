@@ -5,6 +5,9 @@ dev/
 target/
 *.releaseBackup
 
+# .gitignore for datasource
+application-db.yml
+
 # web application files
 #/web-app/WEB-INF
  
