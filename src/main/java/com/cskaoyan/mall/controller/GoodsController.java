@@ -51,7 +51,7 @@ public class GoodsController {
 //    }
 
     @RequestMapping("/comment/list")
-    public BaseRespVo commentList(@RequestBody int page, int limit, String sort, String order, String userId, String valueId) {
+    public BaseRespVo commentList(int page, int limit, String sort, String order, String userId, String valueId) {
         ListBean comments = goodsService.commentList(page, limit, sort, order, userId, valueId);
         BaseRespVo ok = BaseRespVo.ok(comments);
         return ok;
