@@ -1,3 +1,4 @@
+# 端口
 server:
   port: 80
 
@@ -5,3 +6,15 @@ server:
 spring:
   profiles:
     active: db
+
+# 分页 方言
+pagehelper:
+  helper-dialect: mysql
+
+# log
+logging:
+  level:
+    com:
+      cskaoyan:
+        mall:
+          mapper: debug

@@ -18,7 +18,7 @@ public class MallManageServiceImpl implements MallManageService {
     public List getRegionList() {
         RegionExample example = new RegionExample();
         RegionExample.Criteria criteria = example.createCriteria();
-        criteria.andCodeBetween(1, 25);
+        criteria.andCodeBetween(11, 65);
         List<Region> regions = regionMapper.selectByExample(example);
         System.out.println("regions = " + regions);
         return regions;
