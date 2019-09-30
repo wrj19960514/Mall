@@ -16,7 +16,7 @@ public class MallManageController {
         BaseRespVo<Object> respVo = new BaseRespVo<>();
         respVo.setErrno(0);
         respVo.setErrmsg("成功");
-        respVo.setData(mallManageService.getRegionList());
+        respVo.setData(mallManageService.getRegionList(11,65));
         return respVo;
     }
 
