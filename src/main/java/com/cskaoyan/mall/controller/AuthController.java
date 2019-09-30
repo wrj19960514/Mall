@@ -35,4 +35,10 @@ public class AuthController {
         BaseRespVo ok = BaseRespVo.ok(userInfo);
         return ok;
     }
+
+    @RequestMapping("/admin/auth/logout")
+    public BaseRespVo logout() {
+        BaseRespVo ok = BaseRespVo.ok(null);
+        return ok;
+    }
 }
