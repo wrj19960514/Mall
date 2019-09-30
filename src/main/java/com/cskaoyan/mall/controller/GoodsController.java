@@ -41,12 +41,12 @@ public class GoodsController {
         return ok;
     }
 
-    @RequestMapping("/create")
-    public BaseRespVo create(@RequestBody) {
-
-        BaseRespVo ok = BaseRespVo.ok(null);
-        return ok;
-    }
+//    @RequestMapping("/create")
+//    public BaseRespVo create(@RequestBody ) {
+//
+//        BaseRespVo ok = BaseRespVo.ok(null);
+//        return ok;
+//    }
 }
 
 
