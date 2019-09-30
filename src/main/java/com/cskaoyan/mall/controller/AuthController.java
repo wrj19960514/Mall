@@ -24,7 +24,7 @@ public class AuthController {
     @RequestMapping("/admin/auth/info")
     public BaseRespVo info(String token) {
         UserInfo userInfo = new UserInfo();
-        userInfo.setAvatar("595bff99-b2db-4e3f-9f3d-15ea6a04a942");
+        userInfo.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
         userInfo.setName("admin123");
         ArrayList roles = new ArrayList();
         roles.add("超级管理员");
