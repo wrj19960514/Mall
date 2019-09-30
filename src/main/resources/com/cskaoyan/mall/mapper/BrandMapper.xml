@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.BrandMapper">
+  <select id="queryBrandLabel" resultType="com.cskaoyan.mall.vo.Label">
+    select id as value,name as label from cskaoyan_mall_brand
+  </select>
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Brand">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -71,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, desc, pic_url, sort_order, floor_price, add_time, update_time, deleted
+    id, name, `desc`, pic_url, sort_order, floor_price, add_time, update_time, deleted
   </sql>
   <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.BrandExample" resultMap="BaseResultMap">
     select
@@ -88,7 +91,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from cskaoyan_mall_brand
     where id = #{id,jdbcType=INTEGER}
@@ -104,12 +107,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.cskaoyan.mall.bean.Brand">
-    insert into cskaoyan_mall_brand (id, name, desc, 
-      pic_url, sort_order, floor_price, 
+    insert into cskaoyan_mall_brand (id, name, `desc`,
+      pic_url, sort_order, floor_price,
       add_time, update_time, deleted
       )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, 
-      #{picUrl,jdbcType=VARCHAR}, #{sortOrder,jdbcType=TINYINT}, #{floorPrice,jdbcType=DECIMAL}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
+      #{picUrl,jdbcType=VARCHAR}, #{sortOrder,jdbcType=TINYINT}, #{floorPrice,jdbcType=DECIMAL},
       #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
       )
   </insert>
@@ -123,7 +126,7 @@
         name,
       </if>
       <if test="desc != null">
-        desc,
+        `desc`,
       </if>
       <if test="picUrl != null">
         pic_url,
@@ -190,7 +193,7 @@
         name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.desc != null">
-        desc = #{record.desc,jdbcType=VARCHAR},
+        `desc` = #{record.desc,jdbcType=VARCHAR},
       </if>
       <if test="record.picUrl != null">
         pic_url = #{record.picUrl,jdbcType=VARCHAR},
@@ -219,7 +222,7 @@
     update cskaoyan_mall_brand
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      desc = #{record.desc,jdbcType=VARCHAR},
+      `desc` = #{record.desc,jdbcType=VARCHAR},
       pic_url = #{record.picUrl,jdbcType=VARCHAR},
       sort_order = #{record.sortOrder,jdbcType=TINYINT},
       floor_price = #{record.floorPrice,jdbcType=DECIMAL},
@@ -237,7 +240,7 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="desc != null">
-        desc = #{desc,jdbcType=VARCHAR},
+        `desc` = #{desc,jdbcType=VARCHAR},
       </if>
       <if test="picUrl != null">
         pic_url = #{picUrl,jdbcType=VARCHAR},
@@ -263,7 +266,7 @@
   <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Brand">
     update cskaoyan_mall_brand
     set name = #{name,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
+      `desc` = #{desc,jdbcType=VARCHAR},
       pic_url = #{picUrl,jdbcType=VARCHAR},
       sort_order = #{sortOrder,jdbcType=TINYINT},
       floor_price = #{floorPrice,jdbcType=DECIMAL},
