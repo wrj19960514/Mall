@@ -14,8 +14,8 @@ public class PromoteController {
     PromoteService promoteService;
 
     @RequestMapping("/admin/ad/list")
-    public BaseRespVo getAdList(int page, int limit, String sort, String order) {
-        ListBean adList = promoteService.getAdList(page, limit, sort, order);
+    public BaseRespVo getAdList(int page, int limit, String sort, String order, String name, String content) {
+        ListBean adList = promoteService.getAdList(page, limit, sort, order, name, content);
         BaseRespVo ok = BaseRespVo.ok(adList);
         return ok;
     }
