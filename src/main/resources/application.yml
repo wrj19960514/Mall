@@ -6,6 +6,10 @@ server:
 spring:
   profiles:
     active: db
+    # 时间转换
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
 # 分页 方言
 pagehelper:
@@ -18,3 +22,5 @@ logging:
       cskaoyan:
         mall:
           mapper: debug
+
+

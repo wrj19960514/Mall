@@ -3,6 +3,9 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.Order;
 import com.cskaoyan.mall.bean.OrderExample;
 import java.util.List;
+
+import com.cskaoyan.mall.vo.Statement.GoodsStat;
+import com.cskaoyan.mall.vo.Statement.OrderStat;
 import org.apache.ibatis.annotations.Param;
 
 public interface OrderMapper {
@@ -27,4 +30,6 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+
+    List<OrderStat> getOrderStatement();
 }
