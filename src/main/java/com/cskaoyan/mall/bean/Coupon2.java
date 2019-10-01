@@ -2,8 +2,9 @@ package com.cskaoyan.mall.bean;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 
-public class Coupon {
+public class Coupon2 {
     private Integer id;
 
     private String name;
@@ -26,7 +27,7 @@ public class Coupon {
 
     private Short goodsType;
 
-    private String goodsValue;
+    private List goodsValue;
 
     private String code;
 
@@ -57,7 +58,7 @@ public class Coupon {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getDesc() {
@@ -65,7 +66,7 @@ public class Coupon {
     }
 
     public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
+        this.desc = desc;
     }
 
     public String getTag() {
@@ -73,7 +74,7 @@ public class Coupon {
     }
 
     public void setTag(String tag) {
-        this.tag = tag == null ? null : tag.trim();
+        this.tag = tag;
     }
 
     public Integer getTotal() {
@@ -132,12 +133,12 @@ public class Coupon {
         this.goodsType = goodsType;
     }
 
-    public String getGoodsValue() {
+    public List getGoodsValue() {
         return goodsValue;
     }
 
-    public void setGoodsValue(String goodsValue) {
-        this.goodsValue = goodsValue == null ? null : goodsValue.trim();
+    public void setGoodsValue(List goodsValue) {
+        this.goodsValue = goodsValue;
     }
 
     public String getCode() {
@@ -145,7 +146,7 @@ public class Coupon {
     }
 
     public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
+        this.code = code;
     }
 
     public Short getTimeType() {
@@ -202,31 +203,5 @@ public class Coupon {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
-    }
-
-    @Override
-    public String toString() {
-        return "Coupon{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
-                ", tag='" + tag + '\'' +
-                ", total=" + total +
-                ", discount=" + discount +
-                ", min=" + min +
-                ", limit=" + limit +
-                ", type=" + type +
-                ", status=" + status +
-                ", goodsType=" + goodsType +
-                ", goodsValue='" + goodsValue + '\'' +
-                ", code='" + code + '\'' +
-                ", timeType=" + timeType +
-                ", days=" + days +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", addTime=" + addTime +
-                ", updateTime=" + updateTime +
-                ", deleted=" + deleted +
-                '}';
     }
 }

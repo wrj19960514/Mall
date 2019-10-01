@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.Ad;
 import com.cskaoyan.mall.bean.Coupon;
+import com.cskaoyan.mall.bean.Coupon2;
 import com.cskaoyan.mall.vo.ListBean;
 
 public interface PromoteService {

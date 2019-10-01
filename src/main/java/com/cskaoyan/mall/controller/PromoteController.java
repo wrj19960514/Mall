@@ -2,6 +2,7 @@ package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.Ad;
 import com.cskaoyan.mall.bean.Coupon;
+import com.cskaoyan.mall.bean.Coupon2;
 import com.cskaoyan.mall.service.PromoteService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.ListBean;
@@ -52,8 +53,10 @@ public class PromoteController {
         return ok;
     }
     //添加优惠券信息
-    @RequestMapping("/admin/coupon/create ")
-    public BaseRespVo insertCoupon(Coupon coupon) {
+    @RequestMapping(value = "/admin/coupon/create", produces = "application/json")
+    public BaseRespVo insertCoupon(@RequestBody Coupon coupon) {
+        System.out.println(coupon);
+
         coupon = promoteService.insertCoupon(coupon);
         BaseRespVo ok = BaseRespVo.ok(coupon);
         return ok;

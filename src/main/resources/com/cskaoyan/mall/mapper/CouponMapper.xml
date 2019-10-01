@@ -116,10 +116,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.cskaoyan.mall.bean.Coupon">
-    <selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into cskaoyan_mall_coupon (id, `name`, `desc`,
+    <!--<selectKey keyProperty="id" resultType="java.lang.Integer"  keyColumn="id" order="AFTER">-->
+      <!--SELECT LAST_INSERT_ID() as id-->
+    <!--</selectKey>-->
+    insert into cskaoyan_mall_coupon (id, name, `desc`,
       tag, total, discount,
       `min`, `limit`, `type`,
       `status`, goods_type, goods_value,

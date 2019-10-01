@@ -1,10 +1,7 @@
 package com.cskaoyan.mall.service;
 
 import com.alibaba.druid.util.StringUtils;
-import com.cskaoyan.mall.bean.Ad;
-import com.cskaoyan.mall.bean.AdExample;
-import com.cskaoyan.mall.bean.Coupon;
-import com.cskaoyan.mall.bean.CouponExample;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.AdMapper;
 import com.cskaoyan.mall.mapper.CouponMapper;
 import com.cskaoyan.mall.vo.ListBean;
