@@ -4,6 +4,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.cskaoyan.mall.bean.Ad;
 import com.cskaoyan.mall.bean.AdExample;
 import com.cskaoyan.mall.mapper.AdMapper;
+import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.ListBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +18,8 @@ public class PromoteServiceImpl implements PromoteService {
 
     @Autowired
     AdMapper adMapper;
+    private ListBean listBean;
+
 
     @Override
     public ListBean getAdList(int page, int limit, String sort, String order, String name, String content) {
@@ -40,5 +43,20 @@ public class PromoteServiceImpl implements PromoteService {
         listBean.setItems(ads);
         listBean.setTotal(total);
         return listBean;
+    }
+
+    @Override
+    public Ad updateAds(Ad ad) {
+        AdExample adExample = new AdExample();
+        adExample.createCriteria().andIdEqualTo(ad.getId());
+        int i = adMapper.updateByExample(ad, adExample);
+        return adMapper.selectByPrimaryKey(ad.getId());
+    }
+
+    @Override
+    public void deleteAds(Ad ad) {
+        AdExample adExample = new AdExample();
+        adExample.createCriteria().andIdEqualTo(ad.getId());
+        int i = adMapper.deleteByPrimaryKey(ad.getId());
     }
 }
