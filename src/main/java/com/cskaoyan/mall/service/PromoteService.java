@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.service;
 
+import com.cskaoyan.mall.bean.Ad;
 import com.cskaoyan.mall.vo.ListBean;
 
 public interface PromoteService {
@@ -14,4 +15,8 @@ public interface PromoteService {
      * @return  返回的广告数
      */
     ListBean getAdList(int page, int limit, String sort, String order, String name, String content);
+
+    Ad updateAds(Ad ad);
+
+    void deleteAds(Ad ad);
 }
