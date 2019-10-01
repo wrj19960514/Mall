@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.OrderGoodsMapper">
+  <select id="getGoodsStatement" resultType="com.cskaoyan.mall.vo.Statement.GoodsStat">
+    select add_time as day,count(distinct order_id) as orders,sum(`number`) as products,sum(`number` * price) as amount
+     from cskaoyan_mall_order_goods group by DATE_FORMAT(add_time,'%Y-%m-%d')
+  </select>
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.OrderGoods">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="order_id" jdbcType="INTEGER" property="orderId" />

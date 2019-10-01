@@ -3,6 +3,8 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.bean.UserExample;
 import java.util.List;
+
+import com.cskaoyan.mall.vo.Statement.UserStat;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
@@ -27,4 +29,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    List<UserStat> getUserStatement();
 }

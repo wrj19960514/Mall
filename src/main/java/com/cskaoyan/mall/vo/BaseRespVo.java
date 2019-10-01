@@ -5,9 +5,16 @@ package com.cskaoyan.mall.vo;
  * @date 2019/9/30 11:28
  */
 public class BaseRespVo<T> {
+    int errno;
     T data;
     String errmsg;
-    int errno;
+    public int getErrno() {
+        return errno;
+    }
+
+    public void setErrno(int errno) {
+        this.errno = errno;
+    }
 
     public T getData() {
         return data;
@@ -25,27 +32,30 @@ public class BaseRespVo<T> {
         this.errmsg = errmsg;
     }
 
-    public int getErrno() {
-        return errno;
-    }
 
-    public void setErrno(int errno) {
-        this.errno = errno;
-    }
 
     public static BaseRespVo ok(Object data) {
         BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrno(0);
         baseRespVo.setData(data);
         baseRespVo.setErrmsg("成功");
-        baseRespVo.setErrno(0);
         return baseRespVo;
     }
 
     public static BaseRespVo error(Object data) {
         BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrno(-1);
         baseRespVo.setData(data);
         baseRespVo.setErrmsg("错误");
-        baseRespVo.setErrno(-1);
         return baseRespVo;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseRespVo{" +
+                "errno=" + errno +
+                ", data=" + data +
+                ", errmsg='" + errmsg + '\'' +
+                '}';
     }
 }

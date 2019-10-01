@@ -14,7 +14,13 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.System;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author adore
@@ -98,5 +104,14 @@ public class GoodsServiceImpl implements GoodsService {
         listBean.setItems(comments);
         listBean.setTotal(total);
         return listBean;
+    }
+
+    @Override
+    public boolean deleteComment(Comment comment) {
+        int i = commentMapper.deleteByPrimaryKey(comment.getId());
+        if (i == 1) {
+            return true;
+        }
+        return false;
     }
 }

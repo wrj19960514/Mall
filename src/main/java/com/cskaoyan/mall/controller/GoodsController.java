@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.controller;
 
+import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.service.GoodsService;
 import com.cskaoyan.mall.vo.BaseRespVo;
@@ -25,22 +26,23 @@ public class GoodsController {
     @RequestMapping("/goods/list")
     public BaseRespVo getGoodsList(int page, int limit, String sort, String order, String goodsSn, String name) {
         ListBean goods = goodsService.getGoodsList(page, limit, sort, order, goodsSn, name);
-        BaseRespVo ok = BaseRespVo.ok(goods);
-        return ok;
+        return BaseRespVo.ok(goods);
+
     }
 
     @RequestMapping("/goods/catAndBrand")
     public BaseRespVo catAndBrand() {
         CatAndBrand catAndBrand = goodsService.catAndBrand();
-        BaseRespVo ok = BaseRespVo.ok(catAndBrand);
-        return ok;
+        return BaseRespVo.ok(catAndBrand);
     }
 
     @RequestMapping("/goods/delete")
     public BaseRespVo delete(@RequestBody Goods goods) {
         boolean delete = goodsService.delete(goods);
-        BaseRespVo ok = BaseRespVo.ok(null);
-        return ok;
+        if (delete) {
+            return BaseRespVo.ok(null);
+        }
+        return BaseRespVo.error(null);
     }
 
 //    @RequestMapping("/create")
@@ -53,8 +55,16 @@ public class GoodsController {
     @RequestMapping("/comment/list")
     public BaseRespVo commentList(int page, int limit, String sort, String order, String userId, String valueId) {
         ListBean comments = goodsService.commentList(page, limit, sort, order, userId, valueId);
-        BaseRespVo ok = BaseRespVo.ok(comments);
-        return ok;
+        return BaseRespVo.ok(comments);
+    }
+
+    @RequestMapping("/comment/delete")
+    public BaseRespVo deleteComment(@RequestBody Comment comment) {
+        boolean delete = goodsService.deleteComment(comment);
+        if (delete) {
+            return BaseRespVo.ok(null);
+        }
+        return BaseRespVo.error(null);
     }
 }
 

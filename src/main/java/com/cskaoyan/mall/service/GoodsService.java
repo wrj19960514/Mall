@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.service;
 
 
+import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.vo.goodsManage.CatAndBrand;
 import com.cskaoyan.mall.vo.ListBean;
@@ -43,4 +44,11 @@ public interface GoodsService {
      * @return 评论列表
      */
     ListBean commentList(int page, int limit, String sort, String order, String userId, String valueId);
+
+    /**
+     * 删除评论
+     * @param comment 要删除的评论
+     * @return boolean
+     */
+    boolean deleteComment(Comment comment);
 }
