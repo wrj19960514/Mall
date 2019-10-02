@@ -52,11 +52,17 @@ public class PromoteController {
         return ok;
     }
     //添加优惠券信息
-    @RequestMapping(value = "/admin/coupon/create", produces = "application/json")
+    @RequestMapping("/admin/coupon/create")
     public BaseRespVo insertCoupon(@RequestBody Coupon coupon) {
-        System.out.println(coupon);
-
         coupon = promoteService.insertCoupon(coupon);
+        BaseRespVo ok = BaseRespVo.ok(coupon);
+        return ok;
+    }
+
+    //获取详情中的信息
+    @RequestMapping("/admin/coupon/read")
+    public BaseRespVo readCoupon(int id) {
+        Coupon coupon = promoteService.readCoupon(id);
         BaseRespVo ok = BaseRespVo.ok(coupon);
         return ok;
     }
@@ -67,6 +73,26 @@ public class PromoteController {
         ListBean lIstUser = promoteService.getLIstUser(page, limit, sort, order, couponId, userId, status);
         BaseRespVo ok = BaseRespVo.ok(lIstUser);
         return ok;
+    }
+
+    //编辑
+    @RequestMapping("/admin/coupon/update")
+    public BaseRespVo updateCoupon(@RequestBody Coupon coupon) {
+        coupon = promoteService.updateCoupon(coupon);
+        System.out.println(coupon);
+        BaseRespVo ok = BaseRespVo.ok(coupon);
+        return ok;
+    }
+
+    //删除
+    @RequestMapping("/admin/coupon/delete")
+    public BaseRespVo deleteCoupon(@RequestBody Coupon coupon) {
+        promoteService.deleteCoupon(coupon);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setData(null);
+        respVo.setErrmsg("成功");
+        respVo.setErrno(0);
+        return respVo;
     }
 
 }

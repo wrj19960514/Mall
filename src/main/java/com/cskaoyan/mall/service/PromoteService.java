@@ -41,10 +41,14 @@ public interface PromoteService {
      * @return 返回优惠券信息
      */
     ListBean getCouponList(int page, int limit, String sort, String order, String name, String type, String status);
-
+    //添加
     Coupon insertCoupon(Coupon coupon);
-
-    Coupon readCoupon(Coupon coupon);
+    //详情中获取信息
+    Coupon readCoupon(int id);
     //详情中的查找
     ListBean getLIstUser(int page, int limit, String sort, String order, String couponId, String userId, String status);
+    //编辑
+    Coupon updateCoupon(Coupon coupon);
+    //删除
+    void deleteCoupon(Coupon coupon);
 }
