@@ -1,12 +1,15 @@
 package com.cskaoyan.mall.vo.Statement;
 
-import java.sql.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 
 /**
  * @author adore
  * @date 2019/10/1 20:55
  */
 public class GoodsStat {
+    @JsonFormat(pattern = "yyyy-MM-dd")
     Date day;
     int orders;
     int products;

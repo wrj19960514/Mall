@@ -2,7 +2,7 @@ package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.Ad;
 import com.cskaoyan.mall.bean.Coupon;
-import com.cskaoyan.mall.bean.Coupon2;
+import com.cskaoyan.mall.bean.Topic;
 import com.cskaoyan.mall.vo.ListBean;
 
 public interface PromoteService {
@@ -17,18 +17,9 @@ public interface PromoteService {
      * @return  返回的广告信息
      */
     ListBean getAdList(int page, int limit, String sort, String order, String name, String content);
-
-    /**
-     * 编辑
-     * @param ad
-     * @return 编辑后的广告
-     */
+    //编辑
     Ad updateAds(Ad ad);
-
-    /**
-     * 删除
-     * @param ad 接收请求参数
-     */
+    //删除
     void deleteAds(Ad ad);
     /*-----------------------------优惠券管理------------------------------------*/
     /**
@@ -42,6 +33,27 @@ public interface PromoteService {
      * @return 返回优惠券信息
      */
     ListBean getCouponList(int page, int limit, String sort, String order, String name, String type, String status);
-
+    //添加
     Coupon insertCoupon(Coupon coupon);
+    //详情中获取信息
+    Coupon readCoupon(int id);
+    //详情中的查找
+    ListBean getLIstUser(int page, int limit, String sort, String order, String couponId, String userId, String status);
+    //编辑
+    Coupon updateCoupon(Coupon coupon);
+    //删除
+    void deleteCoupon(Coupon coupon);
+    /*-----------------------------专题管理---------------------------------------*/
+    //获取页面信息
+    ListBean getTopicList(int page, int limit, String sort, String order, String title, String subtitle);
+
+    //添加专题
+    Topic createTopic(Topic topic);
+
+    //编辑专题
+    Topic updateTopic(Topic topic);
+
+    //删除专题
+    void deleteTopic(Topic topic);
+
 }

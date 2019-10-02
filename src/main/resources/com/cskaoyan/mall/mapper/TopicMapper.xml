@@ -131,6 +131,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.cskaoyan.mall.bean.Topic">
+    <selectKey keyProperty="id" resultType="java.lang.Integer"  keyColumn="id" order="AFTER">
+      SELECT LAST_INSERT_ID() as id
+    </selectKey>
     insert into cskaoyan_mall_topic (id, title, subtitle, 
       price, read_count, pic_url, 
       sort_order, goods, add_time, 

@@ -1,19 +1,6 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.Brand;
-import com.cskaoyan.mall.bean.BrandExample;
-import com.cskaoyan.mall.bean.Category;
-import com.cskaoyan.mall.bean.CategoryExample;
-import com.cskaoyan.mall.bean.Issue;
-import com.cskaoyan.mall.bean.IssueExample;
-import com.cskaoyan.mall.bean.Keyword;
-import com.cskaoyan.mall.bean.KeywordExample;
-import com.cskaoyan.mall.bean.Order;
-import com.cskaoyan.mall.bean.OrderExample;
-import com.cskaoyan.mall.bean.OrderGoods;
-import com.cskaoyan.mall.bean.Region;
-import com.cskaoyan.mall.bean.RegionExample;
-import com.cskaoyan.mall.bean.User;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.BrandMapper;
 import com.cskaoyan.mall.mapper.CategoryMapper;
 import com.cskaoyan.mall.mapper.IssueMapper;
@@ -34,6 +21,7 @@ import com.cskaoyan.mall.vo.mallManage.RegionListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.System;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -263,8 +251,8 @@ public class MallManageServiceImpl implements MallManageService {
         ArrayList objects = new ArrayList();
         for (Category category : categories) {
             HashMap map = new HashMap();
-            map.put("label",category.getName());
-            map.put("value",category.getId());
+            map.put("label", category.getName());
+            map.put("value", category.getId());
             objects.add(map);
         }
         return objects;
@@ -280,15 +268,15 @@ public class MallManageServiceImpl implements MallManageService {
         ArrayList list = new ArrayList();
         for (Category category : l1) {
             HashMap map = new HashMap();
-            map.put("desc",category.getDesc());
-            map.put("iconUrl",category.getIconUrl());
-            map.put("id",category.getId());
-            map.put("keywords",category.getKeywords());
-            map.put("level",category.getLevel());
-            map.put("name",category.getName());
-            map.put("picUrl",category.getPicUrl());
+            map.put("desc", category.getDesc());
+            map.put("iconUrl", category.getIconUrl());
+            map.put("id", category.getId());
+            map.put("keywords", category.getKeywords());
+            map.put("level", category.getLevel());
+            map.put("name", category.getName());
+            map.put("picUrl", category.getPicUrl());
             List children = getListChildren(category.getId());
-            map.put("children",children);
+            map.put("children", children);
             list.add(map);
         }
         return list;
@@ -299,10 +287,10 @@ public class MallManageServiceImpl implements MallManageService {
         Category category = new Category();
         category.setAddTime(new Date());
         category.setDeleted(false);
-        if(categoryVo.getIconUrl() == null){
+        if (categoryVo.getIconUrl() == null) {
             categoryVo.setIconUrl("");
         }
-        if(categoryVo.getPicUrl()==null){
+        if (categoryVo.getPicUrl() == null) {
             categoryVo.setPicUrl("");
         }
         category.setIconUrl(categoryVo.getIconUrl());
@@ -325,7 +313,7 @@ public class MallManageServiceImpl implements MallManageService {
         List<Category> categories = categoryMapper.selectByExample(categoryExample);
         for (Category category : categories) {
             category.setDeleted(true);
-            categoryMapper.updateByExample(category,categoryExample);
+            categoryMapper.updateByExample(category, categoryExample);
         }
     }
 
@@ -337,10 +325,10 @@ public class MallManageServiceImpl implements MallManageService {
         Category category = new Category();
         category.setAddTime(new Date());
         category.setDeleted(false);
-        if(categoryVo.getIconUrl() == null){
+        if (categoryVo.getIconUrl() == null) {
             categoryVo.setIconUrl("");
         }
-        if(categoryVo.getPicUrl()==null){
+        if (categoryVo.getPicUrl() == null) {
             categoryVo.setPicUrl("");
         }
         category.setIconUrl(categoryVo.getIconUrl());
@@ -353,7 +341,14 @@ public class MallManageServiceImpl implements MallManageService {
         category.setSortOrder((byte) 5);
         category.setUpdateTime(new Date());
         category.setId(categoryVo.getId());
-        categoryMapper.updateByExample(category,categoryExample);
+        categoryMapper.updateByExample(category, categoryExample);
+    }
+
+    @Override
+    public void updateBrand(Brand brand) {
+        BrandExample brandExample = new BrandExample();
+        brandExample.createCriteria().andIdEqualTo(brand.getId());
+        brandMapper.updateByExample(brand,brandExample);
     }
 
     private List getListChildren(Integer id) {
@@ -364,13 +359,13 @@ public class MallManageServiceImpl implements MallManageService {
         ArrayList list = new ArrayList();
         for (Category category : categories) {
             HashMap map = new HashMap();
-            map.put("desc",category.getDesc());
-            map.put("iconUrl",category.getIconUrl());
-            map.put("id",category.getId());
-            map.put("keywords",category.getKeywords());
-            map.put("level",category.getLevel());
-            map.put("name",category.getName());
-            map.put("picUrl",category.getPicUrl());
+            map.put("desc", category.getDesc());
+            map.put("iconUrl", category.getIconUrl());
+            map.put("id", category.getId());
+            map.put("keywords", category.getKeywords());
+            map.put("level", category.getLevel());
+            map.put("name", category.getName());
+            map.put("picUrl", category.getPicUrl());
             list.add(map);
         }
         return list;
