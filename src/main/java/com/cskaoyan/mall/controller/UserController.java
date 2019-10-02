@@ -45,7 +45,7 @@ public class UserController {
     }
     @RequestMapping("/admin/history/list")
     public BaseRespVo getHistoryList(int page, int limit, String sort, String order, String user_id, String keyword) {
-        ListBean footprintList = userService.getFootprintList(page, limit, sort, order, user_id, keyword);
+        ListBean footprintList = userService.getHistoryList(page, limit, sort, order, user_id, keyword);
         BaseRespVo ok = BaseRespVo.ok(footprintList);
         return ok;
     }
