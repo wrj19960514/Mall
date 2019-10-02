@@ -43,16 +43,19 @@ public class StorageController {
         int page =  Integer.parseInt(httpServletRequest.getParameter("page"));
         int limit = Integer.parseInt(httpServletRequest.getParameter("limit"));
         String sort = httpServletRequest.getParameter("sort");
-        String order = httpServletRequest.getParameter("desc");
+        String order = httpServletRequest.getParameter("order");
         String key =  httpServletRequest.getParameter("key");
         String name = httpServletRequest.getParameter("name");
+        Map<String,Object> map = new HashMap<>();
         if(key == null && name == null){
-            List<Storage> items = storageService.getList(page, limit, sort, order);
-            return BaseRespVo.ok(items);
-        }else {
-            Map<String,Object> map = new HashMap<>();
             int total = storageService.getAmount();
-            List<Storage> items =  storageService.getList(page,limit,sort,order);
+            map.put("total",total);
+            List<Storage> items = storageService.getList(page, limit, sort, order);
+            map.put("items",items);
+            return BaseRespVo.ok(map);
+        }else {
+            List<Storage> items =  storageService.getSearch(page,limit,sort,order,key,name);
+            int total = items.size();
             map.put("total",total);
             map.put("items",items);
             return BaseRespVo.ok(map);

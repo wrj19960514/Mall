@@ -22,4 +22,6 @@ public interface StorageService {
     Storage update(Storage storage);
 
     boolean delete(Storage storage);
+
+    List<Storage> getSearch(int page, int limit, String sort, String order, String key, String name);
 }

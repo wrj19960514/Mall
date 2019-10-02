@@ -32,10 +32,31 @@ public class StorageServiceImpl implements StorageService {
     public List<Storage> getList(int page, int limit, String sort, String order) {
         PageHelper.startPage(page, limit);
         StorageExample storageExample = new StorageExample();
+        storageExample.createCriteria();
+        storageExample.setDistinct(true);
+        storageExample.setOrderByClause(sort +" " + order);
         List<Storage> items = storageMapper.selectByExample(storageExample);
+        System.out.println(items);
         return items;
     }
 
+    @Override
+    public List<Storage> getSearch(int page, int limit, String sort, String order, String key, String name) {
+        PageHelper.startPage(page, limit);
+        StorageExample storageExample = new StorageExample();
+        if(key != null && !key.equals("") && name != null && !name.equals("")) {
+            storageExample.createCriteria().andKeyEqualTo(key).andNameLike("%" + name + "%");
+        }else if(key != null && !key.equals("")){
+            storageExample.createCriteria().andKeyEqualTo(key);
+        }else if(name != null && !name.equals("") ){
+            storageExample.createCriteria().andNameLike("%" + name + "%");
+        }
+        storageExample.setDistinct(true);
+        storageExample.setOrderByClause(sort +" "+ order);
+        List<Storage> items = storageMapper.selectByExample(storageExample);
+        System.out.println(items);
+        return items;
+    }
 
     @Override
     public int getAmount() {
@@ -49,7 +70,7 @@ public class StorageServiceImpl implements StorageService {
     public Storage update(Storage storage) {
         StorageExample storageExample = new StorageExample();
         storageExample.createCriteria().andIdEqualTo(storage.getId());
-        storageMapper.selectByExample(storageExample);
+        storageMapper.updateByExample(storage,storageExample);
         return storage;
     }
 
