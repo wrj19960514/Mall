@@ -2,7 +2,6 @@ package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.Ad;
 import com.cskaoyan.mall.bean.Coupon;
-import com.cskaoyan.mall.bean.Coupon2;
 import com.cskaoyan.mall.vo.ListBean;
 
 public interface PromoteService {
@@ -44,4 +43,8 @@ public interface PromoteService {
     ListBean getCouponList(int page, int limit, String sort, String order, String name, String type, String status);
 
     Coupon insertCoupon(Coupon coupon);
+
+    Coupon readCoupon(Coupon coupon);
+    //详情中的查找
+    ListBean getLIstUser(int page, int limit, String sort, String order, String couponId, String userId, String status);
 }

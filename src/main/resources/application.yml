@@ -22,5 +22,5 @@ logging:
       cskaoyan:
         mall:
           mapper: debug
-
-
+mybatis:
+  type-handlers-package: com.cskaoyan.mall.util

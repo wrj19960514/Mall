@@ -2,7 +2,6 @@ package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.Ad;
 import com.cskaoyan.mall.bean.Coupon;
-import com.cskaoyan.mall.bean.Coupon2;
 import com.cskaoyan.mall.service.PromoteService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.ListBean;
@@ -61,4 +60,13 @@ public class PromoteController {
         BaseRespVo ok = BaseRespVo.ok(coupon);
         return ok;
     }
+
+    //详情中的查询
+    @RequestMapping("/admin/coupon/listuser")
+    public BaseRespVo getLIstUser(int page, int limit, String sort, String order, String couponId, String userId, String status) {
+        ListBean lIstUser = promoteService.getLIstUser(page, limit, sort, order, couponId, userId, status);
+        BaseRespVo ok = BaseRespVo.ok(lIstUser);
+        return ok;
+    }
+
 }
