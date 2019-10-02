@@ -5,6 +5,7 @@ import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.vo.goodsManage.CatAndBrand;
 import com.cskaoyan.mall.vo.ListBean;
+import com.cskaoyan.mall.vo.goodsManage.CreateGoodsVo;
 
 
 /**
@@ -51,4 +52,10 @@ public interface GoodsService {
      * @return boolean
      */
     boolean deleteComment(Comment comment);
+
+    /**添加商品
+     * @param createGoodsVo 商品信息封装
+     * @return boolean
+     */
+    boolean create(CreateGoodsVo createGoodsVo);
 }

@@ -48,4 +48,14 @@ public class CreateGoodsVo {
     public void setSpecifications(List<GoodsSpecification> specifications) {
         this.specifications = specifications;
     }
+
+    @Override
+    public String toString() {
+        return "CreateGoodsVo{" +
+                "goods=" + goods +
+                ", attributes=" + attributes +
+                ", products=" + products +
+                ", specifications=" + specifications +
+                '}';
+    }
 }

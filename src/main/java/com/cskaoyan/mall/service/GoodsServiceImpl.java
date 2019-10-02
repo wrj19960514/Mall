@@ -7,6 +7,7 @@ import com.cskaoyan.mall.mapper.CommentMapper;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.vo.goodsManage.CatAndBrand;
 import com.cskaoyan.mall.vo.goodsManage.CategoryList;
+import com.cskaoyan.mall.vo.goodsManage.CreateGoodsVo;
 import com.cskaoyan.mall.vo.goodsManage.Label;
 import com.cskaoyan.mall.vo.ListBean;
 import com.github.pagehelper.PageHelper;
@@ -89,13 +90,14 @@ public class GoodsServiceImpl implements GoodsService {
         CommentExample commentExample = new CommentExample();
         // 根据sort的字段,升序或降序排列
         commentExample.setOrderByClause(sort+ " " + order);
+        CommentExample.Criteria criteria = commentExample.createCriteria();
         // 用户id精确查询
         if (userId != null && !("".equals(userId.trim())) ) {
-            commentExample.createCriteria().andUserIdEqualTo(Integer.valueOf(userId));
+            criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
         // 商品id精准查询
         if (valueId != null && !("".equals(valueId.trim()))) {
-            commentExample.createCriteria().andValueIdEqualTo(Integer.valueOf(valueId));
+            criteria.andValueIdEqualTo(Integer.valueOf(valueId));
         }
         List<Comment> comments = commentMapper.selectByExample(commentExample);
         PageInfo<Comment> userPageInfo = new PageInfo<>(comments);
@@ -113,5 +115,15 @@ public class GoodsServiceImpl implements GoodsService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean create(CreateGoodsVo createGoodsVo) {
+        // 插入商品, 通过selectkey获取商品id
+        createGoodsVo.getGoods().setAddTime(new Date());
+        createGoodsVo.getGoods().setUpdateTime(new Date());
+        int id = goodsMapper.insert(createGoodsVo.getGoods());
+
+        return true;
     }
 }
