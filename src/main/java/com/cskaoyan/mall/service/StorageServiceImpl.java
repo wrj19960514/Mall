@@ -54,7 +54,6 @@ public class StorageServiceImpl implements StorageService {
         storageExample.setDistinct(true);
         storageExample.setOrderByClause(sort +" "+ order);
         List<Storage> items = storageMapper.selectByExample(storageExample);
-        System.out.println(items);
         return items;
     }
 

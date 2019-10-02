@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.*;
 
 /**
+ * 资源存储
  * @author adore
  * @date 2019/9/30 22:35
  */
