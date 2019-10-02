@@ -5,6 +5,7 @@ import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.AdMapper;
 import com.cskaoyan.mall.mapper.CouponMapper;
 import com.cskaoyan.mall.mapper.CouponUserMapper;
+import com.cskaoyan.mall.mapper.TopicMapper;
 import com.cskaoyan.mall.vo.ListBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,6 +26,9 @@ public class PromoteServiceImpl implements PromoteService {
 
     @Autowired
     CouponUserMapper couponUserMapper;
+
+    @Autowired
+    TopicMapper topicMapper;
 
     private ListBean listBean;
 
@@ -150,6 +154,54 @@ public class PromoteServiceImpl implements PromoteService {
     public void deleteCoupon(Coupon coupon) {
         CouponExample couponExample = new CouponExample();
         int i = couponMapper.deleteByPrimaryKey(coupon.getId());
+    }
+
+    /*-------------------------------------------专题管理---------------------------------------*/
+    @Override
+    public ListBean getTopicList(int page, int limit, String sort, String order, String title, String subtitle) {
+        TopicExample topicExample = new TopicExample();
+        //分页
+        PageHelper.startPage(page, limit);
+        topicExample.setOrderByClause(sort + " " + order);
+        //模糊查询
+        TopicExample.Criteria criteria = topicExample.createCriteria();
+        if (!StringUtil.isEmpty(title)) {
+            criteria.andTitleLike("%" + title + "%");
+        }
+        if (!StringUtil.isEmpty(subtitle)) {
+            criteria.andSubtitleLike("%" + subtitle + "%");
+        }
+        List<Topic> topics = topicMapper.selectByExample(topicExample);
+        //获取total
+        PageInfo<Topic> topicPageInfo = new PageInfo<>(topics);
+        long total = topicPageInfo.getTotal();
+        ListBean listBean = new ListBean();
+        listBean.setItems(topics);
+        listBean.setTotal(total);
+        return listBean;
+    }
+
+    @Override
+    public Topic createTopic(Topic topic) {
+        TopicExample topicExample = new TopicExample();
+        int insert = topicMapper.insert(topic);
+        Integer id = topic.getId();
+        topic = topicMapper.selectByPrimaryKey(id);
+        return topic;
+    }
+
+    @Override
+    public Topic updateTopic(Topic topic) {
+        TopicExample topicExample = new TopicExample();
+        int i = topicMapper.updateByPrimaryKey(topic);
+        topic = topicMapper.selectByPrimaryKey(topic.getId());
+        return topic;
+    }
+
+    @Override
+    public void deleteTopic(Topic topic) {
+        TopicExample topicExample = new TopicExample();
+        int i = topicMapper.deleteByExample(topicExample);
     }
 
 
