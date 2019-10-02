@@ -50,7 +50,7 @@ public class GoodsServiceImpl implements GoodsService {
         if (name != null && !("".equals(name.trim()))) {
             criteria.andNameLike("%" + name + "%");
         }
-        List<Goods> goods = goodsMapper.selectByExample(goodsExample);
+        List<Goods> goods = goodsMapper.selectByExampleWithBLOBs(goodsExample);
         PageInfo<Goods> userPageInfo = new PageInfo<>(goods);
         long total = userPageInfo.getTotal();
         ListBean listBean = new ListBean();
