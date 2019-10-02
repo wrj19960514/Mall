@@ -344,6 +344,13 @@ public class MallManageServiceImpl implements MallManageService {
         categoryMapper.updateByExample(category, categoryExample);
     }
 
+    @Override
+    public void updateBrand(Brand brand) {
+        BrandExample brandExample = new BrandExample();
+        brandExample.createCriteria().andIdEqualTo(brand.getId());
+        brandMapper.updateByExample(brand,brandExample);
+    }
+
     private List getListChildren(Integer id) {
         CategoryExample categoryExample = new CategoryExample();
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
