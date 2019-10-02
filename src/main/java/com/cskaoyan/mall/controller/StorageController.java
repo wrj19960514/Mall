@@ -12,9 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author adore
@@ -70,5 +68,43 @@ public class StorageController {
             return BaseRespVo.ok(storage);
         }
         return BaseRespVo.error(null);
+    }
+
+
+    @GetMapping("/list")
+    public BaseRespVo getList(HttpServletRequest httpServletRequest){
+        int page =  Integer.parseInt(httpServletRequest.getParameter("page"));
+        int limit = Integer.parseInt(httpServletRequest.getParameter("limit"));
+        String sort = httpServletRequest.getParameter("sort");
+        String order = httpServletRequest.getParameter("desc");
+        String key =  httpServletRequest.getParameter("key");
+        String name = httpServletRequest.getParameter("name");
+        if(key == null && name == null){
+            List<Storage> items = storageService.getList(page, limit, sort, order);
+            return BaseRespVo.ok(items);
+        }else {
+            Map<String,Object> map = new HashMap<>();
+            int total = storageService.getAmount();
+            List<Storage> items =  storageService.getList(page,limit,sort,order);
+            map.put("total",total);
+            map.put("items",items);
+            return BaseRespVo.ok(map);
+        }
+    }
+
+
+    @PostMapping("/update")
+    public BaseRespVo update(@RequestBody Storage storage){
+         Storage updateStorage = storageService.update(storage);
+         return BaseRespVo.ok(updateStorage);
+    }
+
+    @PostMapping("/delete")
+    public BaseRespVo delete(@RequestBody Storage storage){
+         boolean delete = storageService.delete(storage);
+         if (delete){
+             return BaseRespVo.ok(null);
+         }
+         return BaseRespVo.error(null);
     }
 }
