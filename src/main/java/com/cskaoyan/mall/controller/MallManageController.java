@@ -39,15 +39,6 @@ public class MallManageController {
         return respVo;
     }
 
-    @RequestMapping("/admin/storage/create")
-    public BaseRespVo imgStore(@RequestParam("file") MultipartFile img) {
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(mallManageService.getRegionList(11, 65));
-        return respVo;
-    }
-
     @RequestMapping("/admin/brand/list")
     public BaseRespVo brand(BrandInfoVo brandInfoVo) {
         PageHelper.startPage(brandInfoVo.getPage(), brandInfoVo.getLimit());

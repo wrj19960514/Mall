@@ -42,13 +42,13 @@ public class GoodsServiceImpl implements GoodsService {
         GoodsExample goodsExample = new GoodsExample();
         // 根据sort的字段,升序或降序排列
         goodsExample.setOrderByClause(sort+ " " + order);
-        // 商品id精确查询
-        if (goodsSn != null && !("".equals(goodsSn.trim())) ) {
-            goodsExample.createCriteria().andGoodsSnEqualTo(goodsSn);
+        // 商品id精确查询,商品名称模糊查询
+        GoodsExample.Criteria criteria = goodsExample.createCriteria();
+        if (goodsSn != null && !("".equals(goodsSn.trim()))) {
+            criteria.andGoodsSnEqualTo(goodsSn);
         }
-        // 商品名称模糊查询
         if (name != null && !("".equals(name.trim()))) {
-            goodsExample.createCriteria().andNameLike("%" + name + "%");
+            criteria.andNameLike("%" + name + "%");
         }
         List<Goods> goods = goodsMapper.selectByExample(goodsExample);
         PageInfo<Goods> userPageInfo = new PageInfo<>(goods);
