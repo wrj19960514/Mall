@@ -6,13 +6,11 @@ import com.cskaoyan.mall.service.GoodsService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.goodsManage.CatAndBrand;
 import com.cskaoyan.mall.vo.ListBean;
-import com.cskaoyan.mall.vo.goodsManage.CreateGoodsVo;
+import com.cskaoyan.mall.vo.goodsManage.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author adore
@@ -49,14 +47,19 @@ public class GoodsController {
         return BaseRespVo.error(null);
     }
 
-    @RequestMapping("/create")
-    public BaseRespVo create(@RequestBody CreateGoodsVo createGoodsVo) {
-        System.out.println(createGoodsVo);
-        boolean create = goodsService.create(createGoodsVo);
+    @RequestMapping("/goods/create")
+    public BaseRespVo create(@RequestBody GoodsVo goodsVo) {
+        boolean create = goodsService.create(goodsVo);
         if (create) {
             return BaseRespVo.ok(null);
         }
         return BaseRespVo.error(null);
+    }
+
+    @RequestMapping("/goods/detail")
+    public BaseRespVo detail(int id) {
+        GoodsVo goodsVo = goodsService.detail(id);
+        return BaseRespVo.ok(goodsVo);
     }
 
     @RequestMapping("/comment/list")

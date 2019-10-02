@@ -33,5 +33,5 @@ public interface CategoryMapper {
 
     List<CategoryList> queryCategoryLabel();
 
-    List<Label> queryCategoryChildren(@Param("id") String id);
+    List<Label> queryCategoryChildren(@Param("id") Integer id);
 }

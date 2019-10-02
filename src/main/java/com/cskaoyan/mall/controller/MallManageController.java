@@ -64,6 +64,16 @@ public class MallManageController {
         return respVo;
     }
 
+    @RequestMapping("/admin/brand/update")
+    public BaseRespVo brandUpdate(@RequestBody Brand brand) {
+        mallManageService.updateBrand(brand);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
+        return respVo;
+    }
+
     @RequestMapping("/admin/brand/delete")
     public BaseRespVo brandDelete(@RequestBody Brand brand) {
         mallManageService.deleteBrand(brand.getId(),brand.getDeleted());

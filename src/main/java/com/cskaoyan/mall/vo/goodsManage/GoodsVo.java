@@ -11,11 +11,20 @@ import java.util.List;
  * @author adore
  * @date 2019/9/30 23:50
  */
-public class CreateGoodsVo {
+public class GoodsVo {
     Goods goods;
     List<GoodsAttribute> attributes;
     List<GoodsProduct> products;
     List<GoodsSpecification> specifications;
+    Integer[] categoryIds;
+
+    public Integer[] getCategoryIds() {
+        return categoryIds;
+    }
+
+    public void setCategoryIds(Integer[] categoryIds) {
+        this.categoryIds = categoryIds;
+    }
 
     public Goods getGoods() {
         return goods;
@@ -51,7 +60,7 @@ public class CreateGoodsVo {
 
     @Override
     public String toString() {
-        return "CreateGoodsVo{" +
+        return "GoodsVo{" +
                 "goods=" + goods +
                 ", attributes=" + attributes +
                 ", products=" + products +

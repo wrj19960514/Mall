@@ -1,13 +1,10 @@
 package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.*;
-import com.cskaoyan.mall.mapper.BrandMapper;
-import com.cskaoyan.mall.mapper.CategoryMapper;
-import com.cskaoyan.mall.mapper.CommentMapper;
-import com.cskaoyan.mall.mapper.GoodsMapper;
+import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.vo.goodsManage.CatAndBrand;
 import com.cskaoyan.mall.vo.goodsManage.CategoryList;
-import com.cskaoyan.mall.vo.goodsManage.CreateGoodsVo;
+import com.cskaoyan.mall.vo.goodsManage.GoodsVo;
 import com.cskaoyan.mall.vo.goodsManage.Label;
 import com.cskaoyan.mall.vo.ListBean;
 import com.github.pagehelper.PageHelper;
@@ -15,13 +12,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.System;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author adore
@@ -37,6 +29,12 @@ public class GoodsServiceImpl implements GoodsService {
     BrandMapper brandMapper;
     @Autowired
     CommentMapper commentMapper;
+    @Autowired
+    GoodsAttributeMapper goodsAttributeMapper;
+    @Autowired
+    GoodsProductMapper goodsProductMapper;
+    @Autowired
+    GoodsSpecificationMapper goodsSpecificationMapper;
     @Override
     public ListBean getGoodsList(int page, int limit, String sort, String order, String goodsSn, String name) {
         PageHelper.startPage(page, limit);
@@ -64,7 +62,7 @@ public class GoodsServiceImpl implements GoodsService {
     public CatAndBrand catAndBrand() {
         List<CategoryList> categoryList = categoryMapper.queryCategoryLabel();
         for (CategoryList categories : categoryList) {
-            String id = categories.getValue();
+            Integer id = categories.getValue();
             List<Label> children = categoryMapper.queryCategoryChildren(id);
             categories.setChildren(children);
         }
@@ -118,12 +116,67 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public boolean create(CreateGoodsVo createGoodsVo) {
+    public boolean create(GoodsVo goodsVo) {
+        Date date = new Date();
         // 插入商品, 通过selectkey获取商品id
-        createGoodsVo.getGoods().setAddTime(new Date());
-        createGoodsVo.getGoods().setUpdateTime(new Date());
-        int id = goodsMapper.insert(createGoodsVo.getGoods());
-
+        goodsVo.getGoods().setAddTime(date);
+        goodsVo.getGoods().setUpdateTime(date);
+        Goods goods = goodsVo.getGoods();
+        goodsMapper.insert(goods);
+        Integer id = goods.getId();
+        // 插入商品参数
+        List<GoodsAttribute> attributes = goodsVo.getAttributes();
+        for (GoodsAttribute attribute : attributes) {
+            attribute.setGoodsId(id);
+            attribute.setAddTime(date);
+            attribute.setUpdateTime(date);
+            int insert = goodsAttributeMapper.insert(attribute);
+        }
+        // 插入商品货品表
+        List<GoodsProduct> products = goodsVo.getProducts();
+        for (GoodsProduct product : products) {
+            product.setGoodsId(id);
+            product.setAddTime(date);
+            product.setUpdateTime(date);
+            int insert = goodsProductMapper.insert(product);
+        }
+        // 插入商品规格表
+        List<GoodsSpecification> specifications = goodsVo.getSpecifications();
+        for (GoodsSpecification specification : specifications) {
+            specification.setGoodsId(id);
+            specification.setAddTime(date);
+            specification.setUpdateTime(date);
+            int insert = goodsSpecificationMapper.insert(specification);
+        }
         return true;
+    }
+
+    @Override
+    public GoodsVo detail(int id) {
+        GoodsVo goodsVo = new GoodsVo();
+        // 商品信息
+        Goods goods = goodsMapper.selectByPrimaryKey(id);
+        // 商品参数
+        GoodsAttributeExample goodsAttributeExample = new GoodsAttributeExample();
+        goodsAttributeExample.createCriteria().andGoodsIdEqualTo(id);
+        List<GoodsAttribute> goodsAttributes = goodsAttributeMapper.selectByExample(goodsAttributeExample);
+        // 商品货品
+        GoodsProductExample goodsProductExample = new GoodsProductExample();
+        goodsProductExample.createCriteria().andGoodsIdEqualTo(id);
+        List<GoodsProduct> goodsProducts = goodsProductMapper.selectByExample(goodsProductExample);
+        // 商品规格
+        GoodsSpecificationExample goodsSpecificationExample = new GoodsSpecificationExample();
+        goodsSpecificationExample.createCriteria().andGoodsIdEqualTo(id);
+        List<GoodsSpecification> goodsSpecifications = goodsSpecificationMapper.selectByExample(goodsSpecificationExample);
+        // categoryIds
+        Integer categoryId = goods.getCategoryId();
+        Category category = categoryMapper.selectByPrimaryKey(categoryId);
+        Integer pid = category.getPid();
+        goodsVo.setGoods(goods);
+        goodsVo.setAttributes(goodsAttributes);
+        goodsVo.setProducts(goodsProducts);
+        goodsVo.setSpecifications(goodsSpecifications);
+        goodsVo.setCategoryIds(new Integer[]{pid, categoryId});
+        return goodsVo;
     }
 }

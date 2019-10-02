@@ -5,7 +5,7 @@ import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.vo.goodsManage.CatAndBrand;
 import com.cskaoyan.mall.vo.ListBean;
-import com.cskaoyan.mall.vo.goodsManage.CreateGoodsVo;
+import com.cskaoyan.mall.vo.goodsManage.GoodsVo;
 
 
 /**
@@ -54,8 +54,15 @@ public interface GoodsService {
     boolean deleteComment(Comment comment);
 
     /**添加商品
-     * @param createGoodsVo 商品信息封装
+     * @param goodsVo 商品信息封装
      * @return boolean
      */
-    boolean create(CreateGoodsVo createGoodsVo);
+    boolean create(GoodsVo goodsVo);
+
+    /**
+     * 编辑商品前获取商品详情
+     * @param id id
+     * @return 商品所有信息
+     */
+    GoodsVo detail(int id);
 }
