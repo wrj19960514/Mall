@@ -13,6 +13,16 @@ public class OrderListVo {
 
     private String orderSn;
 
+    private int orderStatusArray;
+
+    public int getOrderStatusArray() {
+        return orderStatusArray;
+    }
+
+    public void setOrderStatusArray(int orderStatusArray) {
+        this.orderStatusArray = orderStatusArray;
+    }
+
     public int getPage() {
         return page;
     }
