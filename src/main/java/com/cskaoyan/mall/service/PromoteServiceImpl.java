@@ -110,8 +110,10 @@ public class PromoteServiceImpl implements PromoteService {
     }
 
     @Override
-    public Coupon readCoupon(Coupon coupon) {
-        return null;
+    public Coupon readCoupon(int id) {
+        CouponUserExample couponUserExample = new CouponUserExample();
+        Coupon coupon = couponMapper.selectByPrimaryKey(id);
+        return coupon;
     }
 
     @Override
@@ -134,6 +136,20 @@ public class PromoteServiceImpl implements PromoteService {
         listBean.setItems(couponUsers);
         listBean.setTotal(total);
         return listBean;
+    }
+
+    @Override
+    public Coupon updateCoupon(Coupon coupon) {
+        CouponExample couponExample = new CouponExample();
+        int i = couponMapper.updateByPrimaryKey(coupon);
+        coupon = couponMapper.selectByPrimaryKey(coupon.getId());
+        return coupon;
+    }
+
+    @Override
+    public void deleteCoupon(Coupon coupon) {
+        CouponExample couponExample = new CouponExample();
+        int i = couponMapper.deleteByPrimaryKey(coupon.getId());
     }
 
 

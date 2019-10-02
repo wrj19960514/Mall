@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
      * @param order
      * @param user_id 搜索 user_id
      * @param name 搜索 name
-     * @return 收获地址列表
+     * @return 收货地址列表
      */
     public ListBean getAddressList(int page, int limit, String sort, String order, String user_id, String name) {
         // 分页
@@ -180,7 +180,7 @@ public class UserServiceImpl implements UserService {
         feedbackExample.setOrderByClause(sort + " " + order);
         // 查询
         if (!StringUtils.isEmpty(username)) {
-            feedbackExample.createCriteria().andUsernameLike(username);
+            feedbackExample.createCriteria().andUsernameLike("%" + username + "%");
         }
         if (!StringUtils.isEmpty(id)) {
             feedbackExample.createCriteria().andIdEqualTo(Integer.valueOf(id));
