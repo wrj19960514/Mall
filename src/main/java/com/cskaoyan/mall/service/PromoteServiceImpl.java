@@ -4,6 +4,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.AdMapper;
 import com.cskaoyan.mall.mapper.CouponMapper;
+import com.cskaoyan.mall.mapper.CouponUserMapper;
 import com.cskaoyan.mall.vo.ListBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -21,6 +22,9 @@ public class PromoteServiceImpl implements PromoteService {
 
     @Autowired
     CouponMapper couponMapper;
+
+    @Autowired
+    CouponUserMapper couponUserMapper;
 
     private ListBean listBean;
 
@@ -104,4 +108,33 @@ public class PromoteServiceImpl implements PromoteService {
         coupon = couponMapper.selectByPrimaryKey(id);
         return coupon;
     }
+
+    @Override
+    public Coupon readCoupon(Coupon coupon) {
+        return null;
+    }
+
+    @Override
+    public ListBean getLIstUser(int page, int limit, String sort, String order, String couponId, String userId, String status) {
+        PageHelper.startPage(page, limit);
+        CouponUserExample couponUserExample = new CouponUserExample();
+        couponUserExample.setOrderByClause(sort + " " + order);
+        CouponUserExample.Criteria criteria = couponUserExample.createCriteria();
+        if (!StringUtil.isEmpty(userId)) {
+            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+        }
+        if (!StringUtil.isEmpty(status)) {
+            criteria.andStatusEqualTo(Short.valueOf(status));
+        }
+        List<CouponUser> couponUsers = couponUserMapper.selectByExample(couponUserExample);
+        PageInfo<CouponUser> couponUserPageInfo = new PageInfo<>(couponUsers);
+        long total = couponUserPageInfo.getTotal();
+        //返回数据
+        ListBean listBean = new ListBean();
+        listBean.setItems(couponUsers);
+        listBean.setTotal(total);
+        return listBean;
+    }
+
+
 }

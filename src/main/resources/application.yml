@@ -27,6 +27,11 @@ logging:
       cskaoyan:
         mall:
           mapper: debug
+<<<<<<< HEAD
 
 
 
+=======
+mybatis:
+  type-handlers-package: com.cskaoyan.mall.util
+>>>>>>> df1baf4484efa068f3ed1eb303ad049b1c41aff9
