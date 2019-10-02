@@ -80,12 +80,16 @@ public class MallManageServiceImpl implements MallManageService {
     public List getBrandList(BrandInfoVo brandInfoVo) {
         BrandExample example = new BrandExample();
         BrandExample.Criteria criteria = example.createCriteria();
-        if (brandInfoVo.getId() != 0) {
-            criteria.andIdEqualTo(brandInfoVo.getId());
+        if (brandInfoVo.getId() != null && (!brandInfoVo.getId().equals(""))) {
+            criteria.andIdEqualTo(Integer.parseInt(brandInfoVo.getId()));
         }
-        if (brandInfoVo.getName() != null) {
-            criteria.andNameLike(brandInfoVo.getName());
+        if (brandInfoVo.getName() == null || "".equals(brandInfoVo.getName())) {
+            brandInfoVo.setName("%%");
+        } else {
+            String name = brandInfoVo.getName();
+            brandInfoVo.setName("%" + name + "%");
         }
+        criteria.andNameLike(brandInfoVo.getName());
         List<Brand> brands = brandMapper.selectByExample(example);
         return brands;
     }
@@ -107,7 +111,7 @@ public class MallManageServiceImpl implements MallManageService {
         Brand brand = new Brand();
         brand.setName(brandCreateVo.getName());
         brand.setDesc(brandCreateVo.getDesc());
-        brand.setPicUrl(""); // TODO
+        brand.setPicUrl(brandCreateVo.getPicUrl());
         brand.setFloorPrice(brand.getFloorPrice());
         brand.setAddTime(new Date());
         brand.setDeleted(false);
@@ -123,10 +127,8 @@ public class MallManageServiceImpl implements MallManageService {
         } else {
             criteria.andOrderStatusEqualTo((short) orderListVo.getOrderStatusArray());
         }
-        if (orderListVo.getUserId() == 0) {
-            ;
-        } else {
-            criteria.andUserIdEqualTo((int) orderListVo.getUserId());
+        if (orderListVo.getUserId() != null && (!"".equals(orderListVo.getUserId()))) {
+            criteria.andUserIdEqualTo(Integer.parseInt(orderListVo.getUserId()));
         }
         if (orderListVo.getOrderSn() == null || orderListVo.getOrderSn().equals("")) {
             orderListVo.setOrderSn("%%");
@@ -348,7 +350,7 @@ public class MallManageServiceImpl implements MallManageService {
     public void updateBrand(Brand brand) {
         BrandExample brandExample = new BrandExample();
         brandExample.createCriteria().andIdEqualTo(brand.getId());
-        brandMapper.updateByExample(brand,brandExample);
+        brandMapper.updateByExample(brand, brandExample);
     }
 
     private List getListChildren(Integer id) {
