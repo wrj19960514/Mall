@@ -8,7 +8,6 @@ import com.cskaoyan.mall.mapper.OrderGoodsMapper;
 import com.cskaoyan.mall.mapper.OrderMapper;
 import com.cskaoyan.mall.mapper.RegionMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
-import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
 import com.cskaoyan.mall.vo.mallManage.BrandInfoVo;
 import com.cskaoyan.mall.vo.mallManage.IssueListVo;
@@ -112,15 +111,23 @@ public class MallManageServiceImpl implements MallManageService {
     public List getOrderList(OrderListVo orderListVo) {
         OrderExample orderExample = new OrderExample();
         OrderExample.Criteria criteria = orderExample.createCriteria();
-        if (orderListVo.getUserId() != 0) {
+        if (orderListVo.getOrderStatusArray() == 0) {
+            ;
+        } else {
+            criteria.andOrderStatusEqualTo((short) orderListVo.getOrderStatusArray());
+        }
+        if (orderListVo.getUserId() == 0) {
+            ;
+        } else {
             criteria.andUserIdEqualTo((int) orderListVo.getUserId());
         }
-        if ("".equals(orderListVo.getOrderSn())) {
-            BaseRespVo.error(null);
+        if (orderListVo.getOrderSn() == null || orderListVo.getOrderSn().equals("")) {
+            orderListVo.setOrderSn("%%");
+        } else {
+            String sn = orderListVo.getOrderSn();
+            orderListVo.setOrderSn("%" + sn + "%");
         }
-        if (orderListVo.getOrderSn() != null) {
-            criteria.andOrderSnEqualTo(orderListVo.getOrderSn());
-        }
+        criteria.andOrderSnLike(orderListVo.getOrderSn());
         List<Order> orders = orderMapper.selectByExample(orderExample);
         return orders;
     }
@@ -224,6 +231,6 @@ public class MallManageServiceImpl implements MallManageService {
         keyword.setDeleted(true);
         KeywordExample keywordExample = new KeywordExample();
         keywordExample.createCriteria().andIdEqualTo(keyword.getId());
-        keywordMapper.updateByExample(keyword,keywordExample);
+        keywordMapper.updateByExample(keyword, keywordExample);
     }
 }
