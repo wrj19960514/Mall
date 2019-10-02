@@ -1,7 +1,21 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.Brand;
+import com.cskaoyan.mall.bean.BrandExample;
+import com.cskaoyan.mall.bean.Category;
+import com.cskaoyan.mall.bean.CategoryExample;
+import com.cskaoyan.mall.bean.Issue;
+import com.cskaoyan.mall.bean.IssueExample;
+import com.cskaoyan.mall.bean.Keyword;
+import com.cskaoyan.mall.bean.KeywordExample;
+import com.cskaoyan.mall.bean.Order;
+import com.cskaoyan.mall.bean.OrderExample;
+import com.cskaoyan.mall.bean.OrderGoods;
+import com.cskaoyan.mall.bean.Region;
+import com.cskaoyan.mall.bean.RegionExample;
+import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.mapper.BrandMapper;
+import com.cskaoyan.mall.mapper.CategoryMapper;
 import com.cskaoyan.mall.mapper.IssueMapper;
 import com.cskaoyan.mall.mapper.KeywordMapper;
 import com.cskaoyan.mall.mapper.OrderGoodsMapper;
@@ -10,6 +24,7 @@ import com.cskaoyan.mall.mapper.RegionMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
 import com.cskaoyan.mall.vo.mallManage.BrandInfoVo;
+import com.cskaoyan.mall.vo.mallManage.CategoryVo;
 import com.cskaoyan.mall.vo.mallManage.IssueListVo;
 import com.cskaoyan.mall.vo.mallManage.KeywordListVo;
 import com.cskaoyan.mall.vo.mallManage.OrderDetailedVo;
@@ -21,6 +36,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -45,6 +61,9 @@ public class MallManageServiceImpl implements MallManageService {
 
     @Autowired
     KeywordMapper keywordMapper;
+
+    @Autowired
+    CategoryMapper categoryMapper;
 
     @Override
     public List getRegionList(int i, int i2) {
@@ -232,5 +251,128 @@ public class MallManageServiceImpl implements MallManageService {
         KeywordExample keywordExample = new KeywordExample();
         keywordExample.createCriteria().andIdEqualTo(keyword.getId());
         keywordMapper.updateByExample(keyword, keywordExample);
+    }
+
+    @Override
+    public List getCategoryL1() {
+        CategoryExample categoryExample = new CategoryExample();
+        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        criteria.andPidEqualTo(0);
+        criteria.andDeletedEqualTo(false);
+        List<Category> categories = categoryMapper.selectByExample(categoryExample);
+        ArrayList objects = new ArrayList();
+        for (Category category : categories) {
+            HashMap map = new HashMap();
+            map.put("label",category.getName());
+            map.put("value",category.getId());
+            objects.add(map);
+        }
+        return objects;
+    }
+
+    @Override
+    public List getCategoryListAndChildren() {
+        CategoryExample categoryExample = new CategoryExample();
+        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        criteria.andPidEqualTo(0);
+        criteria.andDeletedEqualTo(false);
+        List<Category> l1 = categoryMapper.selectByExample(categoryExample);
+        ArrayList list = new ArrayList();
+        for (Category category : l1) {
+            HashMap map = new HashMap();
+            map.put("desc",category.getDesc());
+            map.put("iconUrl",category.getIconUrl());
+            map.put("id",category.getId());
+            map.put("keywords",category.getKeywords());
+            map.put("level",category.getLevel());
+            map.put("name",category.getName());
+            map.put("picUrl",category.getPicUrl());
+            List children = getListChildren(category.getId());
+            map.put("children",children);
+            list.add(map);
+        }
+        return list;
+    }
+
+    @Override
+    public void createCategory(CategoryVo categoryVo) {
+        Category category = new Category();
+        category.setAddTime(new Date());
+        category.setDeleted(false);
+        if(categoryVo.getIconUrl() == null){
+            categoryVo.setIconUrl("");
+        }
+        if(categoryVo.getPicUrl()==null){
+            categoryVo.setPicUrl("");
+        }
+        category.setIconUrl(categoryVo.getIconUrl());
+        category.setPicUrl(categoryVo.getPicUrl());
+        category.setKeywords(categoryVo.getKeywords());
+        category.setDesc(categoryVo.getDesc());
+        category.setName(categoryVo.getName());
+        category.setLevel(categoryVo.getLevel());
+        category.setPid(categoryVo.getPid());
+        category.setSortOrder((byte) 5);
+        int insert = categoryMapper.insert(category);
+        System.out.println("insert = " + insert);
+    }
+
+    @Override
+    public void deleteCategory(CategoryVo categoryVo) {
+        CategoryExample categoryExample = new CategoryExample();
+        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        criteria.andIdEqualTo(categoryVo.getId());
+        List<Category> categories = categoryMapper.selectByExample(categoryExample);
+        for (Category category : categories) {
+            category.setDeleted(true);
+            categoryMapper.updateByExample(category,categoryExample);
+        }
+    }
+
+    @Override
+    public void updateCategory(CategoryVo categoryVo) {
+        CategoryExample categoryExample = new CategoryExample();
+        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        criteria.andIdEqualTo(categoryVo.getId());
+        Category category = new Category();
+        category.setAddTime(new Date());
+        category.setDeleted(false);
+        if(categoryVo.getIconUrl() == null){
+            categoryVo.setIconUrl("");
+        }
+        if(categoryVo.getPicUrl()==null){
+            categoryVo.setPicUrl("");
+        }
+        category.setIconUrl(categoryVo.getIconUrl());
+        category.setPicUrl(categoryVo.getPicUrl());
+        category.setKeywords(categoryVo.getKeywords());
+        category.setDesc(categoryVo.getDesc());
+        category.setName(categoryVo.getName());
+        category.setLevel(categoryVo.getLevel());
+        category.setPid(categoryVo.getPid());
+        category.setSortOrder((byte) 5);
+        category.setUpdateTime(new Date());
+        category.setId(categoryVo.getId());
+        categoryMapper.updateByExample(category,categoryExample);
+    }
+
+    private List getListChildren(Integer id) {
+        CategoryExample categoryExample = new CategoryExample();
+        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        criteria.andPidEqualTo(id);
+        List<Category> categories = categoryMapper.selectByExample(categoryExample);
+        ArrayList list = new ArrayList();
+        for (Category category : categories) {
+            HashMap map = new HashMap();
+            map.put("desc",category.getDesc());
+            map.put("iconUrl",category.getIconUrl());
+            map.put("id",category.getId());
+            map.put("keywords",category.getKeywords());
+            map.put("level",category.getLevel());
+            map.put("name",category.getName());
+            map.put("picUrl",category.getPicUrl());
+            list.add(map);
+        }
+        return list;
     }
 }

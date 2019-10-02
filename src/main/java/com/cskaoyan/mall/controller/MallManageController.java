@@ -8,6 +8,7 @@ import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
 import com.cskaoyan.mall.vo.mallManage.BrandInfoVo;
 import com.cskaoyan.mall.vo.mallManage.BrandListBean;
+import com.cskaoyan.mall.vo.mallManage.CategoryVo;
 import com.cskaoyan.mall.vo.mallManage.IssueListVo;
 import com.cskaoyan.mall.vo.mallManage.KeywordListVo;
 import com.cskaoyan.mall.vo.mallManage.OrderDetailedVo;
@@ -19,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -197,6 +197,57 @@ public class MallManageController {
     @RequestMapping("/admin/keyword/delete")
     public BaseRespVo keywordDelete(@RequestBody Keyword keyword) {
         mallManageService.deleteKeyword(keyword);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
+        return respVo;
+    }
+
+    @RequestMapping("/admin/category/l1")
+    public BaseRespVo categoryL1() {
+        List list = mallManageService.getCategoryL1();
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(list);
+        return respVo;
+    }
+
+
+    @RequestMapping("/admin/category/list")
+    public BaseRespVo categoryList() {
+        List list = mallManageService.getCategoryListAndChildren();
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(list);
+        return respVo;
+    }
+
+    @RequestMapping("/admin/category/create")
+    public BaseRespVo categoryCreate(@RequestBody CategoryVo categoryVo) {
+        mallManageService.createCategory(categoryVo);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
+        return respVo;
+    }
+
+    @RequestMapping("/admin/category/delete")
+    public BaseRespVo categoryDelete(@RequestBody CategoryVo categoryVo) {
+        mallManageService.deleteCategory(categoryVo);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrno(0);
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
+        return respVo;
+    }
+
+    @RequestMapping("/admin/category/update")
+    public BaseRespVo categoryUpdate(@RequestBody CategoryVo categoryVo) {
+        mallManageService.updateCategory(categoryVo);
         BaseRespVo<Object> respVo = new BaseRespVo<>();
         respVo.setErrno(0);
         respVo.setErrmsg("成功");
