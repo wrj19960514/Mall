@@ -81,6 +81,11 @@ public class MallManageServiceImpl implements MallManageService {
     public List getBrandList(BrandInfoVo brandInfoVo) {
         BrandExample example = new BrandExample();
         BrandExample.Criteria criteria = example.createCriteria();
+        // 修复了因为搜索框不同类型时引起的搜索结果的bugs。
+        // 搜索框在填入数据后删除所以数据会得到空字符串，
+        // 使用int会引起类型转换异常，所以使用String类型。
+        // 当Id输入为非数字字符串时，返回结果应为空，
+        // 使用criteria.andIdEqualTo(0)实现。
         if (brandInfoVo.getId() != null && (!brandInfoVo.getId().equals(""))) {
             String id = brandInfoVo.getId();
             boolean integer = IntegerUtils.isInteger(id);
@@ -134,6 +139,11 @@ public class MallManageServiceImpl implements MallManageService {
         } else {
             criteria.andOrderStatusEqualTo((short) orderListVo.getOrderStatusArray());
         }
+        // 修复了因为搜索框不同类型时引起的搜索结果的bugs。
+        // 搜索框在填入数据后删除所以数据会得到空字符串，
+        // 使用int会引起类型转换异常，所以使用String类型。
+        // 当Id输入为非数字字符串时，返回结果应为空，
+        // 使用criteria.andUserIdEqualTo(0)实现。
         if (orderListVo.getUserId() != null && (!"".equals(orderListVo.getUserId()))) {
             String userId = orderListVo.getUserId();
             boolean integer = IntegerUtils.isInteger(userId);
