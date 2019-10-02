@@ -21,11 +21,11 @@ import com.cskaoyan.mall.vo.mallManage.RegionListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.System;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.lang.System;
 
 @Component
 public class MallManageServiceImpl implements MallManageService {
