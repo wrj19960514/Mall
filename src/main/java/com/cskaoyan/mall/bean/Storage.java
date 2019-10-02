@@ -93,18 +93,4 @@ public class Storage {
         this.deleted = deleted;
     }
 
-    @Override
-    public String toString() {
-        return "Storage{" +
-                "id=" + id +
-                ", key='" + key + '\'' +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", size=" + size +
-                ", url='" + url + '\'' +
-                ", addTime=" + addTime +
-                ", updateTime=" + updateTime +
-                ", deleted=" + deleted +
-                '}';
-    }
 }
