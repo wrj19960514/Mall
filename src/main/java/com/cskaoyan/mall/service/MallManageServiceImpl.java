@@ -9,6 +9,7 @@ import com.cskaoyan.mall.mapper.OrderGoodsMapper;
 import com.cskaoyan.mall.mapper.OrderMapper;
 import com.cskaoyan.mall.mapper.RegionMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.util.IntegerUtils;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
 import com.cskaoyan.mall.vo.mallManage.BrandInfoVo;
 import com.cskaoyan.mall.vo.mallManage.CategoryVo;
@@ -81,7 +82,13 @@ public class MallManageServiceImpl implements MallManageService {
         BrandExample example = new BrandExample();
         BrandExample.Criteria criteria = example.createCriteria();
         if (brandInfoVo.getId() != null && (!brandInfoVo.getId().equals(""))) {
-            criteria.andIdEqualTo(Integer.parseInt(brandInfoVo.getId()));
+            String id = brandInfoVo.getId();
+            boolean integer = IntegerUtils.isInteger(id);
+            if (integer) {
+                criteria.andIdEqualTo(Integer.parseInt(brandInfoVo.getId()));
+            }else {
+                criteria.andIdEqualTo(0);
+            }
         }
         if (brandInfoVo.getName() == null || "".equals(brandInfoVo.getName())) {
             brandInfoVo.setName("%%");
@@ -128,7 +135,13 @@ public class MallManageServiceImpl implements MallManageService {
             criteria.andOrderStatusEqualTo((short) orderListVo.getOrderStatusArray());
         }
         if (orderListVo.getUserId() != null && (!"".equals(orderListVo.getUserId()))) {
-            criteria.andUserIdEqualTo(Integer.parseInt(orderListVo.getUserId()));
+            String userId = orderListVo.getUserId();
+            boolean integer = IntegerUtils.isInteger(userId);
+            if (integer) {
+                criteria.andUserIdEqualTo(Integer.parseInt(userId));
+            }else {
+                criteria.andUserIdEqualTo(9999999);
+            }
         }
         if (orderListVo.getOrderSn() == null || orderListVo.getOrderSn().equals("")) {
             orderListVo.setOrderSn("%%");
