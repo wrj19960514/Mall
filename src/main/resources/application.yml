@@ -10,6 +10,11 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+    #    上传文件大小限制
+  servlet:
+    multipart:
+      max-file-size: 5MB
+
 
 # 分页 方言
 pagehelper:
@@ -22,5 +27,11 @@ logging:
       cskaoyan:
         mall:
           mapper: debug
+<<<<<<< HEAD
+
+
+
+=======
 mybatis:
   type-handlers-package: com.cskaoyan.mall.util
+>>>>>>> df1baf4484efa068f3ed1eb303ad049b1c41aff9
