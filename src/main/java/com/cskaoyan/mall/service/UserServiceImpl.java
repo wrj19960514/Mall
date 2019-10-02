@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service;
 import com.alibaba.druid.util.StringUtils;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
+import com.cskaoyan.mall.util.IntegerUtils;
 import com.cskaoyan.mall.vo.ListBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -49,8 +50,9 @@ public class UserServiceImpl implements UserService {
         // 排序
         userExample.setOrderByClause(sort + " " + order);
         // 根据 username 模糊查询
+        UserExample.Criteria criteria = userExample.createCriteria();
         if (!StringUtils.isEmpty(username)) {
-            userExample.createCriteria().andUsernameLike("%" + username + "%");
+            criteria.andUsernameLike("%" + username + "%");
         }
         // 根据 mobile 模糊查询
         if (!StringUtils.isEmpty(mobile)) {
@@ -75,19 +77,22 @@ public class UserServiceImpl implements UserService {
      * @param name 搜索 name
      * @return 收货地址列表
      */
-    public ListBean getAddressList(int page, int limit, String sort, String order, String user_id, String name) {
+    public ListBean getAddressList(int page, int limit, String sort, String order, String userId, String name) {
         // 分页
         PageHelper.startPage(page, limit);
         AddressExample addressExample = new AddressExample();
         // 排序
         addressExample.setOrderByClause(sort + " " + order);
         // id查询
-        if (!StringUtils.isEmpty(user_id)) {
-            addressExample.createCriteria().andUserIdEqualTo(Integer.valueOf(user_id));
+        AddressExample.Criteria criteria = addressExample.createCriteria();
+        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
+            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)){
+            criteria.andUserIdEqualTo(-1);
         }
         // 模糊查询
         if(!StringUtils.isEmpty(name)) {
-            addressExample.createCriteria().andAddressLike("%" + name + "%");
+            criteria.andNameLike("%" + name + "%");
         }
         // 封装
         List<Address> addressList = addressMapper.selectByExample(addressExample);
@@ -100,18 +105,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ListBean getCollectList(int page, int limit, String sort, String order, String user_id, String value_id) {
+    public ListBean getCollectList(int page, int limit, String sort, String order, String userId, String valueId) {
         // 分页
         PageHelper.startPage(page, limit);
         // 排序
         CollectExample collectExample = new CollectExample();
         collectExample.setOrderByClause(sort + " " + order);
         // 查询
-        if (!StringUtils.isEmpty(user_id)) {
-            collectExample.createCriteria().andUserIdEqualTo(Integer.valueOf(user_id));
+        CollectExample.Criteria criteria = collectExample.createCriteria();
+        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
+            // 非空数字
+            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)){
+            // 非空非数字
+            criteria.andUserIdEqualTo(-1);
         }
-        if (!StringUtils.isEmpty(value_id)) {
-            collectExample.createCriteria().andValueIdEqualTo(Integer.valueOf(value_id));
+        if (!StringUtils.isEmpty(valueId) && IntegerUtils.isInteger(valueId)) {
+            // 非空数字
+            criteria.andValueIdEqualTo(Integer.valueOf(valueId));
+        } else if (!StringUtils.isEmpty(valueId) && !IntegerUtils.isInteger(valueId)){
+            // 非空非数字
+            criteria.andValueIdEqualTo(-1);
         }
         // 封装
         List<Collect> collectList = collectMapper.selectByExample(collectExample);
@@ -124,18 +138,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ListBean getFootprintList(int page, int limit, String sort, String order, String user_id, String goods_id) {
+    public ListBean getFootprintList(int page, int limit, String sort, String order, String userId, String goodsId) {
         // 分页
         PageHelper.startPage(page, limit);
         // 排序
         FootprintExample footprintExample = new FootprintExample();
         footprintExample.setOrderByClause(sort + " " + order);
         // 查询
-        if (!StringUtils.isEmpty(user_id)) {
-            footprintExample.createCriteria().andUserIdEqualTo(Integer.valueOf(user_id));
+        FootprintExample.Criteria criteria = footprintExample.createCriteria();
+        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
+            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)) {
+            criteria.andUserIdEqualTo(-1);
         }
-        if (!StringUtils.isEmpty(goods_id)) {
-            footprintExample.createCriteria().andGoodsIdEqualTo(Integer.valueOf(goods_id));
+        if (!StringUtils.isEmpty(goodsId) && IntegerUtils.isInteger(goodsId)) {
+            criteria.andGoodsIdEqualTo(Integer.valueOf(goodsId));
+        } else if (!StringUtils.isEmpty(goodsId) && !IntegerUtils.isInteger(goodsId)){
+            criteria.andGoodsIdEqualTo(-1);
         }
         // 封装
         List<Footprint> footprintList = footprintMapper.selectByExample(footprintExample);
@@ -148,18 +167,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ListBean getHistoryList(int page, int limit, String sort, String order, String user_id, String keyword) {
+    public ListBean getHistoryList(int page, int limit, String sort, String order, String userId, String keyword) {
         // 分页
         PageHelper.startPage(page, limit);
         // 排序
         SearchHistoryExample searchHistoryExample = new SearchHistoryExample();
         searchHistoryExample.setOrderByClause(sort + " " + order);
         // 查询
-        if (!StringUtils.isEmpty(user_id)) {
-            searchHistoryExample.createCriteria().andUserIdEqualTo(Integer.valueOf(user_id));
+        SearchHistoryExample.Criteria criteria = searchHistoryExample.createCriteria();
+        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
+            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)){
+            criteria.andUserIdEqualTo(-1);
         }
         if (!StringUtils.isEmpty(keyword)) {
-            searchHistoryExample.createCriteria().andKeywordLike("%" + keyword + "%");
+            criteria.andKeywordLike("%" + keyword + "%");
         }
         // 封装
         List<SearchHistory> searchHistoryList = searchHistoryMapper.selectByExample(searchHistoryExample);
@@ -179,12 +201,16 @@ public class UserServiceImpl implements UserService {
         FeedbackExample feedbackExample = new FeedbackExample();
         feedbackExample.setOrderByClause(sort + " " + order);
         // 查询
+        FeedbackExample.Criteria criteria = feedbackExample.createCriteria();
+        if (!StringUtils.isEmpty(id) && IntegerUtils.isInteger(id)) {
+            criteria.andIdEqualTo(Integer.valueOf(id));
+        } else if (!StringUtils.isEmpty(id) && !IntegerUtils.isInteger(id)){
+            criteria.andIdEqualTo(-1);
+        }
         if (!StringUtils.isEmpty(username)) {
-            feedbackExample.createCriteria().andUsernameLike("%" + username + "%");
+            criteria.andUsernameLike("%" + username + "%");
         }
-        if (!StringUtils.isEmpty(id)) {
-            feedbackExample.createCriteria().andIdEqualTo(Integer.valueOf(id));
-        }
+
         // 封装
         List<Feedback> feedbackList = feedbackMapper.selectByExample(feedbackExample);
         PageInfo<Feedback> pageInfo = new PageInfo<>(feedbackList);
