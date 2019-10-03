@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.StorageMapper">
+
+  <select id="queryAllStorage" resultMap="BaseResultMap">
+    select id,`key`,name,type,`size`,url,add_time,update_time,deleted from cskaoyan_mall_storage order by #{sort} #{order}
+  </select>
+
+  <select id="queryStorageByKeyAndName" resultMap="BaseResultMap">
+    select id,`key`,name,type,`size`,url,add_time,update_time,deleted from cskaoyan_mall_storage
+     <where>
+         <if test="key != null">
+             `key` = #{key}
+         </if>
+         <if test="name != '%null%'">
+            and name like #{name}
+         </if>
+     </where>
+  </select>
+
+  <update id="updateStorage">
+    update cskaoyan_mall_storage set name = #{storage.name} where id= #{storage.id}
+  </update>
+
+  <delete id="deleteStorage">
+    delete from cskaoyan_mall_storage where id = #{id}
+  </delete>
+
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Storage">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="key" jdbcType="VARCHAR" property="key" />

@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.Ad;
 import com.cskaoyan.mall.bean.Coupon;
+import com.cskaoyan.mall.bean.GrouponRules;
 import com.cskaoyan.mall.bean.Topic;
 import com.cskaoyan.mall.vo.ListBean;
 
@@ -17,6 +18,8 @@ public interface PromoteService {
      * @return  返回的广告信息
      */
     ListBean getAdList(int page, int limit, String sort, String order, String name, String content);
+    //添加
+    Ad createAds(Ad ad);
     //编辑
     Ad updateAds(Ad ad);
     //删除
@@ -55,5 +58,19 @@ public interface PromoteService {
 
     //删除专题
     void deleteTopic(Topic topic);
+    /*-------------------------------团购规则--------------------------------------*/
+    //获取页面信息
+    ListBean getGrouponRulesList(int page, int limit, String goodsId, String sort, String order);
 
+    //添加团购规则
+    GrouponRules createGrouponRules(GrouponRules grouponRules);
+
+    //编辑团购规则
+    void updateGrouponRules(GrouponRules grouponRules);
+
+    //删除团购规则
+    void deleteGrouponRules(GrouponRules grouponRules);
+    /*-------------------------------------团购活动---------------------------------------*/
+    //获取页面信息
+    ListBean getListRecord(int page, int limit, String sort, String order, String goodsId);
 }

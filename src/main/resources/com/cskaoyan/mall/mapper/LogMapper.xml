@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.LogMapper">
+
+ <select id="queryAllLogs" resultMap="BaseResultMap">
+      select id,admin,ip,type,action,status,result,comment,add_time,update_time,deleted
+      from cskaoyan_mall_log order by #{sort} #{order}
+ </select>
+<select id="queryLogsByName" resultMap="BaseResultMap">
+    select id,admin,ip,type,action,status,result,comment,add_time,update_time,deleted
+     from cskaoyan_mall_log
+     where admin like #{name}
+     order by #{sort} #{order}
+</select>
+
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Log">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="admin" jdbcType="VARCHAR" property="admin" />

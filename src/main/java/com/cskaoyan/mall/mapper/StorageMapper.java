@@ -2,7 +2,9 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Storage;
 import com.cskaoyan.mall.bean.StorageExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface StorageMapper {
@@ -27,4 +29,12 @@ public interface StorageMapper {
     int updateByPrimaryKeySelective(Storage record);
 
     int updateByPrimaryKey(Storage record);
+
+    List<Storage> queryAllStorage(@Param("sort") String sort, @Param("order") String order);
+
+    List<Storage> queryStorageByKeyAndName(@Param("sort") String sort, @Param("order") String order, @Param("key") String key, @Param("name") String name);
+
+    void updateStorage(@Param("storage") Storage storage);
+
+    void deleteStorage(@Param("id") Integer id);
 }

@@ -95,6 +95,7 @@
     from cskaoyan_mall_groupon_rules
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyan_mall_groupon_rules
     where id = #{id,jdbcType=INTEGER}
@@ -106,6 +107,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.cskaoyan.mall.bean.GrouponRules">
+    <selectKey keyProperty="id" resultType="java.lang.Integer"  keyColumn="id" order="AFTER">
+      SELECT LAST_INSERT_ID() as id
+    </selectKey>
     insert into cskaoyan_mall_groupon_rules (id, goods_id, goods_name, 
       pic_url, discount, discount_member, 
       add_time, update_time, expire_time, 
