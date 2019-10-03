@@ -7,13 +7,9 @@ import com.cskaoyan.mall.vo.BaseRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.*;
+
 
 /**
  * 资源存储
@@ -36,46 +32,5 @@ public class StorageController {
             return BaseRespVo.ok(storage);
         }
         return BaseRespVo.error(null);
-    }
-
-
-    @GetMapping("/list")
-    public BaseRespVo getList(HttpServletRequest httpServletRequest){
-        int page =  Integer.parseInt(httpServletRequest.getParameter("page"));
-        int limit = Integer.parseInt(httpServletRequest.getParameter("limit"));
-        String sort = httpServletRequest.getParameter("sort");
-        String order = httpServletRequest.getParameter("order");
-        String key =  httpServletRequest.getParameter("key");
-        String name = httpServletRequest.getParameter("name");
-        Map<String,Object> map = new HashMap<>();
-        if(key == null && name == null){
-            int total = storageService.getAmount();
-            map.put("total",total);
-            List<Storage> items = storageService.getList(page, limit, sort, order);
-            map.put("items",items);
-            return BaseRespVo.ok(map);
-        }else {
-            List<Storage> items =  storageService.getSearch(page,limit,sort,order,key,name);
-            int total = items.size();
-            map.put("total",total);
-            map.put("items",items);
-            return BaseRespVo.ok(map);
-        }
-    }
-
-
-    @PostMapping("/update")
-    public BaseRespVo update(@RequestBody Storage storage){
-         Storage updateStorage = storageService.update(storage);
-         return BaseRespVo.ok(updateStorage);
-    }
-
-    @PostMapping("/delete")
-    public BaseRespVo delete(@RequestBody Storage storage){
-         boolean delete = storageService.delete(storage);
-         if (delete){
-             return BaseRespVo.ok(null);
-         }
-         return BaseRespVo.error(null);
     }
 }

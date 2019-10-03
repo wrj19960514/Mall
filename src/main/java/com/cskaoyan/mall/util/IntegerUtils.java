@@ -13,7 +13,7 @@ public class IntegerUtils {
         if(string == null || "".equals(string.trim())){
             return false;
         }
-        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+        Pattern pattern = Pattern.compile("^[-+]?[\\d]*$");
         return pattern.matcher(string).matches();
     }
 }

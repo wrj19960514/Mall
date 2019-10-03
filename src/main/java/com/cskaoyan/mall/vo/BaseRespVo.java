@@ -50,6 +50,13 @@ public class BaseRespVo<T> {
         return baseRespVo;
     }
 
+    public static BaseRespVo paramError() {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrno(401);
+        baseRespVo.setErrmsg("请输入正确的参数值");
+        return baseRespVo;
+    }
+
     @Override
     public String toString() {
         return "BaseRespVo{" +

@@ -3,10 +3,12 @@ package com.cskaoyan.mall.controller;
 import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.service.GoodsService;
+import com.cskaoyan.mall.util.ParamUtils;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.goodsManage.CatAndBrand;
 import com.cskaoyan.mall.vo.ListBean;
 import com.cskaoyan.mall.vo.goodsManage.GoodsVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +26,8 @@ public class GoodsController {
 
     @RequestMapping("/goods/list")
     public BaseRespVo getGoodsList(int page, int limit, String sort, String order, String goodsSn, String name) {
-        // 有字母
-        if (goodsSn != null && goodsSn.matches("(?i)[^a-z]*[a-z]+[^a-z]*")) {
+        // 不为空且不是数字
+        if (!ParamUtils.isEmpty(goodsSn) && !ParamUtils.isInteger(goodsSn)) {
             return BaseRespVo.error(null);
         }
         ListBean goods = goodsService.getGoodsList(page, limit, sort, order, goodsSn, name);
@@ -49,11 +51,7 @@ public class GoodsController {
 
     @RequestMapping("/goods/create")
     public BaseRespVo create(@RequestBody GoodsVo goodsVo) {
-        boolean create = goodsService.create(goodsVo);
-        if (create) {
-            return BaseRespVo.ok(null);
-        }
-        return BaseRespVo.error(null);
+        return goodsService.create(goodsVo);
     }
 
     @RequestMapping("/goods/detail")
@@ -64,20 +62,16 @@ public class GoodsController {
 
     @RequestMapping("/goods/update")
     public BaseRespVo update(@RequestBody GoodsVo goodsVo) {
-        boolean update = goodsService.update(goodsVo);
-        if (update) {
-            return BaseRespVo.ok(null);
-        }
-        return BaseRespVo.error(null);
+        return goodsService.update(goodsVo);
     }
 
     @RequestMapping("/comment/list")
     public BaseRespVo commentList(int page, int limit, String sort, String order, String userId, String valueId) {
-        // 有字母
-        if (userId != null && userId.matches("(?i)[^a-z]*[a-z]+[^a-z]*")) {
+        // 不为空且不是数字
+        if (!ParamUtils.isEmpty(userId) && !ParamUtils.isInteger(userId)) {
             return BaseRespVo.error(null);
         }
-        if (valueId != null && valueId.matches("(?i)[^a-z]*[a-z]+[^a-z]*")) {
+        if (!ParamUtils.isEmpty(valueId) && !ParamUtils.isInteger(valueId)) {
             return BaseRespVo.error(null);
         }
         ListBean comments = goodsService.commentList(page, limit, sort, order, userId, valueId);

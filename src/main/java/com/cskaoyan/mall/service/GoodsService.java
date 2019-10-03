@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Goods;
+import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.goodsManage.CatAndBrand;
 import com.cskaoyan.mall.vo.ListBean;
 import com.cskaoyan.mall.vo.goodsManage.GoodsVo;
@@ -57,7 +58,7 @@ public interface GoodsService {
      * @param goodsVo 商品信息封装
      * @return boolean
      */
-    boolean create(GoodsVo goodsVo);
+    BaseRespVo create(GoodsVo goodsVo);
 
     /**
      * 编辑商品前获取商品详情
@@ -70,5 +71,5 @@ public interface GoodsService {
      * @param goodsVo 商品信息封装
      * @return boolean
      */
-    boolean update(GoodsVo goodsVo);
+    BaseRespVo update(GoodsVo goodsVo);
 }
