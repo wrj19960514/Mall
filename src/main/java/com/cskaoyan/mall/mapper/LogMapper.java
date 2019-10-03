@@ -2,7 +2,9 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Log;
 import com.cskaoyan.mall.bean.LogExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface LogMapper {
@@ -27,4 +29,9 @@ public interface LogMapper {
     int updateByPrimaryKeySelective(Log record);
 
     int updateByPrimaryKey(Log record);
+
+    List<Log> queryAllLogs(@Param("sort") String sort, @Param("order") String order);
+
+    List<Log> queryLogsByName(@Param("name")String name,@Param("sort") String sort, @Param("order") String order);
+
 }

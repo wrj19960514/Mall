@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.RoleMapper">
+
+  <resultMap id="roleMap" type="com.cskaoyan.mall.vo.adminManage.RoleVo">
+    <result column="idz" property="value"/>
+    <result column="namez" property="label"/>
+  </resultMap>
+  <select id="queryAllRoles" resultMap="roleMap">
+    select id as idz,name as namez from cskaoyan_mall_role
+  </select>
+
+  <select id="selectAllRoles" resultMap="BaseResultMap">
+    select `id`,`name`,`desc`,`enabled`,`add_time`,`update_time`,`deleted`
+    from cskaoyan_mall_role order by #{sort} #{order}
+  </select>
+
+  <select id="selectRolesByName" resultMap="BaseResultMap">
+    select `id`,`name`,`desc`,`enabled`,`add_time`,`update_time`,`deleted`
+    from cskaoyan_mall_role
+    where name like #{name}
+    order by #{sort} #{order}
+  </select>
+
+  <insert id="insertRole">
+    insert into cskaoyan_mall_role (name,`desc`,add_time,update_time) value
+    (#{role.name},#{role.desc},#{role.addTime},#{role.updateTime})
+  </insert>
+
+  <select id="queryIdByName" resultType="Integer">
+    select id from cskaoyan_mall_role where name = #{name}
+  </select>
+
+  <update id="updateRole">
+    update cskaoyan_mall_role set name = #{role.name},`desc` = #{role.desc},
+    update_time = #{role.updateTime}
+    where id = #{role.id}
+  </update>
+
+  <delete id="deleteRole">
+    delete from cskaoyan_mall_role where id =#{id}
+  </delete>
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Role">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
