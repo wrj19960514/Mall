@@ -77,6 +77,7 @@ public class StorageServiceImpl implements StorageService {
     public boolean delete(Storage storage) {
         boolean flag = false;
         StorageExample storageExample = new StorageExample();
+        storage.setDeleted(true);
         storageExample.createCriteria().andIdEqualTo(storage.getId());
         int delete = storageMapper.deleteByExample(storageExample);
         if(delete == 1){
