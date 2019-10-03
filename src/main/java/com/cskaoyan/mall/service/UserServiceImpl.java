@@ -3,7 +3,7 @@ package com.cskaoyan.mall.service;
 import com.alibaba.druid.util.StringUtils;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
-import com.cskaoyan.mall.util.IntegerUtils;
+import com.cskaoyan.mall.util.SearchUtils;
 import com.cskaoyan.mall.vo.ListBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -85,10 +85,17 @@ public class UserServiceImpl implements UserService {
         addressExample.setOrderByClause(sort + " " + order);
         // id查询
         AddressExample.Criteria criteria = addressExample.createCriteria();
-        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
-            criteria.andUserIdEqualTo(Integer.valueOf(userId));
-        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)){
-            criteria.andUserIdEqualTo(-1);
+//        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
+//            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+//        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)){
+//            criteria.andUserIdEqualTo(-1);
+//        }
+        /*
+        * 判断是否为空
+        * 非空进一步判断是否为数字
+        */
+        if (!StringUtils.isEmpty(userId)) {
+            criteria.andUserIdEqualTo(SearchUtils.search(userId));
         }
         // 模糊查询
         if(!StringUtils.isEmpty(name)) {
@@ -113,19 +120,25 @@ public class UserServiceImpl implements UserService {
         collectExample.setOrderByClause(sort + " " + order);
         // 查询
         CollectExample.Criteria criteria = collectExample.createCriteria();
-        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
-            // 非空数字
-            criteria.andUserIdEqualTo(Integer.valueOf(userId));
-        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)){
-            // 非空非数字
-            criteria.andUserIdEqualTo(-1);
+//        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
+//            // 非空数字
+//            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+//        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)){
+//            // 非空非数字
+//            criteria.andUserIdEqualTo(-1);
+//        }
+        if (!StringUtils.isEmpty(userId)) {
+            criteria.andUserIdEqualTo(SearchUtils.search(userId));
         }
-        if (!StringUtils.isEmpty(valueId) && IntegerUtils.isInteger(valueId)) {
-            // 非空数字
-            criteria.andValueIdEqualTo(Integer.valueOf(valueId));
-        } else if (!StringUtils.isEmpty(valueId) && !IntegerUtils.isInteger(valueId)){
-            // 非空非数字
-            criteria.andValueIdEqualTo(-1);
+//        if (!StringUtils.isEmpty(valueId) && IntegerUtils.isInteger(valueId)) {
+//            // 非空数字
+//            criteria.andValueIdEqualTo(Integer.valueOf(valueId));
+//        } else if (!StringUtils.isEmpty(valueId) && !IntegerUtils.isInteger(valueId)){
+//            // 非空非数字
+//            criteria.andValueIdEqualTo(-1);
+//        }
+        if (!StringUtils.isEmpty(valueId)) {
+            criteria.andUserIdEqualTo(SearchUtils.search(valueId));
         }
         // 封装
         List<Collect> collectList = collectMapper.selectByExample(collectExample);
@@ -146,15 +159,21 @@ public class UserServiceImpl implements UserService {
         footprintExample.setOrderByClause(sort + " " + order);
         // 查询
         FootprintExample.Criteria criteria = footprintExample.createCriteria();
-        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
-            criteria.andUserIdEqualTo(Integer.valueOf(userId));
-        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)) {
-            criteria.andUserIdEqualTo(-1);
+//        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
+//            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+//        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)) {
+//            criteria.andUserIdEqualTo(-1);
+//        }
+        if (!StringUtils.isEmpty(userId)) {
+            criteria.andUserIdEqualTo(SearchUtils.search(userId));
         }
-        if (!StringUtils.isEmpty(goodsId) && IntegerUtils.isInteger(goodsId)) {
-            criteria.andGoodsIdEqualTo(Integer.valueOf(goodsId));
-        } else if (!StringUtils.isEmpty(goodsId) && !IntegerUtils.isInteger(goodsId)){
-            criteria.andGoodsIdEqualTo(-1);
+//        if (!StringUtils.isEmpty(goodsId) && IntegerUtils.isInteger(goodsId)) {
+//            criteria.andGoodsIdEqualTo(Integer.valueOf(goodsId));
+//        } else if (!StringUtils.isEmpty(goodsId) && !IntegerUtils.isInteger(goodsId)){
+//            criteria.andGoodsIdEqualTo(-1);
+//        }
+        if (!StringUtils.isEmpty(goodsId)) {
+            criteria.andUserIdEqualTo(SearchUtils.search(goodsId));
         }
         // 封装
         List<Footprint> footprintList = footprintMapper.selectByExample(footprintExample);
@@ -175,10 +194,13 @@ public class UserServiceImpl implements UserService {
         searchHistoryExample.setOrderByClause(sort + " " + order);
         // 查询
         SearchHistoryExample.Criteria criteria = searchHistoryExample.createCriteria();
-        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
-            criteria.andUserIdEqualTo(Integer.valueOf(userId));
-        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)){
-            criteria.andUserIdEqualTo(-1);
+//        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
+//            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+//        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)){
+//            criteria.andUserIdEqualTo(-1);
+//        }
+        if (!StringUtils.isEmpty(userId)) {
+            criteria.andUserIdEqualTo(SearchUtils.search(userId));
         }
         if (!StringUtils.isEmpty(keyword)) {
             criteria.andKeywordLike("%" + keyword + "%");
@@ -202,10 +224,13 @@ public class UserServiceImpl implements UserService {
         feedbackExample.setOrderByClause(sort + " " + order);
         // 查询
         FeedbackExample.Criteria criteria = feedbackExample.createCriteria();
-        if (!StringUtils.isEmpty(id) && IntegerUtils.isInteger(id)) {
-            criteria.andIdEqualTo(Integer.valueOf(id));
-        } else if (!StringUtils.isEmpty(id) && !IntegerUtils.isInteger(id)){
-            criteria.andIdEqualTo(-1);
+//        if (!StringUtils.isEmpty(id) && IntegerUtils.isInteger(id)) {
+//            criteria.andIdEqualTo(Integer.valueOf(id));
+//        } else if (!StringUtils.isEmpty(id) && !IntegerUtils.isInteger(id)){
+//            criteria.andIdEqualTo(-1);
+//        }
+        if (!StringUtils.isEmpty(id)) {
+            criteria.andUserIdEqualTo(SearchUtils.search(id));
         }
         if (!StringUtils.isEmpty(username)) {
             criteria.andUsernameLike("%" + username + "%");
