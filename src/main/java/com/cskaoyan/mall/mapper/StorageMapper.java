@@ -30,11 +30,11 @@ public interface StorageMapper {
 
     int updateByPrimaryKey(Storage record);
 
-  /*  List<Storage> queryAllStorage(@Param("sort") String sort, @Param("order") String order);
+    List<Storage> queryAllStorage(@Param("sort") String sort, @Param("order") String order);
 
     List<Storage> queryStorageByKeyAndName(@Param("sort") String sort, @Param("order") String order, @Param("key") String key, @Param("name") String name);
 
     void updateStorage(@Param("storage") Storage storage);
 
-    void deleteStorage(@Param("id") Integer id);*/
+    void deleteStorage(@Param("id") Integer id);
 }

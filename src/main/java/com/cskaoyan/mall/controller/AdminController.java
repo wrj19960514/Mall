@@ -118,7 +118,7 @@ public class AdminController {
         BaseRespVo ok = BaseRespVo.ok(null);
         return ok;
     }
-  /*  @RequestMapping("admin/storage/list")
+    @RequestMapping("admin/storage/list")
     public BaseRespVo getStorageList(int page,int limit,String sort,String order,String key,String name) {
         if(key!= null || name!= null){
             ListBean listBean = storageService.queryStorageByKeyAndName(page, limit, sort, order, key, name);
@@ -141,5 +141,5 @@ public class AdminController {
         storageService.deleteStorage(storage);
         BaseRespVo ok = BaseRespVo.ok(null);
         return ok;
-    }*/
+    }
 }
