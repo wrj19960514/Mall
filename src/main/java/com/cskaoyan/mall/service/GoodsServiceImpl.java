@@ -179,4 +179,27 @@ public class GoodsServiceImpl implements GoodsService {
         goodsVo.setCategoryIds(new Integer[]{pid, categoryId});
         return goodsVo;
     }
+
+    @Override
+    public boolean update(GoodsVo goodsVo) {
+        // goods
+        Goods goods = goodsVo.getGoods();
+        goodsMapper.updateByPrimaryKey(goods);
+        // attributes
+        List<GoodsAttribute> attributes = goodsVo.getAttributes();
+        for (GoodsAttribute attribute : attributes) {
+            goodsAttributeMapper.updateByPrimaryKey(attribute);
+        }
+        // products
+        List<GoodsProduct> products = goodsVo.getProducts();
+        for (GoodsProduct product : products) {
+            goodsProductMapper.updateByPrimaryKey(product);
+        }
+        // specifications
+        List<GoodsSpecification> specifications = goodsVo.getSpecifications();
+        for (GoodsSpecification specification : specifications) {
+            goodsSpecificationMapper.updateByPrimaryKey(specification);
+        }
+        return true;
+    }
 }

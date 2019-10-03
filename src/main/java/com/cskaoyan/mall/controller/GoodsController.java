@@ -62,6 +62,15 @@ public class GoodsController {
         return BaseRespVo.ok(goodsVo);
     }
 
+    @RequestMapping("/goods/update")
+    public BaseRespVo update(@RequestBody GoodsVo goodsVo) {
+        boolean update = goodsService.update(goodsVo);
+        if (update) {
+            return BaseRespVo.ok(null);
+        }
+        return BaseRespVo.error(null);
+    }
+
     @RequestMapping("/comment/list")
     public BaseRespVo commentList(int page, int limit, String sort, String order, String userId, String valueId) {
         // 有字母

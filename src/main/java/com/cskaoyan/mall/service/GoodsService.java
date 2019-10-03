@@ -65,4 +65,10 @@ public interface GoodsService {
      * @return 商品所有信息
      */
     GoodsVo detail(int id);
+
+    /**更新商品错误
+     * @param goodsVo 商品信息封装
+     * @return boolean
+     */
+    boolean update(GoodsVo goodsVo);
 }
