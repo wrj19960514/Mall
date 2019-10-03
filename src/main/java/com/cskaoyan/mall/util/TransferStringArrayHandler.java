@@ -20,7 +20,7 @@ import java.sql.SQLException;
 public class TransferStringArrayHandler implements TypeHandler<String[]> {
     ObjectMapper objectMapper = new ObjectMapper();
 
-    /*插入数据  由javabean转换为数据库接收的类型*/
+    // 插入数据  由javabean转换为数据库接收的类型
     @Override
     public void setParameter(PreparedStatement preparedStatement, int index, String[] strings, JdbcType jdbcType) throws SQLException {
         try {
