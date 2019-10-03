@@ -11,6 +11,7 @@ import com.cskaoyan.mall.vo.goodsManage.Label;
 import com.cskaoyan.mall.vo.ListBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.omg.CORBA.INTERNAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -56,7 +57,7 @@ public class GoodsServiceImpl implements GoodsService {
         if (!ParamUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
-        List<Goods> goods = goodsMapper.selectByExample(goodsExample);
+        List<Goods> goods = goodsMapper.selectByExampleWithBLOBs(goodsExample);
         PageInfo<Goods> userPageInfo = new PageInfo<>(goods);
         long total = userPageInfo.getTotal();
         ListBean listBean = new ListBean();
@@ -216,7 +217,7 @@ public class GoodsServiceImpl implements GoodsService {
         for (GoodsProduct product : products) {
             if (product.getNumber() == null || !ParamUtils.isInteger(product.getNumber().toString()) ||
                     product.getPrice() == null || !ParamUtils.isInteger(product.getPrice().toString()) ||
-                    product.getNumber() < 0 || product.getPrice().compareTo(new BigDecimal("0")) == -1) {
+                    product.getNumber() < 0 || product.getPrice().compareTo(new BigDecimal("0")) == -1 ) {
                 baseRespVo.setErrmsg("库存输入正确数值");
                 baseRespVo.setErrno(401);
                 return baseRespVo;
