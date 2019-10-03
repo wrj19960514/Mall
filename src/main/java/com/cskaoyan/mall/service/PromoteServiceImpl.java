@@ -2,17 +2,17 @@ package com.cskaoyan.mall.service;
 
 import com.alibaba.druid.util.StringUtils;
 import com.cskaoyan.mall.bean.*;
-import com.cskaoyan.mall.mapper.AdMapper;
-import com.cskaoyan.mall.mapper.CouponMapper;
-import com.cskaoyan.mall.mapper.CouponUserMapper;
-import com.cskaoyan.mall.mapper.TopicMapper;
+import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.vo.ListBean;
+import com.cskaoyan.mall.vo.promote.GrouponsVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,6 +29,15 @@ public class PromoteServiceImpl implements PromoteService {
 
     @Autowired
     TopicMapper topicMapper;
+
+    @Autowired
+    GrouponRulesMapper grouponRulesMapper;
+
+    @Autowired
+    GoodsMapper goodsMapper;
+
+    @Autowired
+    GrouponMapper grouponMapper;
 
     private ListBean listBean;
 
@@ -62,11 +71,21 @@ public class PromoteServiceImpl implements PromoteService {
     }
 
     @Override
+    public Ad createAds(Ad ad) {
+        AdExample adExample = new AdExample();
+        int insert = adMapper.insert(ad);
+        Integer id = ad.getId();
+        ad = adMapper.selectByPrimaryKey(id);
+        return ad;
+    }
+
+    @Override
     public Ad updateAds(Ad ad) {
         AdExample adExample = new AdExample();
         adExample.createCriteria().andIdEqualTo(ad.getId());
         int i = adMapper.updateByExample(ad, adExample);
-        return adMapper.selectByPrimaryKey(ad.getId());
+        ad = adMapper.selectByPrimaryKey(ad.getId());
+        return ad;
     }
 
     @Override
@@ -201,7 +220,108 @@ public class PromoteServiceImpl implements PromoteService {
     @Override
     public void deleteTopic(Topic topic) {
         TopicExample topicExample = new TopicExample();
-        int i = topicMapper.deleteByExample(topicExample);
+        int i = topicMapper.deleteByPrimaryKey(topic.getId());
+    }
+
+    /*---------------------------------------团购规则---------------------------------------*/
+    @Override
+    public ListBean getGrouponRulesList(int page, int limit, String goodsId, String sort, String order) {
+        GrouponRulesExample grouponRulesExample = new GrouponRulesExample();
+        //分页
+        PageHelper.startPage(page, limit);
+        grouponRulesExample.setOrderByClause(sort + " " + order);
+        GrouponRulesExample.Criteria criteria = grouponRulesExample.createCriteria();
+        //查询
+        if (!StringUtil.isEmpty(goodsId)) {
+            criteria.andGoodsIdEqualTo(Integer.valueOf(goodsId));
+        }
+        List<GrouponRules> grouponRules = grouponRulesMapper.selectByExample(grouponRulesExample);
+        //获取total
+        PageInfo<GrouponRules> grouponRulesPageInfo = new PageInfo<>(grouponRules);
+        long total = grouponRulesPageInfo.getTotal();
+        ListBean listBean = new ListBean();
+        listBean.setItems(grouponRules);
+        listBean.setTotal(total);
+        return listBean;
+    }
+
+    @Override
+    public GrouponRules createGrouponRules(GrouponRules grouponRules) {
+        GrouponRulesExample grouponRulesExample = new GrouponRulesExample();
+        Goods goods = goodsMapper.selectByPrimaryKey(grouponRules.getGoodsId());
+        grouponRules.setGoodsName(goods.getName());
+        grouponRules.setPicUrl(goods.getPicUrl());
+        Date date = new Date();
+        grouponRules.setAddTime(date);
+        grouponRules.setUpdateTime(date);
+        int insert = grouponRulesMapper.insert(grouponRules);
+        Integer id = grouponRules.getId();
+        grouponRules = grouponRulesMapper.selectByPrimaryKey(id);
+        return grouponRules;
+    }
+
+    @Override
+    public void updateGrouponRules(GrouponRules grouponRules) {
+        GrouponRulesExample grouponRulesExample = new GrouponRulesExample();
+        int i = grouponRulesMapper.updateByPrimaryKey(grouponRules);
+    }
+
+    @Override
+    public void deleteGrouponRules(GrouponRules grouponRules) {
+        GrouponRulesExample grouponRulesExample = new GrouponRulesExample();
+        grouponRulesMapper.deleteByPrimaryKey(grouponRules.getId());
+    }
+    /*--------------------------------------团购活动---------------------------------------*/
+    @Override
+    public ListBean getListRecord(int page, int limit, String sort, String order, String goodsId) {
+        GrouponExample grouponExample = new GrouponExample();
+        GrouponRulesExample grouponRulesExample = new GrouponRulesExample();
+        //分页
+        PageHelper.startPage(page, limit);
+        grouponExample.setOrderByClause(sort + " " + order);
+        GrouponsVo grouponsVo = new GrouponsVo();
+        GrouponExample.Criteria grouponExampleCriteria = grouponExample.createCriteria();
+        GrouponRulesExample.Criteria grouponRulesExampleCriteria = grouponRulesExample.createCriteria();
+        ArrayList itemsList = new ArrayList<GrouponsVo>();
+        if (!StringUtil.isEmpty(goodsId)) {
+            grouponRulesExampleCriteria.andGoodsIdEqualTo(Integer.valueOf(goodsId));
+            List<GrouponRules> grouponRules1 = grouponRulesMapper.selectByExample(grouponRulesExample);
+            for (GrouponRules grouponRule : grouponRules1) {
+                Integer id = grouponRule.getId();
+                grouponExampleCriteria.andRulesIdEqualTo(id);
+                List<Groupon>  groupons = grouponMapper.selectByExample(grouponExample);
+                for (Groupon groupon : groupons) {
+                    grouponsVo.setGroupon(groupon);
+                    Integer rulesId = groupon.getRulesId();
+                    GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(rulesId);
+                    grouponsVo.setRules(grouponRules);
+                    Goods goods = goodsMapper.selectByPrimaryKey(grouponRules.getGoodsId());
+                    grouponsVo.setGoods(goods);
+                    itemsList.add(grouponsVo);
+                }
+
+            }
+        } else {
+            List<Groupon> groupons = grouponMapper.selectByExample(grouponExample);
+            for (Groupon groupon : groupons) {
+                grouponsVo.setGroupon(groupon);
+                Integer rulesId = groupon.getRulesId();
+                GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(rulesId);
+                grouponsVo.setRules(grouponRules);
+                Goods goods = goodsMapper.selectByPrimaryKey(grouponRules.getGoodsId());
+                grouponsVo.setGoods(goods);
+                itemsList.add(grouponsVo);
+            }
+        }
+
+
+        //获取total
+        PageInfo<Groupon> grouponPageInfo = new PageInfo<>();
+        long total = grouponPageInfo.getTotal();
+        ListBean listBean = new ListBean();
+        listBean.setItems(itemsList);
+        listBean.setTotal(total);
+        return listBean;
     }
 
 
