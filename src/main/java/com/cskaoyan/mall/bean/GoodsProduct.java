@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.bean;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
 public class GoodsProduct {
@@ -8,7 +9,7 @@ public class GoodsProduct {
 
     private Integer goodsId;
 
-    private String specifications;
+    private String[] specifications;
 
     private BigDecimal price;
 
@@ -38,12 +39,12 @@ public class GoodsProduct {
         this.goodsId = goodsId;
     }
 
-    public String getSpecifications() {
+    public String[] getSpecifications() {
         return specifications;
     }
 
-    public void setSpecifications(String specifications) {
-        this.specifications = specifications == null ? null : specifications.trim();
+    public void setSpecifications(String[] specifications) {
+        this.specifications = specifications;
     }
 
     public BigDecimal getPrice() {
@@ -92,5 +93,20 @@ public class GoodsProduct {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "GoodsProduct{" +
+                "id=" + id +
+                ", goodsId=" + goodsId +
+                ", specifications=" + Arrays.toString(specifications) +
+                ", price=" + price +
+                ", number=" + number +
+                ", url='" + url + '\'' +
+                ", addTime=" + addTime +
+                ", updateTime=" + updateTime +
+                ", deleted=" + deleted +
+                '}';
     }
 }

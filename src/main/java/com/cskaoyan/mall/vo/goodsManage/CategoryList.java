@@ -7,15 +7,15 @@ import java.util.List;
  * @date 2019/9/30 19:48
  */
 public class CategoryList {
-    String value;
+    Integer value;
     String label;
     List<Label> children;
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 

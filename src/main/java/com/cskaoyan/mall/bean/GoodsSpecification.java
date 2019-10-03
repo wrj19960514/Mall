@@ -82,4 +82,18 @@ public class GoodsSpecification {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
+
+    @Override
+    public String toString() {
+        return "GoodsSpecification{" +
+                "id=" + id +
+                ", goodsId=" + goodsId +
+                ", specification='" + specification + '\'' +
+                ", value='" + value + '\'' +
+                ", picUrl='" + picUrl + '\'' +
+                ", addTime=" + addTime +
+                ", updateTime=" + updateTime +
+                ", deleted=" + deleted +
+                '}';
+    }
 }

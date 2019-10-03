@@ -23,6 +23,7 @@ public class FileUtil {
         int size = (int) file.getSize();
         String type = file.getContentType();
         String contextPath = request.getContextPath();
+        // http://localhost:80/根据需求可以决定是否留下绝对地址还是相对地址
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath + "/";
         String url = basePath + Constant.VIRTUAL_IMG_PATH + key;
         // storage对象
@@ -32,6 +33,7 @@ public class FileUtil {
         storage.setSize(size);
         storage.setUrl(url);
         storage.setType(type);
+        storage.setDeleted(false);
         storage.setAddTime(new Date());
         storage.setUpdateTime(storage.getAddTime());
         // 保存

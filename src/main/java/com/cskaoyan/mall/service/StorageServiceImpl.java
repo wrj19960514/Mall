@@ -78,6 +78,7 @@ public class StorageServiceImpl implements StorageService {
         boolean flag = false;
         storage.setDeleted(true);
         StorageExample storageExample = new StorageExample();
+        storage.setDeleted(true);
         storageExample.createCriteria().andIdEqualTo(storage.getId());
         //逻辑删除
         int delete = storageMapper.updateByExample(storage,storageExample);
