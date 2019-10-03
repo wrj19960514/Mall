@@ -45,11 +45,11 @@ public class StorageServiceImpl implements StorageService {
         PageHelper.startPage(page, limit);
         StorageExample storageExample = new StorageExample();
         if(key != null && !key.equals("") && name != null && !name.equals("")) {
-            storageExample.createCriteria().andKeyEqualTo(key).andNameLike("%" + name + "%");
+            storageExample.createCriteria().andKeyEqualTo(key).andDeletedNotEqualTo(true).andNameLike("%" + name + "%");
         }else if(key != null && !key.equals("")){
-            storageExample.createCriteria().andKeyEqualTo(key);
+            storageExample.createCriteria().andDeletedNotEqualTo(true).andKeyEqualTo(key);
         }else if(name != null && !name.equals("") ){
-            storageExample.createCriteria().andNameLike("%" + name + "%");
+            storageExample.createCriteria().andDeletedNotEqualTo(true).andNameLike("%" + name + "%");
         }
         storageExample.setDistinct(true);
         storageExample.setOrderByClause(sort +" "+ order);
@@ -76,9 +76,11 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public boolean delete(Storage storage) {
         boolean flag = false;
+        storage.setDeleted(true);
         StorageExample storageExample = new StorageExample();
         storageExample.createCriteria().andIdEqualTo(storage.getId());
-        int delete = storageMapper.deleteByExample(storageExample);
+        //逻辑删除
+        int delete = storageMapper.updateByExample(storage,storageExample);
         if(delete == 1){
             flag = true;
         }
