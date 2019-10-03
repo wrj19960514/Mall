@@ -40,7 +40,7 @@ public class MallManageController {
     }
 
     @RequestMapping("/admin/brand/list")
-    public BaseRespVo brand(BrandInfoVo brandInfoVo) {
+    public BaseRespVo brandList(BrandInfoVo brandInfoVo) {
         PageHelper.startPage(brandInfoVo.getPage(), brandInfoVo.getLimit());
         BrandListBean brandListBean = new BrandListBean();
         List brandList = mallManageService.getBrandList(brandInfoVo);

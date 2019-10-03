@@ -60,8 +60,7 @@ public class TransferStringArrayHandler implements TypeHandler<String[]> {
     @Override
     public String[] getResult(CallableStatement callableStatement, int index) throws SQLException {
         String value = callableStatement.getString(index);
+
         return parseString2StringArray(value);
     }
-
-
 }

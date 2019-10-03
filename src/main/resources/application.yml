@@ -31,3 +31,5 @@ logging:
 mybatis:
   type-handlers-package: com.cskaoyan.mall.util
 
+
+

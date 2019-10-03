@@ -7,6 +7,16 @@ public class BrandCreateVo {
 
     private String name;
 
+    private String picUrl;
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
     public String getDesc() {
         return desc;
     }
