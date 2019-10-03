@@ -19,9 +19,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,11 +30,7 @@ public class MallManageController {
 
     @RequestMapping("/admin/region/list")
     public BaseRespVo region() {
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(mallManageService.getRegionList(11, 65));
-        return respVo;
+        return BaseRespVo.ok(mallManageService.getRegionList(11, 65));
     }
 
     @RequestMapping("/admin/brand/list")
@@ -47,41 +41,25 @@ public class MallManageController {
         PageInfo brandPageInfo = new PageInfo<>(brandList);
         brandListBean.setItems(brandList);
         brandListBean.setTotal(brandPageInfo.getTotal());
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(brandListBean);
-        return respVo;
+        return BaseRespVo.ok(brandListBean);
     }
 
     @RequestMapping("/admin/brand/create")
     public BaseRespVo brandCreate(@RequestBody BrandCreateVo brandCreateVo) {
         mallManageService.createBrand(brandCreateVo);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/admin/brand/update")
     public BaseRespVo brandUpdate(@RequestBody Brand brand) {
         mallManageService.updateBrand(brand);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/admin/brand/delete")
     public BaseRespVo brandDelete(@RequestBody Brand brand) {
-        mallManageService.deleteBrand(brand.getId(),brand.getDeleted());
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        mallManageService.deleteBrand(brand.getId(), brand.getDeleted());
+        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/admin/order/list")
@@ -92,27 +70,13 @@ public class MallManageController {
         PageInfo brandPageInfo = new PageInfo<>(brandList);
         brandListBean.setItems(brandList);
         brandListBean.setTotal(brandPageInfo.getTotal());
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(brandListBean);
-        return respVo;
+        return BaseRespVo.ok(brandListBean);
     }
 
     @RequestMapping("/admin/order/detail")
     public BaseRespVo orderDetail(int id) {
         OrderDetailedVo orderDetailed = mallManageService.getOrderDetailed(id);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(orderDetailed);
-        return respVo;
-    }
-
-    @RequestMapping("/admin/category")
-    public BaseRespVo category() {
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        return respVo;
+        return BaseRespVo.ok(orderDetailed);
     }
 
     @RequestMapping("/admin/issue/list")
@@ -123,41 +87,25 @@ public class MallManageController {
         PageInfo brandPageInfo = new PageInfo<>(brandList);
         brandListBean.setItems(brandList);
         brandListBean.setTotal(brandPageInfo.getTotal());
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(brandListBean);
-        return respVo;
+        return BaseRespVo.ok(brandListBean);
     }
 
     @RequestMapping("/admin/issue/create")
     public BaseRespVo issueCreate(@RequestBody Question question) {
         mallManageService.createissue(question);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/admin/issue/delete")
     public BaseRespVo issueDelete(@RequestBody Issue issue) {
         mallManageService.deleteIssue(issue);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/admin/issue/update")
     public BaseRespVo issueUpdate(@RequestBody Issue issue) {
         mallManageService.updateIssue(issue);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/admin/keyword/list")
@@ -168,91 +116,55 @@ public class MallManageController {
         PageInfo brandPageInfo = new PageInfo<>(brandList);
         brandListBean.setItems(brandList);
         brandListBean.setTotal(brandPageInfo.getTotal());
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(brandListBean);
-        return respVo;
+        return BaseRespVo.ok(brandListBean);
     }
 
     @RequestMapping("/admin/keyword/create")
     public BaseRespVo keywordCreate(@RequestBody Keyword keyword) {
         mallManageService.createKeyword(keyword);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/admin/keyword/update")
     public BaseRespVo keywordUpdate(@RequestBody Keyword keyword) {
         mallManageService.updateKeyword(keyword);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/admin/keyword/delete")
     public BaseRespVo keywordDelete(@RequestBody Keyword keyword) {
         mallManageService.deleteKeyword(keyword);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/admin/category/l1")
     public BaseRespVo categoryL1() {
         List list = mallManageService.getCategoryL1();
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(list);
-        return respVo;
+        return BaseRespVo.ok(list);
     }
 
 
     @RequestMapping("/admin/category/list")
     public BaseRespVo categoryList() {
         List list = mallManageService.getCategoryListAndChildren();
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(list);
-        return respVo;
+        return BaseRespVo.ok(list);
     }
 
     @RequestMapping("/admin/category/create")
     public BaseRespVo categoryCreate(@RequestBody CategoryVo categoryVo) {
         mallManageService.createCategory(categoryVo);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/admin/category/delete")
     public BaseRespVo categoryDelete(@RequestBody CategoryVo categoryVo) {
         mallManageService.deleteCategory(categoryVo);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/admin/category/update")
     public BaseRespVo categoryUpdate(@RequestBody CategoryVo categoryVo) {
         mallManageService.updateCategory(categoryVo);
-        BaseRespVo<Object> respVo = new BaseRespVo<>();
-        respVo.setErrno(0);
-        respVo.setErrmsg("成功");
-        respVo.setData(null);
-        return respVo;
+        return BaseRespVo.ok(null);
     }
 }
