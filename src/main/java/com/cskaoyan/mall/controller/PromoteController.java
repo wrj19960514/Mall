@@ -149,9 +149,15 @@ public class PromoteController {
     //获取规则信息
     @RequestMapping("/admin/groupon/list")
     public BaseRespVo getGrouponList(int page, int limit, String goodsId, String sort, String order) {
-        ListBean grouponList = promoteService.getGrouponRulesList(page, limit, goodsId, sort, order);
-        BaseRespVo ok = BaseRespVo.ok(grouponList);
-        return ok;
+        //goodsId中只能是数字
+        if (goodsId == null || goodsId.matches("^[0-9]*$")) {
+            ListBean grouponList = promoteService.getGrouponRulesList(page, limit, goodsId, sort, order);
+            BaseRespVo ok = BaseRespVo.ok(grouponList);
+            return ok;
+        }
+        BaseRespVo error = BaseRespVo.error(null);
+        return error;
+
     }
 
     //添加团购规则
@@ -184,11 +190,17 @@ public class PromoteController {
         respVo.setErrno(0);
         return respVo;
     }
+
     /*----------------------------------团购活动----------------------------------------*/
     @RequestMapping("/admin/groupon/listRecord")
     public BaseRespVo getListRecord(int page, int limit, String sort, String order, String goodsId) {
-        ListBean listRecord = promoteService.getListRecord(page, limit, sort, order, goodsId);
-        BaseRespVo ok = BaseRespVo.ok(listRecord);
-        return ok;
+        if (goodsId == null || goodsId.matches("^[0-9]*$")) {
+            ListBean listRecord = promoteService.getListRecord(page, limit, sort, order, goodsId);
+            BaseRespVo ok = BaseRespVo.ok(listRecord);
+            return ok;
+
+        }
+        BaseRespVo error = BaseRespVo.error(null);
+        return error;
     }
 }

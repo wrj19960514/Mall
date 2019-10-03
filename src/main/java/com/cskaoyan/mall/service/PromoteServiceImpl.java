@@ -11,6 +11,7 @@ import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.System;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -232,7 +233,7 @@ public class PromoteServiceImpl implements PromoteService {
         grouponRulesExample.setOrderByClause(sort + " " + order);
         GrouponRulesExample.Criteria criteria = grouponRulesExample.createCriteria();
         //查询
-        if (!StringUtil.isEmpty(goodsId)) {
+        if (!StringUtils.isEmpty(goodsId)) {
             criteria.andGoodsIdEqualTo(Integer.valueOf(goodsId));
         }
         List<GrouponRules> grouponRules = grouponRulesMapper.selectByExample(grouponRulesExample);
