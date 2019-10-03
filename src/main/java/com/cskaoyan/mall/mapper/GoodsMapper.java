@@ -33,4 +33,6 @@ public interface GoodsMapper {
     int updateByPrimaryKeyWithBLOBs(Goods record);
 
     int updateByPrimaryKey(Goods record);
+
+    int checkGoodsData(@Param("goodsSn") String goodsSn, @Param("name") String name);
 }
