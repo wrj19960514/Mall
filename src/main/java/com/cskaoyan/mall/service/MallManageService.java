@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.service;
 
+import com.cskaoyan.mall.bean.Brand;
 import com.cskaoyan.mall.bean.Issue;
 import com.cskaoyan.mall.bean.Keyword;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
@@ -51,4 +52,6 @@ public interface MallManageService {
     void deleteCategory(CategoryVo categoryVo);
 
     void updateCategory(CategoryVo categoryVo);
+
+    void updateBrand(Brand brand);
 }

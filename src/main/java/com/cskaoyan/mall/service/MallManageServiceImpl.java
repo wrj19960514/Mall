@@ -1,19 +1,6 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.Brand;
-import com.cskaoyan.mall.bean.BrandExample;
-import com.cskaoyan.mall.bean.Category;
-import com.cskaoyan.mall.bean.CategoryExample;
-import com.cskaoyan.mall.bean.Issue;
-import com.cskaoyan.mall.bean.IssueExample;
-import com.cskaoyan.mall.bean.Keyword;
-import com.cskaoyan.mall.bean.KeywordExample;
-import com.cskaoyan.mall.bean.Order;
-import com.cskaoyan.mall.bean.OrderExample;
-import com.cskaoyan.mall.bean.OrderGoods;
-import com.cskaoyan.mall.bean.Region;
-import com.cskaoyan.mall.bean.RegionExample;
-import com.cskaoyan.mall.bean.User;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.BrandMapper;
 import com.cskaoyan.mall.mapper.CategoryMapper;
 import com.cskaoyan.mall.mapper.IssueMapper;
@@ -22,6 +9,7 @@ import com.cskaoyan.mall.mapper.OrderGoodsMapper;
 import com.cskaoyan.mall.mapper.OrderMapper;
 import com.cskaoyan.mall.mapper.RegionMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.util.IntegerUtils;
 import com.cskaoyan.mall.vo.mallManage.BrandCreateVo;
 import com.cskaoyan.mall.vo.mallManage.BrandInfoVo;
 import com.cskaoyan.mall.vo.mallManage.CategoryVo;
@@ -34,6 +22,7 @@ import com.cskaoyan.mall.vo.mallManage.RegionListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.System;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -92,12 +81,27 @@ public class MallManageServiceImpl implements MallManageService {
     public List getBrandList(BrandInfoVo brandInfoVo) {
         BrandExample example = new BrandExample();
         BrandExample.Criteria criteria = example.createCriteria();
-        if (brandInfoVo.getId() != 0) {
-            criteria.andIdEqualTo(brandInfoVo.getId());
+        // 修复了因为搜索框不同类型时引起的搜索结果的bugs。
+        // 搜索框在填入数据后删除所以数据会得到空字符串，
+        // 使用int会引起类型转换异常，所以使用String类型。
+        // 当Id输入为非数字字符串时，返回结果应为空，
+        // 使用criteria.andIdEqualTo(0)实现。
+        if (brandInfoVo.getId() != null && (!brandInfoVo.getId().equals(""))) {
+            String id = brandInfoVo.getId();
+            boolean integer = IntegerUtils.isInteger(id);
+            if (integer) {
+                criteria.andIdEqualTo(Integer.parseInt(brandInfoVo.getId()));
+            }else {
+                criteria.andIdEqualTo(0);
+            }
         }
-        if (brandInfoVo.getName() != null) {
-            criteria.andNameLike(brandInfoVo.getName());
+        if (brandInfoVo.getName() == null || "".equals(brandInfoVo.getName())) {
+            brandInfoVo.setName("%%");
+        } else {
+            String name = brandInfoVo.getName();
+            brandInfoVo.setName("%" + name + "%");
         }
+        criteria.andNameLike(brandInfoVo.getName());
         List<Brand> brands = brandMapper.selectByExample(example);
         return brands;
     }
@@ -119,7 +123,7 @@ public class MallManageServiceImpl implements MallManageService {
         Brand brand = new Brand();
         brand.setName(brandCreateVo.getName());
         brand.setDesc(brandCreateVo.getDesc());
-        brand.setPicUrl(""); // TODO
+        brand.setPicUrl(brandCreateVo.getPicUrl());
         brand.setFloorPrice(brand.getFloorPrice());
         brand.setAddTime(new Date());
         brand.setDeleted(false);
@@ -135,10 +139,19 @@ public class MallManageServiceImpl implements MallManageService {
         } else {
             criteria.andOrderStatusEqualTo((short) orderListVo.getOrderStatusArray());
         }
-        if (orderListVo.getUserId() == 0) {
-            ;
-        } else {
-            criteria.andUserIdEqualTo((int) orderListVo.getUserId());
+        // 修复了因为搜索框不同类型时引起的搜索结果的bugs。
+        // 搜索框在填入数据后删除所以数据会得到空字符串，
+        // 使用int会引起类型转换异常，所以使用String类型。
+        // 当Id输入为非数字字符串时，返回结果应为空，
+        // 使用criteria.andUserIdEqualTo(0)实现。
+        if (orderListVo.getUserId() != null && (!"".equals(orderListVo.getUserId()))) {
+            String userId = orderListVo.getUserId();
+            boolean integer = IntegerUtils.isInteger(userId);
+            if (integer) {
+                criteria.andUserIdEqualTo(Integer.parseInt(userId));
+            }else {
+                criteria.andUserIdEqualTo(9999999);
+            }
         }
         if (orderListVo.getOrderSn() == null || orderListVo.getOrderSn().equals("")) {
             orderListVo.setOrderSn("%%");
@@ -263,8 +276,8 @@ public class MallManageServiceImpl implements MallManageService {
         ArrayList objects = new ArrayList();
         for (Category category : categories) {
             HashMap map = new HashMap();
-            map.put("label",category.getName());
-            map.put("value",category.getId());
+            map.put("label", category.getName());
+            map.put("value", category.getId());
             objects.add(map);
         }
         return objects;
@@ -280,15 +293,15 @@ public class MallManageServiceImpl implements MallManageService {
         ArrayList list = new ArrayList();
         for (Category category : l1) {
             HashMap map = new HashMap();
-            map.put("desc",category.getDesc());
-            map.put("iconUrl",category.getIconUrl());
-            map.put("id",category.getId());
-            map.put("keywords",category.getKeywords());
-            map.put("level",category.getLevel());
-            map.put("name",category.getName());
-            map.put("picUrl",category.getPicUrl());
+            map.put("desc", category.getDesc());
+            map.put("iconUrl", category.getIconUrl());
+            map.put("id", category.getId());
+            map.put("keywords", category.getKeywords());
+            map.put("level", category.getLevel());
+            map.put("name", category.getName());
+            map.put("picUrl", category.getPicUrl());
             List children = getListChildren(category.getId());
-            map.put("children",children);
+            map.put("children", children);
             list.add(map);
         }
         return list;
@@ -299,10 +312,10 @@ public class MallManageServiceImpl implements MallManageService {
         Category category = new Category();
         category.setAddTime(new Date());
         category.setDeleted(false);
-        if(categoryVo.getIconUrl() == null){
+        if (categoryVo.getIconUrl() == null) {
             categoryVo.setIconUrl("");
         }
-        if(categoryVo.getPicUrl()==null){
+        if (categoryVo.getPicUrl() == null) {
             categoryVo.setPicUrl("");
         }
         category.setIconUrl(categoryVo.getIconUrl());
@@ -325,7 +338,7 @@ public class MallManageServiceImpl implements MallManageService {
         List<Category> categories = categoryMapper.selectByExample(categoryExample);
         for (Category category : categories) {
             category.setDeleted(true);
-            categoryMapper.updateByExample(category,categoryExample);
+            categoryMapper.updateByExample(category, categoryExample);
         }
     }
 
@@ -337,10 +350,10 @@ public class MallManageServiceImpl implements MallManageService {
         Category category = new Category();
         category.setAddTime(new Date());
         category.setDeleted(false);
-        if(categoryVo.getIconUrl() == null){
+        if (categoryVo.getIconUrl() == null) {
             categoryVo.setIconUrl("");
         }
-        if(categoryVo.getPicUrl()==null){
+        if (categoryVo.getPicUrl() == null) {
             categoryVo.setPicUrl("");
         }
         category.setIconUrl(categoryVo.getIconUrl());
@@ -353,7 +366,14 @@ public class MallManageServiceImpl implements MallManageService {
         category.setSortOrder((byte) 5);
         category.setUpdateTime(new Date());
         category.setId(categoryVo.getId());
-        categoryMapper.updateByExample(category,categoryExample);
+        categoryMapper.updateByExample(category, categoryExample);
+    }
+
+    @Override
+    public void updateBrand(Brand brand) {
+        BrandExample brandExample = new BrandExample();
+        brandExample.createCriteria().andIdEqualTo(brand.getId());
+        brandMapper.updateByExample(brand, brandExample);
     }
 
     private List getListChildren(Integer id) {
@@ -364,13 +384,13 @@ public class MallManageServiceImpl implements MallManageService {
         ArrayList list = new ArrayList();
         for (Category category : categories) {
             HashMap map = new HashMap();
-            map.put("desc",category.getDesc());
-            map.put("iconUrl",category.getIconUrl());
-            map.put("id",category.getId());
-            map.put("keywords",category.getKeywords());
-            map.put("level",category.getLevel());
-            map.put("name",category.getName());
-            map.put("picUrl",category.getPicUrl());
+            map.put("desc", category.getDesc());
+            map.put("iconUrl", category.getIconUrl());
+            map.put("id", category.getId());
+            map.put("keywords", category.getKeywords());
+            map.put("level", category.getLevel());
+            map.put("name", category.getName());
+            map.put("picUrl", category.getPicUrl());
             list.add(map);
         }
         return list;
