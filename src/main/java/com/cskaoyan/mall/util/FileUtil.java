@@ -33,6 +33,7 @@ public class FileUtil {
         storage.setSize(size);
         storage.setUrl(url);
         storage.setType(type);
+        storage.setDeleted(false);
         storage.setAddTime(new Date());
         storage.setUpdateTime(storage.getAddTime());
         // 保存
