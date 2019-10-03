@@ -1,18 +1,14 @@
-package com.cskaoyan.mall.vo.goodsManage;
+package com.cskaoyan.mall.vo.adminManage;
 
-/**
- * @author adore
- * @date 2019/9/30 18:17
- */
-public class Label {
-    Integer value;
+public class RoleVo {
+    int value ;
     String label;
 
-    public Integer getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(int value) {
         this.value = value;
     }
 

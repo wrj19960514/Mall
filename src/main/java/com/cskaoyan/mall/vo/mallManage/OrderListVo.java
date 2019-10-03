@@ -9,19 +9,11 @@ public class OrderListVo {
 
     private String order;
 
-    private long userId;
+    private String userId;
 
     private String orderSn;
 
     private int orderStatusArray;
-
-    public int getOrderStatusArray() {
-        return orderStatusArray;
-    }
-
-    public void setOrderStatusArray(int orderStatusArray) {
-        this.orderStatusArray = orderStatusArray;
-    }
 
     public int getPage() {
         return page;
@@ -55,11 +47,11 @@ public class OrderListVo {
         this.order = order;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -69,5 +61,13 @@ public class OrderListVo {
 
     public void setOrderSn(String orderSn) {
         this.orderSn = orderSn;
+    }
+
+    public int getOrderStatusArray() {
+        return orderStatusArray;
+    }
+
+    public void setOrderStatusArray(int orderStatusArray) {
+        this.orderStatusArray = orderStatusArray;
     }
 }
