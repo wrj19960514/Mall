@@ -2,6 +2,7 @@ package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.Ad;
 import com.cskaoyan.mall.bean.Coupon;
+import com.cskaoyan.mall.bean.GrouponRules;
 import com.cskaoyan.mall.bean.Topic;
 import com.cskaoyan.mall.service.PromoteService;
 import com.cskaoyan.mall.vo.BaseRespVo;
@@ -25,6 +26,15 @@ public class PromoteController {
         BaseRespVo ok = BaseRespVo.ok(adList);
         return ok;
     }
+
+    //添加广告
+    @RequestMapping("/admin/ad/create")
+    public BaseRespVo createAds(@RequestBody Ad ad) {
+        Ad ads = promoteService.createAds(ad);
+        BaseRespVo ok = BaseRespVo.ok(ads);
+        return ok;
+    }
+
     //编辑广告信息
     @RequestMapping("/admin/ad/update")
     public BaseRespVo updateAds(@RequestBody Ad ad) {
@@ -32,6 +42,7 @@ public class PromoteController {
         BaseRespVo ok = BaseRespVo.ok(ad);
         return ok;
     }
+
     //删除
     @RequestMapping("/admin/ad/delete")
     public BaseRespVo deleteAds(@RequestBody Ad ad) {
@@ -52,6 +63,7 @@ public class PromoteController {
         BaseRespVo ok = BaseRespVo.ok(couponList);
         return ok;
     }
+
     //添加优惠券信息
     @RequestMapping("/admin/coupon/create")
     public BaseRespVo insertCoupon(@RequestBody Coupon coupon) {
@@ -95,14 +107,17 @@ public class PromoteController {
         respVo.setErrno(0);
         return respVo;
     }
+
     /*------------------------------专题管理--------------------------------*/
     //获取页面信息
     @RequestMapping("/admin/topic/list")
     public BaseRespVo getTopicList(int page, int limit, String sort, String order, String title, String subtitle) {
         ListBean topicList = promoteService.getTopicList(page, limit, sort, order, title, subtitle);
+        System.out.println(topicList);
         BaseRespVo ok = BaseRespVo.ok(topicList);
         return ok;
     }
+
     //添加专题
     @RequestMapping("/admin/topic/create")
     public BaseRespVo createTopic(@RequestBody Topic topic) {
@@ -110,6 +125,7 @@ public class PromoteController {
         BaseRespVo ok = BaseRespVo.ok(topic);
         return ok;
     }
+
     //编辑专题
     @RequestMapping("/admin/topic/update")
     public BaseRespVo updateTopic(@RequestBody Topic topic) {
@@ -117,6 +133,7 @@ public class PromoteController {
         BaseRespVo ok = BaseRespVo.ok(topic);
         return ok;
     }
+
     //删除专题
     @RequestMapping("/admin/topic/delete")
     public BaseRespVo deleteTopic(@RequestBody Topic topic) {
@@ -126,5 +143,52 @@ public class PromoteController {
         respVo.setErrmsg("成功");
         respVo.setErrno(0);
         return respVo;
+    }
+
+    /*-------------------------------------团购规则------------------------------------*/
+    //获取规则信息
+    @RequestMapping("/admin/groupon/list")
+    public BaseRespVo getGrouponList(int page, int limit, String goodsId, String sort, String order) {
+        ListBean grouponList = promoteService.getGrouponRulesList(page, limit, goodsId, sort, order);
+        BaseRespVo ok = BaseRespVo.ok(grouponList);
+        return ok;
+    }
+
+    //添加团购规则
+    @RequestMapping("/admin/groupon/create")
+    public BaseRespVo createGrouponRules(@RequestBody GrouponRules grouponRules) {
+        System.out.println(grouponRules);
+        grouponRules = promoteService.createGrouponRules(grouponRules);
+        BaseRespVo ok = BaseRespVo.ok(grouponRules);
+        return ok;
+    }
+
+    //编辑团购规则
+    @RequestMapping("/admin/groupon/update")
+    public BaseRespVo updateGroupRules(@RequestBody GrouponRules grouponRules) {
+        promoteService.updateGrouponRules(grouponRules);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
+        respVo.setErrno(0);
+        return respVo;
+    }
+
+    //删除团购规则
+    @RequestMapping("/admin/groupon/delete")
+    public BaseRespVo deleteGrouponRules(@RequestBody GrouponRules grouponRules) {
+        promoteService.deleteGrouponRules(grouponRules);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrmsg("成功");
+        respVo.setData(null);
+        respVo.setErrno(0);
+        return respVo;
+    }
+    /*----------------------------------团购活动----------------------------------------*/
+    @RequestMapping("/admin/groupon/listRecord")
+    public BaseRespVo getListRecord(int page, int limit, String sort, String order, String goodsId) {
+        ListBean listRecord = promoteService.getListRecord(page, limit, sort, order, goodsId);
+        BaseRespVo ok = BaseRespVo.ok(listRecord);
+        return ok;
     }
 }
