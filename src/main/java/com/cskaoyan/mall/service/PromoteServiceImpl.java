@@ -249,7 +249,7 @@ public class PromoteServiceImpl implements PromoteService {
     @Override
     public GrouponRules createGrouponRules(GrouponRules grouponRules) {
         GrouponRulesExample grouponRulesExample = new GrouponRulesExample();
-        Goods goods = goodsMapper.selectByPrimaryKey(grouponRules.getGoodsId());
+        Goods goods = goodsMapper.selectByPrimaryKey(Integer.valueOf(grouponRules.getGoodsId()));
         grouponRules.setGoodsName(goods.getName());
         grouponRules.setPicUrl(goods.getPicUrl());
         Date date = new Date();
@@ -296,7 +296,7 @@ public class PromoteServiceImpl implements PromoteService {
                     Integer rulesId = groupon.getRulesId();
                     GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(rulesId);
                     grouponsVo.setRules(grouponRules);
-                    Goods goods = goodsMapper.selectByPrimaryKey(grouponRules.getGoodsId());
+                    Goods goods = goodsMapper.selectByPrimaryKey(Integer.valueOf(grouponRules.getGoodsId()));
                     grouponsVo.setGoods(goods);
                     itemsList.add(grouponsVo);
                 }
@@ -309,7 +309,7 @@ public class PromoteServiceImpl implements PromoteService {
                 Integer rulesId = groupon.getRulesId();
                 GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(rulesId);
                 grouponsVo.setRules(grouponRules);
-                Goods goods = goodsMapper.selectByPrimaryKey(grouponRules.getGoodsId());
+                Goods goods = goodsMapper.selectByPrimaryKey(Integer.valueOf(grouponRules.getGoodsId()));
                 grouponsVo.setGoods(goods);
                 itemsList.add(grouponsVo);
             }

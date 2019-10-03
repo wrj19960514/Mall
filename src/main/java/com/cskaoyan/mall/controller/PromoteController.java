@@ -83,9 +83,13 @@ public class PromoteController {
     //详情中的查询
     @RequestMapping("/admin/coupon/listuser")
     public BaseRespVo getLIstUser(int page, int limit, String sort, String order, String couponId, String userId, String status) {
-        ListBean lIstUser = promoteService.getLIstUser(page, limit, sort, order, couponId, userId, status);
-        BaseRespVo ok = BaseRespVo.ok(lIstUser);
-        return ok;
+        if (userId == null || userId.matches("^[0-9]*$")) {
+            ListBean lIstUser = promoteService.getLIstUser(page, limit, sort, order, couponId, userId, status);
+            BaseRespVo ok = BaseRespVo.ok(lIstUser);
+            return ok;
+        }
+        BaseRespVo error = BaseRespVo.error(null);
+        return error;
     }
 
     //编辑
