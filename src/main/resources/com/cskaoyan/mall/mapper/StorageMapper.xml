@@ -9,10 +9,10 @@
   <select id="queryStorageByKeyAndName" resultMap="BaseResultMap">
     select id,`key`,name,type,`size`,url,add_time,update_time,deleted from cskaoyan_mall_storage
      <where>
-         <if test="key != null">
+         <if test="key != null and key != ''">
              `key` = #{key}
          </if>
-         <if test="name != '%null%'">
+         <if test="name != '%null%' and name != '%%'">
             and name like #{name}
          </if>
      </where>

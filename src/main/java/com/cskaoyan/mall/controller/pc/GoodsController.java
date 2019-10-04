@@ -9,9 +9,12 @@ import com.cskaoyan.mall.vo.goodsManage.CatAndBrand;
 import com.cskaoyan.mall.vo.ListBean;
 import com.cskaoyan.mall.vo.goodsManage.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * @author adore
@@ -49,7 +52,14 @@ public class GoodsController {
     }
 
     @RequestMapping("/goods/create")
-    public BaseRespVo create(@RequestBody GoodsVo goodsVo) {
+    public BaseRespVo create(@RequestBody @Valid GoodsVo goodsVo, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String defaultMessage = bindingResult.getFieldError().getDefaultMessage();
+            BaseRespVo baseRespVo = new BaseRespVo();
+            baseRespVo.setErrmsg(defaultMessage);
+            baseRespVo.setErrno(400);
+            return baseRespVo;
+        }
         return goodsService.create(goodsVo);
     }
 
@@ -60,7 +70,14 @@ public class GoodsController {
     }
 
     @RequestMapping("/goods/update")
-    public BaseRespVo update(@RequestBody GoodsVo goodsVo) {
+    public BaseRespVo update(@RequestBody @Valid GoodsVo goodsVo, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String defaultMessage = bindingResult.getFieldError().getDefaultMessage();
+            BaseRespVo baseRespVo = new BaseRespVo();
+            baseRespVo.setErrmsg(defaultMessage);
+            baseRespVo.setErrno(400);
+            return baseRespVo;
+        }
         return goodsService.update(goodsVo);
     }
 
