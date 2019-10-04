@@ -11,14 +11,12 @@ import com.cskaoyan.mall.vo.goodsManage.Label;
 import com.cskaoyan.mall.vo.ListBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.omg.CORBA.INTERNAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -139,24 +137,21 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
     public BaseRespVo create(GoodsVo goodsVo) {
-
-        Goods goods = goodsVo.getGoods();
-        List<GoodsAttribute> attributes = goodsVo.getAttributes();
-        List<GoodsProduct> products = goodsVo.getProducts();
-        List<GoodsSpecification> specifications = goodsVo.getSpecifications();
-        // 数据校验
-        BaseRespVo baseRespVo = checkData(goods, attributes, products, specifications, 0);
-        if (baseRespVo.getErrno() == 401) {
-            return baseRespVo;
-        }
         // 存入数据
         Date date = new Date();
+        Goods goods = goodsVo.getGoods();
+        // 0 添加商品 , 1 是更新商品
+        BaseRespVo baseRespVo = checkGoodsData(goods, 0);
+        if (baseRespVo.getErrno() == 400) {
+            return baseRespVo;
+        }
         goods.setAddTime(date);
         goods.setUpdateTime(date);
         // 插入商品, 通过select key获取商品id
         goodsMapper.insert(goods);
         Integer id = goods.getId();
         // 插入商品参数表数据
+        List<GoodsAttribute> attributes = goodsVo.getAttributes();
         for (GoodsAttribute attribute : attributes) {
             attribute.setGoodsId(id);
             attribute.setAddTime(date);
@@ -164,6 +159,7 @@ public class GoodsServiceImpl implements GoodsService {
             goodsAttributeMapper.insert(attribute);
         }
         // 插入商品货品表数据
+        List<GoodsProduct> products = goodsVo.getProducts();
         for (GoodsProduct product : products) {
             product.setGoodsId(id);
             product.setAddTime(date);
@@ -171,6 +167,7 @@ public class GoodsServiceImpl implements GoodsService {
             goodsProductMapper.insert(product);
         }
         // 插入商品规格表数据
+        List<GoodsSpecification> specifications = goodsVo.getSpecifications();
         for (GoodsSpecification specification : specifications) {
             specification.setGoodsId(id);
             specification.setAddTime(date);
@@ -180,114 +177,17 @@ public class GoodsServiceImpl implements GoodsService {
         return BaseRespVo.ok(null);
     }
 
-    private BaseRespVo checkData(Goods goods, List<GoodsAttribute> attributes, List<GoodsProduct> products, List<GoodsSpecification> specifications, int method) {
-        // method = 0 为create, method = 1 为update
-        BaseRespVo checkGoodsData = checkGoodsData(goods, method);
-        if (checkGoodsData.getErrno() == 401) {
-            return checkGoodsData;
-        }
-        BaseRespVo checkAttribute = checkAttribute(attributes);
-        if (checkAttribute.getErrno() == 401) {
-            return checkAttribute;
-        }
-        BaseRespVo checkProduct = checkProduct(products);
-        if (checkProduct.getErrno() == 401) {
-            return checkProduct;
-        }
-        BaseRespVo checkSpecification = checkSpecification(specifications);
-        if (checkSpecification.getErrno() == 401) {
-            return checkSpecification;
-        }
-        return BaseRespVo.ok(null);
-    }
-
-    private BaseRespVo checkSpecification(List<GoodsSpecification> specifications) {
+    private BaseRespVo checkGoodsData(Goods goods, int i) {
         BaseRespVo baseRespVo = new BaseRespVo();
-        for (GoodsSpecification specification : specifications) {
-            if (ParamUtils.isEmpty(specification.getSpecification()) || ParamUtils.isEmpty(specification.getValue())) {
-                baseRespVo.setErrmsg("规格不为空");
-                baseRespVo.setErrno(401);
-                return baseRespVo;
-            }
-        }
-        return baseRespVo;
-    }
-
-    private BaseRespVo checkProduct(List<GoodsProduct> products) {
-        BaseRespVo baseRespVo = new BaseRespVo();
-        for (GoodsProduct product : products) {
-            if (product.getNumber() == null || !ParamUtils.isInteger(product.getNumber().toString()) ||
-                    product.getPrice() == null || !ParamUtils.isInteger(product.getPrice().toString()) ||
-                    product.getNumber() < 0 || product.getPrice().compareTo(new BigDecimal("0")) == -1) {
-                baseRespVo.setErrmsg("库存输入正确数值");
-                baseRespVo.setErrno(401);
-                return baseRespVo;
-            }
-        }
-        return baseRespVo;
-    }
-
-    private BaseRespVo checkAttribute(List<GoodsAttribute> attributes) {
-        BaseRespVo baseRespVo = new BaseRespVo();
-        for (GoodsAttribute attribute : attributes) {
-            if (ParamUtils.isEmpty(attribute.getAttribute()) || ParamUtils.isEmpty(attribute.getValue())) {
-                baseRespVo.setErrmsg("商品参数不为空");
-                baseRespVo.setErrno(401);
-                return baseRespVo;
-            }
-        }
-        return baseRespVo;
-    }
-
-    private BaseRespVo checkGoodsData(Goods goods, int method) {
-        BaseRespVo baseRespVo = new BaseRespVo();
-        String goodsSn = goods.getGoodsSn();
-        String name = goods.getName();
-        // 商品编号不为空, 必须为数字, 数据库中不重复
-        // 商品名称不为空, 数据库中不重复
-        if (method == 0) {
-            if (ParamUtils.isEmpty(goodsSn) || !ParamUtils.isInteger(goodsSn) || ParamUtils.isEmpty(name) ||
-                    goodsMapper.checkGoodsData(goodsSn, name) >= 1) {
-                baseRespVo.setErrmsg("商品编号/名称: 不正确/已存在");
-                baseRespVo.setErrno(401);
-                return baseRespVo;
-            }
-        }
-        if (method == 1) {
-            if (ParamUtils.isEmpty(goodsSn) || !ParamUtils.isInteger(goodsSn) || ParamUtils.isEmpty(name) ||
-                    goodsMapper.checkGoodsData(goodsSn, name) > 1) {
-                baseRespVo.setErrmsg("商品编号/名称: 不正确/已存在");
-                baseRespVo.setErrno(401);
-                return baseRespVo;
-            }
-        }
-        // 专柜价格 当前价格
-        BigDecimal counterPrice = goods.getCounterPrice();
-        BigDecimal retailPrice = goods.getRetailPrice();
-        // counterPrice.compareTo(new BigDecimal("0")) == -1 代表 counterPrice 小于 0
-        if (counterPrice == null || !ParamUtils.isInteger(counterPrice.toString()) ||
-                retailPrice == null || !ParamUtils.isInteger(retailPrice.toString()) ||
-                counterPrice.compareTo(new BigDecimal("0")) == -1 || retailPrice.compareTo(new BigDecimal("0")) == -1) {
-            baseRespVo.setErrmsg("价格输入不正确");
-            baseRespVo.setErrno(401);
+        if (goodsMapper.checkGoodsData(goods.getGoodsSn(), goods.getName()) > i) {
+            baseRespVo.setErrmsg("商品名称/编号已存在");
+            baseRespVo.setErrno(400);
             return baseRespVo;
         }
-        if (goods.getIsHot() == null || goods.getIsNew() == null || goods.getIsOnSale() == null) {
-            baseRespVo.setErrmsg("选择:新品/热卖/在售");
-            baseRespVo.setErrno(401);
-            return baseRespVo;
-        }
-        // 图片 分类 品牌商 商品单位
         String unit = goods.getUnit();
-        if (ParamUtils.isEmpty(goods.getPicUrl()) || goods.getCategoryId() == null ||
-                goods.getBrandId() == null || ParamUtils.isEmpty(unit)) {
-            baseRespVo.setErrmsg("请输入商品基本信息");
-            baseRespVo.setErrno(401);
-            return baseRespVo;
-        }
-        if (!"件".equals(unit.trim()) && !"个".equals(unit.trim()) && !"盒".equals(unit.trim())) {
-            baseRespVo.setErrmsg("商品单位:件/个/盒");
-            baseRespVo.setErrno(401);
+        if (unit != null && !"件".equals(unit) && !"个".equals(unit) && !"盒".equals(unit)) {
+            baseRespVo.setErrmsg("商品单位必须是:件/个/盒");
+            baseRespVo.setErrno(400);
             return baseRespVo;
         }
         return baseRespVo;
@@ -325,30 +225,30 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
     public BaseRespVo update(GoodsVo goodsVo) {
-        Goods goods = goodsVo.getGoods();
-        List<GoodsAttribute> attributes = goodsVo.getAttributes();
-        List<GoodsProduct> products = goodsVo.getProducts();
-        List<GoodsSpecification> specifications = goodsVo.getSpecifications();
-        // 数据校验
-        BaseRespVo baseRespVo = checkData(goods, attributes, products, specifications, 1);
-        if (baseRespVo.getErrno() == 401) {
-            return baseRespVo;
-        }
         // goods
         Date date = new Date();
+        Goods goods = goodsVo.getGoods();
+        // 0 添加商品 , 1 是更新商品
+        BaseRespVo baseRespVo = checkGoodsData(goods, 1);
+        if (baseRespVo.getErrno() == 400) {
+            return baseRespVo;
+        }
         goods.setUpdateTime(date);
         goodsMapper.updateByPrimaryKey(goods);
         // attributes
+        List<GoodsAttribute> attributes = goodsVo.getAttributes();
         for (GoodsAttribute attribute : attributes) {
             attribute.setUpdateTime(date);
             goodsAttributeMapper.updateByPrimaryKey(attribute);
         }
         // products
+        List<GoodsProduct> products = goodsVo.getProducts();
         for (GoodsProduct product : products) {
             product.setUpdateTime(date);
             goodsProductMapper.updateByPrimaryKey(product);
         }
         // specifications
+        List<GoodsSpecification> specifications = goodsVo.getSpecifications();
         for (GoodsSpecification specification : specifications) {
             specification.setUpdateTime(date);
             goodsSpecificationMapper.updateByPrimaryKey(specification);
