@@ -74,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, user_id, province_id, city_id, area_id, address, mobile, is_default, add_time, 
+    id, `name`, user_id, province_id, city_id, area_id, address, mobile, is_default, add_time,
     update_time, deleted
   </sql>
   <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.AddressExample" resultMap="BaseResultMap">
@@ -92,7 +92,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from cskaoyan_mall_address
     where id = #{id,jdbcType=INTEGER}
@@ -108,14 +108,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.cskaoyan.mall.bean.Address">
-    insert into cskaoyan_mall_address (id, name, user_id, 
-      province_id, city_id, area_id, 
-      address, mobile, is_default, 
+    insert into cskaoyan_mall_address (id, name, user_id,
+      province_id, city_id, area_id,
+      address, mobile, is_default,
       add_time, update_time, deleted
       )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
-      #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
-      #{address,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{isDefault,jdbcType=BIT}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
+      #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER},
+      #{address,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{isDefault,jdbcType=BIT},
       #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
       )
   </insert>
@@ -320,4 +320,18 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectById" resultType="com.cskaoyan.mall.bean.Address">
+    select a.id, a.name, user_id as userId, province_id as provinceId, city_id as cityId, area_id as areaId, address,
+    mobile, is_default as isDefault, add_time as addTime, update_time as updateTime, deleted,
+    r1.name as province, r2.name as city, r3.name as area
+    from cskaoyan_mall_address a
+    left join cskaoyan_mall_region r1 on province_id = r1.code
+    left join cskaoyan_mall_region r2 on city_id = r2.code
+    left join cskaoyan_mall_region r3 on area_id = r3.code
+    where a.name like #{name}
+      <if test="userId != null">
+      and a.user_id = #{userId}
+      </if>
+      order by #{sort}
+  </select>
 </mapper>

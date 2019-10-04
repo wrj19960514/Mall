@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.bean;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class GoodsSpecification {
@@ -7,8 +8,10 @@ public class GoodsSpecification {
 
     private Integer goodsId;
 
+    @NotNull(message = "规格名不能为空")
     private String specification;
 
+    @NotNull(message = "规格值不能为空")
     private String value;
 
     private String picUrl;

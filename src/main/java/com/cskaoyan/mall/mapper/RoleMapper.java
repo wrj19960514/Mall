@@ -54,4 +54,7 @@ public interface RoleMapper {
     void deletePermsByRoleId(@Param("roleId")Integer roleId);
 
     void insertPermsByRoleId(@Param("roleId") Integer roleId,@Param("perm") String permission, @Param("date")Date date);
+
+    List<String> queryRoleNameByRoleIds(@Param("roleIds") Integer[] roleIds);
+
 }

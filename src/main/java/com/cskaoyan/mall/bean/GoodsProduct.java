@@ -1,5 +1,7 @@
 package com.cskaoyan.mall.bean;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
@@ -11,8 +13,10 @@ public class GoodsProduct {
 
     private String[] specifications;
 
+    @DecimalMin(value = "0", message = "货品售价不正确")
     private BigDecimal price;
 
+    @Min(value = 0, message = "货品数量不正确")
     private Integer number;
 
     private String url;

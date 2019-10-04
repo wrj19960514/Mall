@@ -2,14 +2,21 @@ package com.cskaoyan.mall.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class Goods {
     private Integer id;
 
+    @NotNull(message = "商品编号不能为空")
+    @Min(value = 0, message = "商品编号必须为数字")
     private String goodsSn;
 
+    @NotNull(message = "商品名称不能为空")
     private String name;
 
     private Integer categoryId;
@@ -36,8 +43,10 @@ public class Goods {
 
     private String unit;
 
+    @DecimalMin(value = "0", message = "专柜价格不正确")
     private BigDecimal counterPrice;
 
+    @DecimalMin(value = "0", message = "当前价格不正确")
     private BigDecimal retailPrice;
 
     private Date addTime;

@@ -27,4 +27,8 @@ public interface AddressMapper {
     int updateByPrimaryKeySelective(Address record);
 
     int updateByPrimaryKey(Address record);
+
+    List<Address> selectById(@Param("userId") String userId,
+                             @Param("name") String name,
+                             @Param("sort") String sort);
 }

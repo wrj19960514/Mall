@@ -5,6 +5,7 @@ import com.cskaoyan.mall.bean.AdminExample;
 
 import java.util.List;
 
+import com.cskaoyan.mall.vo.RoleIdsVo;
 import com.cskaoyan.mall.vo.adminManage.AddAdminVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -42,4 +43,8 @@ public interface AdminMapper {
     int selectIdByUsername(@Param("username")String username);
 
     void updateAdminById(@Param("addAdminVo")AddAdminVo addAdminVo);
+
+    String queryPasswordByUsername(@Param("principal") String principal);
+
+    RoleIdsVo queryRoleIdsByUsername(@Param("principal") String principal);
 }

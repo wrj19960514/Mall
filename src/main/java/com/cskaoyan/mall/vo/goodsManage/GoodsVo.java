@@ -5,6 +5,7 @@ import com.cskaoyan.mall.bean.GoodsAttribute;
 import com.cskaoyan.mall.bean.GoodsProduct;
 import com.cskaoyan.mall.bean.GoodsSpecification;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -12,9 +13,13 @@ import java.util.List;
  * @date 2019/9/30 23:50
  */
 public class GoodsVo {
+    @Valid
     Goods goods;
+    @Valid
     List<GoodsAttribute> attributes;
+    @Valid
     List<GoodsProduct> products;
+    @Valid
     List<GoodsSpecification> specifications;
     Integer[] categoryIds;
 

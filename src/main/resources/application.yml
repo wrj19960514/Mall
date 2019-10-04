@@ -14,7 +14,9 @@ spring:
   servlet:
     multipart:
       max-file-size: 5MB
-
+  datasource:
+    druid:
+      filters: stat
 
 # 分页 方言
 pagehelper:
@@ -30,6 +32,7 @@ logging:
 
 mybatis:
   type-handlers-package: com.cskaoyan.mall.util
+
 
 
 
