@@ -78,31 +78,22 @@ public class UserServiceImpl implements UserService {
      * @return 收货地址列表
      */
     public ListBean getAddressList(int page, int limit, String sort, String order, String userId, String name) {
-        // 分页
         PageHelper.startPage(page, limit);
-        AddressExample addressExample = new AddressExample();
-        // 排序
-        addressExample.setOrderByClause(sort + " " + order);
-        // id查询
-        AddressExample.Criteria criteria = addressExample.createCriteria();
-//        if (!StringUtils.isEmpty(userId) && IntegerUtils.isInteger(userId)) {
-//            criteria.andUserIdEqualTo(Integer.valueOf(userId));
-//        } else if (!StringUtils.isEmpty(userId) && !IntegerUtils.isInteger(userId)){
-//            criteria.andUserIdEqualTo(-1);
+        if (userId == "") userId = null;
+        if (name == null) name = "";
+        name = "%" + name + "%";
+        sort = sort + " " + order;
+        List<Address> addressList = addressMapper.selectById(userId, name, sort);
+//        AddressExample addressExample = new AddressExample();
+//        addressExample.setOrderByClause(sort + " " + order);
+//        AddressExample.Criteria criteria = addressExample.createCriteria();
+//        if (!StringUtils.isEmpty(userId)) {
+//            criteria.andUserIdEqualTo(SearchUtils.search(userId));
 //        }
-        /*
-        * 判断是否为空
-        * 非空进一步判断是否为数字
-        */
-        if (!StringUtils.isEmpty(userId)) {
-            criteria.andUserIdEqualTo(SearchUtils.search(userId));
-        }
-        // 模糊查询
-        if(!StringUtils.isEmpty(name)) {
-            criteria.andNameLike("%" + name + "%");
-        }
-        // 封装
-        List<Address> addressList = addressMapper.selectByExample(addressExample);
+//        if(!StringUtils.isEmpty(name)) {
+//            criteria.andNameLike("%" + name + "%");
+//        }
+//        List<Address> addressList = addressMapper.selectByExample(addressExample);
         PageInfo<Address> addressPageInfo = new PageInfo<>(addressList);
         long total = addressPageInfo.getTotal();
         ListBean listBean = new ListBean();
