@@ -34,15 +34,15 @@ public interface AdminMapper {
 
     List<Admin> queryAllAdmin(@Param("sort") String sort, @Param("order") String order);
 
-    List<Admin> queryAdminsByUsername(@Param("sort") String sort, @Param("order") String order,String username);
+    List<Admin> queryAdminsByUsername(@Param("sort") String sort, @Param("order") String order, String username);
 
-    void deleteAdminById(@Param("id")int id);
+    void deleteAdminById(@Param("id") int id);
 
     void insertAdmin(@Param("addAdminVo") AddAdminVo addAdminVo);
 
-    int selectIdByUsername(@Param("username")String username);
+    int selectIdByUsername(@Param("username") String username);
 
-    void updateAdminById(@Param("addAdminVo")AddAdminVo addAdminVo);
+    void updateAdminById(@Param("addAdminVo") AddAdminVo addAdminVo);
 
     String queryPasswordByUsername(@Param("principal") String principal);
 
