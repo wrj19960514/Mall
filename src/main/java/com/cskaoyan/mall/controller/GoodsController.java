@@ -8,7 +8,6 @@ import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.goodsManage.CatAndBrand;
 import com.cskaoyan.mall.vo.ListBean;
 import com.cskaoyan.mall.vo.goodsManage.GoodsVo;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

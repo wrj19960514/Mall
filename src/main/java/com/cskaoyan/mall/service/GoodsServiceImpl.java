@@ -85,18 +85,18 @@ public class GoodsServiceImpl implements GoodsService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
     public boolean delete(Goods goods) {
         Integer id = goods.getId();
-        // 删除goods
+        // 删除商品表中的数据
         goodsMapper.deleteByPrimaryKey(id);
-        // 删除有关该商品的其他参数
-        // attribute
+        // 删除有关该商品的其他表中参数
+        // goods_attribute
         GoodsAttributeExample goodsAttributeExample = new GoodsAttributeExample();
         goodsAttributeExample.createCriteria().andGoodsIdEqualTo(id);
         goodsAttributeMapper.deleteByExample(goodsAttributeExample);
-        // product
+        // goods_product
         GoodsProductExample goodsProductExample = new GoodsProductExample();
         goodsProductExample.createCriteria().andGoodsIdEqualTo(id);
         goodsProductMapper.deleteByExample(goodsProductExample);
-        // specification
+        // goods_specification
         GoodsSpecificationExample goodsSpecificationExample = new GoodsSpecificationExample();
         goodsSpecificationExample.createCriteria().andGoodsIdEqualTo(id);
         goodsSpecificationMapper.deleteByExample(goodsSpecificationExample);
@@ -156,31 +156,32 @@ public class GoodsServiceImpl implements GoodsService {
         // 插入商品, 通过select key获取商品id
         goodsMapper.insert(goods);
         Integer id = goods.getId();
-        // 插入商品参数
+        // 插入商品参数表数据
         for (GoodsAttribute attribute : attributes) {
             attribute.setGoodsId(id);
             attribute.setAddTime(date);
             attribute.setUpdateTime(date);
-            int insert = goodsAttributeMapper.insert(attribute);
+            goodsAttributeMapper.insert(attribute);
         }
-        // 插入商品货品表
+        // 插入商品货品表数据
         for (GoodsProduct product : products) {
             product.setGoodsId(id);
             product.setAddTime(date);
             product.setUpdateTime(date);
-            int insert = goodsProductMapper.insert(product);
+            goodsProductMapper.insert(product);
         }
-        // 插入商品规格表
+        // 插入商品规格表数据
         for (GoodsSpecification specification : specifications) {
             specification.setGoodsId(id);
             specification.setAddTime(date);
             specification.setUpdateTime(date);
-            int insert = goodsSpecificationMapper.insert(specification);
+            goodsSpecificationMapper.insert(specification);
         }
         return BaseRespVo.ok(null);
     }
 
     private BaseRespVo checkData(Goods goods, List<GoodsAttribute> attributes, List<GoodsProduct> products, List<GoodsSpecification> specifications, int method) {
+        // method = 0 为create, method = 1 为update
         BaseRespVo checkGoodsData = checkGoodsData(goods, method);
         if (checkGoodsData.getErrno() == 401) {
             return checkGoodsData;
@@ -217,7 +218,7 @@ public class GoodsServiceImpl implements GoodsService {
         for (GoodsProduct product : products) {
             if (product.getNumber() == null || !ParamUtils.isInteger(product.getNumber().toString()) ||
                     product.getPrice() == null || !ParamUtils.isInteger(product.getPrice().toString()) ||
-                    product.getNumber() < 0 || product.getPrice().compareTo(new BigDecimal("0")) == -1 ) {
+                    product.getNumber() < 0 || product.getPrice().compareTo(new BigDecimal("0")) == -1) {
                 baseRespVo.setErrmsg("库存输入正确数值");
                 baseRespVo.setErrno(401);
                 return baseRespVo;
@@ -263,6 +264,7 @@ public class GoodsServiceImpl implements GoodsService {
         // 专柜价格 当前价格
         BigDecimal counterPrice = goods.getCounterPrice();
         BigDecimal retailPrice = goods.getRetailPrice();
+        // counterPrice.compareTo(new BigDecimal("0")) == -1 代表 counterPrice 小于 0
         if (counterPrice == null || !ParamUtils.isInteger(counterPrice.toString()) ||
                 retailPrice == null || !ParamUtils.isInteger(retailPrice.toString()) ||
                 counterPrice.compareTo(new BigDecimal("0")) == -1 || retailPrice.compareTo(new BigDecimal("0")) == -1) {
@@ -275,6 +277,7 @@ public class GoodsServiceImpl implements GoodsService {
             baseRespVo.setErrno(401);
             return baseRespVo;
         }
+        // 图片 分类 品牌商 商品单位
         String unit = goods.getUnit();
         if (ParamUtils.isEmpty(goods.getPicUrl()) || goods.getCategoryId() == null ||
                 goods.getBrandId() == null || ParamUtils.isEmpty(unit)) {
@@ -307,7 +310,7 @@ public class GoodsServiceImpl implements GoodsService {
         GoodsSpecificationExample goodsSpecificationExample = new GoodsSpecificationExample();
         goodsSpecificationExample.createCriteria().andGoodsIdEqualTo(id);
         List<GoodsSpecification> goodsSpecifications = goodsSpecificationMapper.selectByExample(goodsSpecificationExample);
-        // categoryIds
+        // 商品所属分类id 和 父id
         Integer categoryId = goods.getCategoryId();
         Category category = categoryMapper.selectByPrimaryKey(categoryId);
         Integer pid = category.getPid();
