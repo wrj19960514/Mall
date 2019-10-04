@@ -113,16 +113,16 @@ user/index | 个人页面用户相关信息
 ### 1.2.2 部分二:14（吴翀）
 请求地址 | 接口名称
 ---------- | -------
-order/submit, | 提交订单
-order/prepay, | 订单的预支付会话
+order/submit | 提交订单
+order/prepay | 订单的预支付会话
 order/list | 订单列表
 order/detail | 订单详情
 order/cancel | 取消订单
 order/refund | 退款取消订单
 order/delete | 删除订单
 order/confirm | 确认收货
-order/goods, | 代评价商品信息
-order/comment, | 评价订单商品信息
+order/goods | 代评价商品信息
+order/comment | 评价订单商品信息
 
 ### 1.2.3 部分三:12（刘幸垚）
 请求地址 | 接口名称
@@ -150,13 +150,13 @@ goods/category | 获得分类数据
 goods/detail | 获得商品的详情
 goods/related | 商品详情页的关联商品（大家都在看）
 cart/index | 获取购物车的数据
-cart/add, | 添加商品到购物车
-cart/fastadd, | 立即购买商品
-cart/update, | 更新购物车的商品
-cart/delete, | 删除购物车的商品
-cart/checked, | 选择或取消选择商品
-cart/goodscount, | 获取购物车商品件数
-cart/checkout, | 下单前信息确认
+cart/add | 添加商品到购物车
+cart/fastadd | 立即购买商品
+cart/update | 更新购物车的商品
+cart/delete | 删除购物车的商品
+cart/checked | 选择或取消选择商品
+cart/goodscount | 获取购物车商品件数
+cart/checkout | 下单前信息确认
 
 ### 1.2.5 部分五:12(邢文才)
 请求地址 | 接口名称
@@ -187,4 +187,4 @@ feedback/submit | 添加反馈
 footprint/list | 足迹列表
 footprint/delete | 删除足迹
 formid/create | 用户FromId，用于发送模版消息
-storage/upload | 图片上传,
+storage/upload | 图片上传
