@@ -50,6 +50,13 @@ public class BaseRespVo<T> {
         return baseRespVo;
     }
 
+    public static BaseRespVo fail() {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrno(500);
+        baseRespVo.setErrmsg("登录失败");
+        return baseRespVo;
+    }
+
     @Override
     public String toString() {
         return "BaseRespVo{" +

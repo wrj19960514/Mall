@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.exception;
 
 import com.cskaoyan.mall.vo.BaseRespVo;
+import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +27,14 @@ public class CustomExceptionHandler {
     public BaseRespVo numberFormatExceptionHandle(NumberFormatException e) {
         BaseRespVo baseRespVo = new BaseRespVo();
         baseRespVo.setErrmsg("请输入正确的数据");
+        baseRespVo.setErrno(402);
+        return baseRespVo;
+    }
+    @ExceptionHandler(AuthorizationException.class)
+    @ResponseBody
+    public BaseRespVo authorizationExceptionHandler(AuthorizationException e) {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrmsg("没有访问权限");
         baseRespVo.setErrno(402);
         return baseRespVo;
     }

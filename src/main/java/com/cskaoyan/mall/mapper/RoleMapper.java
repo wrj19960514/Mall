@@ -45,4 +45,6 @@ public interface RoleMapper {
     void updateRole(@Param("role") Role role);
 
     void deleteRole(@Param("id") Integer id);
+
+    List<String> queryRoleNameByRoleIds(@Param("roleIds") Integer[] roleIds);
 }

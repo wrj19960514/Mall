@@ -32,16 +32,32 @@ public class TransferIntegerArrayHandler implements TypeHandler<Integer[]> {
 
     @Override
     public Integer[] getResult(ResultSet resultSet, String s) throws SQLException {
-        return new Integer[0];
+        String value = resultSet.getString(s);
+        return parseString2IntegerArray(value);
+    }
+
+    private Integer[] parseString2IntegerArray(String value) {
+        Integer[] integers = new Integer[0];
+        if (value == null){
+            return integers;
+        }
+        try {
+            integers = objectMapper.readValue(value, Integer[].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return integers;
     }
 
     @Override
     public Integer[] getResult(ResultSet resultSet, int i) throws SQLException {
-        return new Integer[0];
+        String value = resultSet.getString(i);
+        return parseString2IntegerArray(value);
     }
 
     @Override
     public Integer[] getResult(CallableStatement callableStatement, int i) throws SQLException {
-        return new Integer[0];
+        String value = callableStatement.getString(i);
+        return parseString2IntegerArray(value);
     }
 }
