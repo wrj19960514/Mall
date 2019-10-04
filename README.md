@@ -97,6 +97,7 @@ null | 11 | 汪仁俊
 
 ## 1.2	微信小程序业务模块
 ### 1.2.1 部分一:11（汪仁俊）
+--------- | ---------- | -------
 功能模块 | 请求地址 | 接口名称
 IndexUrl: |`home/index` | 首页数据接口
 CatalogList: |`catalog/index` | 分类目录全部分类数据接口
@@ -114,6 +115,7 @@ UserIndex: |`user/index` | 个人页面用户相关信息
 
 ### 1.2.2 部分二:14（吴翀）
 功能模块 | 请求地址 | 接口名称
+--------- | ---------- | -------
 OrderSubmit: |`order/submit`, | 提交订单
 OrderPrepay: |`order/prepay`, | 订单的预支付会话
 OrderList: |`order/list` | 订单列表
@@ -127,6 +129,7 @@ OrderComment: |`order/comment`, | 评价订单商品信息
 
 ### 1.2.3 部分三:12（刘幸垚）
 功能模块 | 请求地址 | 接口名称
+--------- | ---------- | -------
 GroupOnList: |`groupon/list` | 团购列表
 GroupOn: |`groupon/query` | 团购API-查询
 GroupOnMy: |`groupon/my` | 团购API-我的团购
@@ -145,6 +148,7 @@ BrandDetail: |`brand/detail` | 品牌详情
 
 ### 1.2.4 部分四:13(焦继武)
 功能模块 | 请求地址 | 接口名称
+--------- | ---------- | -------
 GoodsCount: |`goods/count` | 统计商品总数
 GoodsList: |`goods/list` | 获得商品列表
 GoodsCategory: |`goods/category` | 获得分类数据
@@ -162,6 +166,7 @@ CartCheckout: |`cart/checkout`, | 下单前信息确认
 
 ### 1.2.5 部分五:12(邢文才)
 功能模块 | 请求地址 | 接口名称
+--------- | ---------- | -------
 CollectList: |`collect/list` | 收藏列表
 CollectAddOrDelete: |`collect/addordelete` | 添加或取消收藏
 --------- | ---------- | -------
@@ -180,6 +185,7 @@ SearchClearHistory: |`search/clearhistory` | 搜索历史清楚
 
 ### 1.2.6 部分六:11(戚永华)
 功能模块 | 请求地址 | 接口名称
+--------- | ---------- | -------
 AddressList: |`address/list` | 收货地址列表
 AddressDetail: |`address/detail` | 收货地址详情
 AddressSave: |`address/save` | 保存收货地址
