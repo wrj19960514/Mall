@@ -18,7 +18,8 @@ import java.util.ArrayList;
 public class AuthController {
     @RequestMapping("/login")
     public BaseRespVo login(@RequestBody LoginVo loginVo) {
-        BaseRespVo ok = BaseRespVo.ok("595bff99-b2db-4e3f-9f3d-15ea6a04a942");
+
+        BaseRespVo ok = BaseRespVo.ok("84c40030-f97e-4754-be42-ec29c93457f9");
         return ok;
     }
 
