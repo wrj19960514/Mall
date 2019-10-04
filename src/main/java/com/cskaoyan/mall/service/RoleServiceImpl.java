@@ -3,6 +3,8 @@ package com.cskaoyan.mall.service;
 import com.cskaoyan.mall.bean.Role;
 import com.cskaoyan.mall.mapper.RoleMapper;
 import com.cskaoyan.mall.vo.ListBean;
+import com.cskaoyan.mall.vo.adminManage.PermReqVo;
+import com.cskaoyan.mall.vo.adminManage.PermVo;
 import com.cskaoyan.mall.vo.adminManage.RoleVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -74,5 +76,27 @@ public class RoleServiceImpl implements RoleService {
     public void deleteRole(Role role) {
         Integer id = role.getId();
         roleMapper.deleteRole(id);
+    }
+
+    @Override
+    public PermVo selectPermissionsByRoleId(int roleId) {
+
+        List permsByRoleId = roleMapper.selectPermissionsByRoleId(roleId);
+        List allPerms = roleMapper.selectAllPermissions();
+        PermVo permVo = new PermVo();
+        permVo.setAssignedPermissions(permsByRoleId);
+        permVo.setSystemPermissions(allPerms);
+        return permVo;
+    }
+
+    @Override
+    public void updatePermissionsByRoleId(PermReqVo permReqVo) {
+        Date date = new Date();
+        Integer roleId = permReqVo.getRoleId();
+        List<String> permissions = permReqVo.getPermissions();
+        roleMapper.deletePermsByRoleId(roleId);
+        for (String permission : permissions) {
+            roleMapper.insertPermsByRoleId(roleId,permission,date);
+        }
     }
 }

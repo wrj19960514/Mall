@@ -3,6 +3,7 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.Role;
 import com.cskaoyan.mall.bean.RoleExample;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cskaoyan.mall.vo.adminManage.RoleVo;
@@ -45,4 +46,12 @@ public interface RoleMapper {
     void updateRole(@Param("role") Role role);
 
     void deleteRole(@Param("id") Integer id);
+
+    List selectPermissionsByRoleId(@Param("roleId") Integer roleId);
+
+    List selectAllPermissions();
+
+    void deletePermsByRoleId(@Param("roleId")Integer roleId);
+
+    void insertPermsByRoleId(@Param("roleId") Integer roleId,@Param("perm") String permission, @Param("date")Date date);
 }

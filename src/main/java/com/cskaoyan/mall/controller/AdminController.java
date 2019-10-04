@@ -9,14 +9,9 @@ import com.cskaoyan.mall.service.RoleService;
 import com.cskaoyan.mall.service.StorageService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.ListBean;
-import com.cskaoyan.mall.vo.adminManage.AddAdminVo;
-import com.cskaoyan.mall.vo.adminManage.AdminVo;
-import com.cskaoyan.mall.vo.adminManage.RoleVo;
+import com.cskaoyan.mall.vo.adminManage.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -139,6 +134,18 @@ public class AdminController {
     @RequestMapping("admin/storage/delete")
     public BaseRespVo deleteStorage(@RequestBody Storage storage) {
         storageService.deleteStorage(storage);
+        BaseRespVo ok = BaseRespVo.ok(null);
+        return ok;
+    }
+    @GetMapping("admin/role/permissions")
+    public BaseRespVo getPermissions(int roleId){
+        PermVo permVo = roleService.selectPermissionsByRoleId(roleId);
+        BaseRespVo ok = BaseRespVo.ok(permVo);
+        return ok;
+    }
+    @PostMapping("admin/role/permissions")
+    public BaseRespVo updatePermissions(@RequestBody PermReqVo permReqVo){
+        roleService.updatePermissionsByRoleId(permReqVo);
         BaseRespVo ok = BaseRespVo.ok(null);
         return ok;
     }

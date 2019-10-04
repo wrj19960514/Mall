@@ -40,6 +40,44 @@
   <delete id="deleteRole">
     delete from cskaoyan_mall_role where id =#{id}
   </delete>
+
+  <select id="selectPermissionsByRoleId" resultType="String">
+    select permission from cskaoyan_mall_permission where role_id = #{roleId}
+  </select>
+  
+<resultMap id="permMap1" type="com.cskaoyan.mall.vo.adminManage.PermRespVo">
+  <result column="id" property="idz"/>
+  <result column="name" property="id"/>
+  <result column="label" property="label"/>
+  <collection property="children" column="id" select="com.cskaoyan.mall.mapper.RoleMapper.queryallPermissions"/>
+</resultMap>
+
+  <resultMap id="permMap2" type="com.cskaoyan.mall.vo.adminManage.PermRespVo">
+    <result column="id" property="idz"/>
+    <result column="name" property="id"/>
+    <result column="label" property="label"/>
+    <collection property="children" column="id" select="com.cskaoyan.mall.mapper.RoleMapper.queryAllPerms"/>
+  </resultMap>
+  <!--第一次查询-->
+  <select id="selectAllPermissions" resultMap="permMap1">
+    select id,name,label from cskaoyan_mall_perm where pid = 0
+  </select>
+  <!--第二次查询-->
+  <select id="queryallPermissions" resultMap="permMap2">
+     select id,name,label from cskaoyan_mall_perm where pid = #{id}
+  </select>
+  <!--第三次查询-->
+  <select id="queryAllPerms" resultType="com.cskaoyan.mall.vo.adminManage.PermRespVo">
+    select name as id ,label,api from cskaoyan_mall_perm where pid = #{id}
+  </select>
+
+  <delete id="deletePermsByRoleId">
+    delete from cskaoyan_mall_permission where role_id = #{roleId}
+  </delete>
+  <insert id="insertPermsByRoleId">
+    insert into cskaoyan_mall_permission (role_id,permission,add_time,update_time) values
+    (#{roleId},#{perm},#{date},#{date})
+  </insert>
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Role">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
