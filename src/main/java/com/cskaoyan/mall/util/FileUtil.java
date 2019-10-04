@@ -3,6 +3,7 @@ package com.cskaoyan.mall.util;
 import com.alibaba.druid.util.StringUtils;
 import com.cskaoyan.mall.bean.Storage;
 import com.cskaoyan.mall.config.Constant;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ public class FileUtil {
 
     public static Storage saveImg(MultipartFile file, HttpServletRequest request) {
         //获取文件上传的根目录 C:/Users/username/upload/img
+
         String path = Constant.UPLOAD_PATH + Constant.IMG_FILE_NAME;
         //拿到文件的后缀名和UUID进行拼接形成新的文件名
         //4ca64e85b1544c96b4a6154bb521476f.jpg

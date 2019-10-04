@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.bean;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class GoodsAttribute {
@@ -7,8 +8,10 @@ public class GoodsAttribute {
 
     private Integer goodsId;
 
+    @NotNull(message = "参数名称不能为空")
     private String attribute;
 
+    @NotNull(message = "参数值不能为空")
     private String value;
 
     private Date addTime;
