@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.PermissionMapper">
+  <select id="queryPermissionsByRoleIds" resultType="string">
+        select distinct permission from cskaoyan_mall_permission where role_id in
+    <foreach collection="roleIds" item="role_id" separator="," open="(" close=")">
+      #{role_id}
+    </foreach>
+    </select>
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Permission">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="role_id" jdbcType="INTEGER" property="roleId" />

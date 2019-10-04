@@ -50,10 +50,10 @@ public class BaseRespVo<T> {
         return baseRespVo;
     }
 
-    public static BaseRespVo paramError() {
+    public static BaseRespVo fail() {
         BaseRespVo baseRespVo = new BaseRespVo();
-        baseRespVo.setErrno(401);
-        baseRespVo.setErrmsg("请输入正确的参数值");
+        baseRespVo.setErrno(500);
+        baseRespVo.setErrmsg("登录失败");
         return baseRespVo;
     }
 
