@@ -321,8 +321,8 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectById" resultType="com.cskaoyan.mall.bean.Address">
-    select a.id, a.name, user_id, province_id, city_id, area_id, address, mobile, is_default, add_time,
-    update_time, deleted,
+    select a.id, a.name, user_id as userId, province_id as provinceId, city_id as cityId, area_id as areaId, address,
+    mobile, is_default as isDefault, add_time as addTime, update_time as updateTime, deleted,
     r1.name as province, r2.name as city, r3.name as area
     from cskaoyan_mall_address a
     left join cskaoyan_mall_region r1 on province_id = r1.code
