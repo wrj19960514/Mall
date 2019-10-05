@@ -50,6 +50,13 @@ public class BaseRespVo<T> {
         return baseRespVo;
     }
 
+    public static BaseRespVo exit(){
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrno(0);
+        baseRespVo.setErrmsg("退出成功");
+        return baseRespVo;
+    }
+
     public static BaseRespVo fail() {
         BaseRespVo baseRespVo = new BaseRespVo();
         baseRespVo.setErrno(500);
