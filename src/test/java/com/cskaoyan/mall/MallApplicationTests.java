@@ -1,7 +1,9 @@
 package com.cskaoyan.mall;
 
+import com.cskaoyan.mall.bean.OrderHandleOptions;
 import com.cskaoyan.mall.bean.Region;
 import com.cskaoyan.mall.bean.RegionExample;
+import com.cskaoyan.mall.mapper.OrderHandleOptionsMapper;
 import com.cskaoyan.mall.mapper.RegionMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,18 +18,22 @@ import java.util.List;
 public class MallApplicationTests {
 
     @Autowired
-    RegionMapper regionMapper;
+    OrderHandleOptionsMapper mapper;
 
     /**
      * 测试*MapperExample，使用前在*Mapper注册组件
      */
     @Test
     public void contextLoads() {
-        RegionExample example = new RegionExample();
-        RegionExample.Criteria criteria = example.createCriteria();
-        criteria.andCodeBetween(1, 25);
-        List<Region> regions = regionMapper.selectByExample(example);
-        System.out.println("regions = " + regions);
+        mapper.updateCancelByOrderId(2,true);
+        mapper.updateCommentlByOrderId(2,true);
+        mapper.updateConfirmByOrderId(2,true);
+        mapper.updateDeleteByOrderId(2,true);
+        mapper.updatePayByOrderId(2,true);
+        mapper.updateRebuyByOrderId(2,true);
+        mapper.updateRefundByOrderId(2,true);
+        OrderHandleOptions record = mapper.queryRecordByOrderId(2);
+        System.out.println("record = " + record);
     }
 
 }

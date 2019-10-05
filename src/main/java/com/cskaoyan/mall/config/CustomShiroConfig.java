@@ -5,7 +5,6 @@ import com.cskaoyan.mall.shiro.CustomRealmAuthenticator;
 import com.cskaoyan.mall.shiro.MallSessionManager;
 import com.cskaoyan.mall.shiro.WxRealm;
 import org.apache.shiro.realm.Realm;
-import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -39,26 +37,25 @@ public class CustomShiroConfig {
         filterChainDefinitionMap.put("/wx/auth/login", "anon");
         filterChainDefinitionMap.put("/wx/user/index", "anon");
          //需要进行认证
-        filterChainDefinitionMap.put("admin/**", "authc");
+        filterChainDefinitionMap.put("admin/**","authc");
+        filterChainDefinitionMap.put("wx/order/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
 
-    /*注册securityManager*/
+
     @Bean
     public DefaultWebSecurityManager securityManager(@Qualifier("adminRealm") AdminRealm adminRealm,
                                                      @Qualifier("wxRealm") WxRealm wxRealm,
-                                                     CustomRealmAuthenticator customRealmAuthenticator) {
+                                                     CustomRealmAuthenticator customRealmAuthenticator){
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         ArrayList<Realm> realms = new ArrayList<>();
         realms.add(adminRealm);
         realms.add(wxRealm);
         securityManager.setRealms(realms);
-        //认证器(doAuthenticate根据realm的个数决定执行单个认证或多个认证)
         securityManager.setAuthenticator(customRealmAuthenticator);
         return securityManager;
     }
-
     //注册认证器
     @Bean
     public CustomRealmAuthenticator customRealmAuthenticator(@Qualifier("adminRealm") AdminRealm adminRealm,

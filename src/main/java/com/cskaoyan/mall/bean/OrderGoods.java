@@ -22,7 +22,7 @@ public class OrderGoods {
 
     private String[] specifications;
 
-    private String picUrl;
+    private String[] picUrl;
 
     private Integer comment;
 
@@ -104,11 +104,11 @@ public class OrderGoods {
         this.specifications = specifications;
     }
 
-    public String getPicUrl() {
+    public String[] getPicUrl() {
         return picUrl;
     }
 
-    public void setPicUrl(String picUrl) {
+    public void setPicUrl(String[] picUrl) {
         this.picUrl = picUrl;
     }
 
