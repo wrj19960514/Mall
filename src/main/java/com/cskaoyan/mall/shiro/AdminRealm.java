@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2019/10/4 19:18
  */
 @Component
-public class CustomRealm extends AuthorizingRealm {
+public class AdminRealm extends AuthorizingRealm {
     @Autowired
     AdminMapper adminMapper;
     @Autowired
