@@ -1,17 +1,27 @@
 package com.cskaoyan.mall.service.wx;
 
+import com.cskaoyan.mall.bean.Cart;
+import com.cskaoyan.mall.bean.CartExample;
+import com.cskaoyan.mall.bean.Comment;
+import com.cskaoyan.mall.bean.GoodsProduct;
 import com.cskaoyan.mall.bean.Order;
 import com.cskaoyan.mall.bean.OrderExample;
 import com.cskaoyan.mall.bean.OrderGoods;
 import com.cskaoyan.mall.bean.OrderGoodsExample;
+import com.cskaoyan.mall.mapper.CartMapper;
+import com.cskaoyan.mall.mapper.CommentMapper;
+import com.cskaoyan.mall.mapper.GoodsProductMapper;
 import com.cskaoyan.mall.mapper.OrderGoodsMapper;
 import com.cskaoyan.mall.mapper.OrderHandleOptionsMapper;
 import com.cskaoyan.mall.mapper.OrderMapper;
 import com.cskaoyan.mall.util.DateUtils;
+import com.cskaoyan.mall.vo.OrderComment;
+import com.cskaoyan.mall.vo.OrderSubmitVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +36,15 @@ public class WxOrderServiceImpl implements WxOrderService {
 
     @Autowired
     OrderHandleOptionsMapper optionsMapper;
+
+    @Autowired
+    CartMapper cartMapper;
+
+    @Autowired
+    GoodsProductMapper goodsProductMapper;
+
+    @Autowired
+    CommentMapper commentMapper;
 
     private String[] strings = new String[]{"", "待付款", "待发货", "待收货", "待评价"};
 
@@ -109,6 +128,135 @@ public class WxOrderServiceImpl implements WxOrderService {
     @Override
     public void cancelOrder(int orderId) {
         // TODO 金额在哪
-        optionsMapper.updateCancelByOrderId(orderId,false);
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        order.setOrderStatus((short) 0);
+        order.setUpdateTime(new Date());
+        orderMapper.updateByPrimaryKey(order);
+        optionsMapper.updateCancelByOrderId(orderId, false);
+        optionsMapper.updateRefundByOrderId(orderId, false);
+        optionsMapper.updatePayByOrderId(orderId, false);
+        optionsMapper.updateDeleteByOrderId(orderId, true);
+        optionsMapper.updateConfirmByOrderId(orderId, false);
+        optionsMapper.updateCommentlByOrderId(orderId, false);
+    }
+
+    @Override
+    public void deleteOrder(Integer orderId) {
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        order.setOrderStatus((short) 0);
+        order.setDeleted(true);
+        orderMapper.updateByPrimaryKey(order);
+        optionsMapper.updateCancelByOrderId(orderId, false);
+        optionsMapper.updateRefundByOrderId(orderId, false);
+        optionsMapper.updatePayByOrderId(orderId, false);
+        optionsMapper.updateDeleteByOrderId(orderId, false);
+        optionsMapper.updateConfirmByOrderId(orderId, false);
+        optionsMapper.updateCommentlByOrderId(orderId, false);
+    }
+
+    @Override
+    public void confirmOrder(Integer orderId) {
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        order.setOrderStatus((short) 4);
+        order.setDeleted(false);
+        order.setUpdateTime(new Date());
+        orderMapper.updateByPrimaryKey(order);
+        optionsMapper.updateCancelByOrderId(orderId, false);
+        optionsMapper.updateRefundByOrderId(orderId, true);
+        optionsMapper.updatePayByOrderId(orderId, false);
+        optionsMapper.updateDeleteByOrderId(orderId, true);
+        optionsMapper.updateConfirmByOrderId(orderId, false);
+        optionsMapper.updateCommentlByOrderId(orderId, true);
+    }
+
+    @Override
+    public void refundOrder(Integer orderId) {
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        order.setOrderStatus((short) 4);
+        order.setDeleted(false);
+        order.setUpdateTime(new Date());
+        orderMapper.updateByPrimaryKey(order);
+        optionsMapper.updateCancelByOrderId(orderId, false);
+        optionsMapper.updateRefundByOrderId(orderId, false);
+        optionsMapper.updatePayByOrderId(orderId, false);
+        optionsMapper.updateDeleteByOrderId(orderId, true);
+        optionsMapper.updateConfirmByOrderId(orderId, false);
+        optionsMapper.updateCommentlByOrderId(orderId, true);
+    }
+
+    @Override
+    public boolean submitOrder(OrderSubmitVo orderSubmitVo) {
+        // TODO 添加多个商品至Order_Goods表
+        List<Cart> carts = cartMapper.selectByExample(new CartExample());
+        for (Cart cart : carts) {
+            GoodsProduct goodsProduct = goodsProductMapper.selectByPrimaryKey(cart.getGoodsId());
+            if ((goodsProduct.getNumber() - cart.getNumber()) < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void prepayOrder(Integer orderId) {
+        Order order = new Order();
+        order.setId(orderId);
+        order.setOrderStatus((short) 1);
+        order.setDeleted(false);
+        order.setAddTime(new Date());
+        // order.setUserId(); TODO 添加三张表
+        orderMapper.insert(order);
+        optionsMapper.updateCancelByOrderId(orderId, true);
+        optionsMapper.updateRefundByOrderId(orderId, false);
+        optionsMapper.updatePayByOrderId(orderId, true);
+        optionsMapper.updateDeleteByOrderId(orderId, false);
+        optionsMapper.updateConfirmByOrderId(orderId, false);
+        optionsMapper.updateCommentlByOrderId(orderId, false);
+    }
+
+    @Override
+    public Map getGoodsDetail(int orderId, int goodsId) {
+        HashMap map = new HashMap();
+        OrderGoodsExample example = new OrderGoodsExample();
+        example.createCriteria().andOrderIdEqualTo(orderId).andGoodsIdEqualTo(goodsId);
+        List<OrderGoods> orderGoods = orderGoodsMapper.selectByExample(example);
+        for (OrderGoods goods : orderGoods) {
+            map.put("addTime", DateUtils.toString(goods.getAddTime()));
+            map.put("specifications", goods.getSpecifications());
+            map.put("comment", goods.getComment());
+            map.put("deleted", goods.getDeleted());
+            map.put("goodsId", goods.getGoodsId());
+            map.put("goodsName", goods.getGoodsName());
+            map.put("goodsSn", goods.getGoodsSn());
+            map.put("id", goods.getId());
+            map.put("number", goods.getNumber());
+            map.put("orderId", goods.getOrderId());
+            map.put("picUrl", goods.getPicUrl()[0]);
+            map.put("price", goods.getPrice());
+            map.put("productId", goods.getProductId());
+            map.put("updateTime", DateUtils.toString(goods.getUpdateTime()));
+        }
+        return map;
+    }
+
+    @Override
+    public boolean setGoodsComment(OrderComment orderComment) {
+        if(orderComment.getPicUrls().length>3) {
+            return false;
+        }
+        Comment comment = new Comment();
+        comment.setValueId(orderComment.getOrderGoodsId());
+        comment.setType((byte) 0);
+        comment.setContent(orderComment.getContent());
+        comment.setUserId(0); // TODO 无法判断
+        if(orderComment.isHasPicture()){
+            comment.setPicUrls(orderComment.getPicUrls());
+            comment.setHasPicture(true);
+        }
+        comment.setHasPicture(false);
+        comment.setAddTime(new Date());
+        comment.setStar((short) orderComment.getStar());
+        commentMapper.insert(comment);
+        return true;
     }
 }
