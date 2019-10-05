@@ -108,6 +108,7 @@ public class WxOrderServiceImpl implements WxOrderService {
 
     @Override
     public void cancelOrder(int orderId) {
+        // TODO 金额在哪
         optionsMapper.updateCancelByOrderId(orderId,false);
     }
 }
