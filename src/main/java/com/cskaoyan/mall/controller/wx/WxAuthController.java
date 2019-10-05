@@ -9,10 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("wx/auth")
 public class WxAuthController {
 
     /*登陆*/
-    @PostMapping("wx/auth/login")
+    @PostMapping("/login")
     public BaseRespVo login(@RequestBody LoginVo vo){
         LoginRespVo loginRespVo = new LoginRespVo();
         loginRespVo.setToken("tt1i9fq6q2nqmexibr7lr3h3q3x7gyu4");
@@ -25,15 +26,8 @@ public class WxAuthController {
         return ok;
     }
 
-    @GetMapping("wx/user/index")
-    public BaseRespVo index(String token){
-        return BaseRespVo.ok(null);
+    @PostMapping("/logout")
+    public BaseRespVo logout(){
+        return BaseRespVo.exit();
     }
-
-    @RequestMapping("wx/user/logout")
-    public BaseRespVo logout() {
-
-        return BaseRespVo.ok(null);
-    }
-
 }
