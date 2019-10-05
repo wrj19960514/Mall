@@ -2,9 +2,12 @@ package com.cskaoyan.mall.config;
 
 import com.cskaoyan.mall.shiro.CustomRealm;
 import com.cskaoyan.mall.shiro.MallSessionManager;
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,7 +38,8 @@ public class CustomShiroConfig {
 
     /*securityManager*/
     @Bean
-    public DefaultWebSecurityManager securityManager(CustomRealm customRealm,DefaultSessionManager defaultSessionManager) {
+    public DefaultWebSecurityManager securityManager(@Qualifier("customRealm") CustomRealm customRealm,
+                                                     DefaultSessionManager defaultSessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(customRealm);
         securityManager.setSessionManager(defaultSessionManager);
@@ -49,4 +53,12 @@ public class CustomShiroConfig {
         // 返回自定义的SessionManager
         return new MallSessionManager();
     }
+
+    /*声明式使用鉴权注解的开关*/
+//    @Bean
+//    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
+//        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+//        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+//        return authorizationAttributeSourceAdvisor;
+//    }
 }

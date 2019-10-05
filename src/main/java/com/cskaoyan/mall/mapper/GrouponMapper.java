@@ -3,6 +3,7 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.Groupon;
 import com.cskaoyan.mall.bean.GrouponExample;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface GrouponMapper {
@@ -27,4 +28,8 @@ public interface GrouponMapper {
     int updateByPrimaryKeySelective(Groupon record);
 
     int updateByPrimaryKey(Groupon record);
+
+    List<Groupon> queryCreatorGroupons(@Param("userId")Integer userId);
+
+    List<Groupon> queryJoinerGroupons(@Param("userId")Integer userId);
 }

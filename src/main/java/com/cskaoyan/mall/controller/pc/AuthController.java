@@ -56,6 +56,7 @@ public class AuthController {
         Subject subject = SecurityUtils.getSubject();
         // username
         String principal = (String) subject.getPrincipal();
+        // 获取管理员角色权限信息
         RoleIdsVo roleIdsVo = adminMapper.queryRoleIdsByUsername(principal);
         Integer[] roleIds = roleIdsVo.getRoleIds();
         List<String> roleNames = roleMapper.queryRoleNameByRoleIds(roleIds);
