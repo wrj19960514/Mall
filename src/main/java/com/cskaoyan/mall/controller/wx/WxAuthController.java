@@ -21,6 +21,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 实用shiro后必须在访问已经实现的本地接口否则会被弹回登陆页面
+ * 抓包请使用老师的接口登陆
+ * 测试运行本地程序请使用此接口登陆
+ */
 @RestController
 @RequestMapping("wx/auth")
 public class WxAuthController {
