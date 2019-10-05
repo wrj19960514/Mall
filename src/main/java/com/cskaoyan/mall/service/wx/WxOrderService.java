@@ -8,5 +8,5 @@ public interface WxOrderService {
 
     Map getOrderDetail(int orderId);
 
-    void cancelOrder();
+    void cancelOrder(int orderId);
 }

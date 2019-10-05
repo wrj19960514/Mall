@@ -5,7 +5,9 @@ import com.cskaoyan.mall.vo.BaseRespVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -37,8 +39,9 @@ public class WxOrderController {
     }
 
     @RequestMapping("/cancel")
-    public BaseRespVo cancelOrder(){
-        wxOrderServiceImpl.cancelOrder();
+    public BaseRespVo cancelOrder(@RequestBody Map map){
+        Integer orderId = (Integer) map.get("orderId");
+        wxOrderServiceImpl.cancelOrder(orderId);
         return BaseRespVo.ok(null);
     }
 }

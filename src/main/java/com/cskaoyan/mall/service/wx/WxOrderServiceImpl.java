@@ -34,6 +34,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         ArrayList list = new ArrayList();
         OrderExample example = new OrderExample();
         OrderExample.Criteria criteria = example.createCriteria();
+        criteria.andDeletedEqualTo(false);
         if (showType != 0) {
             criteria.andOrderStatusEqualTo((short) showType);
         }
@@ -62,11 +63,6 @@ public class WxOrderServiceImpl implements WxOrderService {
         return map;
     }
 
-    @Override
-    public void cancelOrder() {
-        ;
-    }
-
     private List getOrderGoods(int orderId) {
         ArrayList list = new ArrayList();
         OrderGoodsExample example = new OrderGoodsExample();
@@ -74,19 +70,19 @@ public class WxOrderServiceImpl implements WxOrderService {
         List<OrderGoods> orderGoods = orderGoodsMapper.selectByExample(example);
         for (OrderGoods goods : orderGoods) {
             HashMap map = new HashMap();
-            map.put("addTime",DateUtils.toString(goods.getAddTime()));
-            map.put("specifications",goods.getSpecifications());
-            map.put("comment",goods.getComment());
-            map.put("deleted",goods.getDeleted());
-            map.put("goodsId",goods.getGoodsId());
-            map.put("goodsName",goods.getGoodsName());
-            map.put("goodsSn",goods.getGoodsSn());
-            map.put("id",goods.getId());
-            map.put("number",goods.getNumber());
-            map.put("orderId",goods.getOrderId());
-            map.put("picUrl",goods.getPicUrl()[0]);
-            map.put("price",goods.getPrice());
-            map.put("productId",goods.getProductId());
+            map.put("addTime", DateUtils.toString(goods.getAddTime()));
+            map.put("specifications", goods.getSpecifications());
+            map.put("comment", goods.getComment());
+            map.put("deleted", goods.getDeleted());
+            map.put("goodsId", goods.getGoodsId());
+            map.put("goodsName", goods.getGoodsName());
+            map.put("goodsSn", goods.getGoodsSn());
+            map.put("id", goods.getId());
+            map.put("number", goods.getNumber());
+            map.put("orderId", goods.getOrderId());
+            map.put("picUrl", goods.getPicUrl()[0]);
+            map.put("price", goods.getPrice());
+            map.put("productId", goods.getProductId());
             map.put("updateTime", DateUtils.toString(goods.getUpdateTime()));
             list.add(map);
         }
@@ -108,5 +104,10 @@ public class WxOrderServiceImpl implements WxOrderService {
         map.put("orderSn", order.getOrderSn());
         map.put("orderStatusText", strings[order.getOrderStatus()]);
         return map;
+    }
+
+    @Override
+    public void cancelOrder(int orderId) {
+        optionsMapper.updateCancelByOrderId(orderId,false);
     }
 }
