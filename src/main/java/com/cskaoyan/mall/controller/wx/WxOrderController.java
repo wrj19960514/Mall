@@ -30,4 +30,15 @@ public class WxOrderController {
         map.put("totalPages",pageInfo.getSize());
         return BaseRespVo.ok(map);
     }
+
+    @RequestMapping("/detail")
+    public BaseRespVo getOrderDetail(int orderId){
+        return BaseRespVo.ok(wxOrderServiceImpl.getOrderDetail(orderId));
+    }
+
+    @RequestMapping("/cancel")
+    public BaseRespVo cancelOrder(){
+        wxOrderServiceImpl.cancelOrder();
+        return BaseRespVo.ok(null);
+    }
 }
