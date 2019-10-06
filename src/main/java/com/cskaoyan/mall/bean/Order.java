@@ -1,8 +1,10 @@
 package com.cskaoyan.mall.bean;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.math.BigDecimal;
 import java.util.Date;
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Order {
     private Integer id;
 
@@ -55,6 +57,16 @@ public class Order {
     private Date updateTime;
 
     private Boolean deleted;
+
+    private OrderHandleoption orderHandleoption;
+
+    public OrderHandleoption getOrderHandleoption() {
+        return orderHandleoption;
+    }
+
+    public void setOrderHandleoption(OrderHandleoption orderHandleoption) {
+        this.orderHandleoption = orderHandleoption;
+    }
 
     public Integer getId() {
         return id;
