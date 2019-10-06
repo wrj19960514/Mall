@@ -39,9 +39,7 @@ public class CustomShiroConfig {
         HashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/admin/auth/login","anon");
         filterChainDefinitionMap.put("/wx/auth/login","anon");
-        filterChainDefinitionMap.put("/fail","anon");
-        filterChainDefinitionMap.put("/jpg/**","anon");
-
+        filterChainDefinitionMap.put("/wx/user/index","anon");
         //认证
         filterChainDefinitionMap.put("/admin/**","authc");
         filterChainDefinitionMap.put("/wx/user/**","authc");
