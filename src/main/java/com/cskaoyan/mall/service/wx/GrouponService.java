@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.service.wx;
 
 import com.cskaoyan.mall.vo.WxListBean;
+import com.cskaoyan.mall.vo.promote.GrouponDetailVo;
 
 /**
  * @author adore
@@ -20,4 +21,6 @@ public interface GrouponService {
      * @return 数据列表
      */
     WxListBean myGroupon(int showType);
+
+    GrouponDetailVo detail(int grouponId);
 }

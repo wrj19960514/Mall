@@ -4,8 +4,7 @@ import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.service.wx.GrouponService;
 import com.cskaoyan.mall.vo.WxListBean;
-import com.cskaoyan.mall.vo.promote.MyGrouponVo;
-import com.cskaoyan.mall.vo.promote.WxGrouponVo;
+import com.cskaoyan.mall.vo.promote.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
@@ -35,7 +34,8 @@ public class GrouponServiceImpl implements GrouponService {
     OrderGoodsMapper orderGoodsMapper;
     @Autowired
     OrderHandleoptionMapper orderHandleoptionMapper;
-
+    @Autowired
+    GoodsProductMapper goodsProductMapper;
     @Override
     public WxListBean getGrouponList(int page, int size) {
         // 分页
@@ -56,14 +56,7 @@ public class GrouponServiceImpl implements GrouponService {
         Subject subject = SecurityUtils.getSubject();
         // username
         String principal = (String) subject.getPrincipal();
-        UserExample userExample = new UserExample();
-        principal = "user";
-        userExample.createCriteria().andUsernameEqualTo(principal);
-        List<User> users = userMapper.selectByExample(userExample);
-        Integer userId = null;
-        for (User user : users) {
-            userId = user.getId();
-        }
+        int userId = userMapper.queryUserIdByUsername(principal);
         MyGrouponVo myGrouponVo = new MyGrouponVo();
         List<MyGrouponVo> myGrouponVos = new ArrayList<>();
         List<Groupon> groupons = null;
@@ -84,9 +77,9 @@ public class GrouponServiceImpl implements GrouponService {
             myGrouponVo.setRules(grouponRules);
             // 订单数据
             Order order = orderMapper.selectByPrimaryKey(groupon.getOrderId());
-            myGrouponVo.setActualPrice(order.getActualPrice().subtract(grouponRules.getDiscount()));
+            myGrouponVo.setActualPrice(order.getActualPrice());
             User user = userMapper.selectByPrimaryKey(groupon.getCreatorUserId());
-            myGrouponVo.setCreator(user.getUsername());
+            myGrouponVo.setCreator(user.getNickname());
             if (groupon.getUserId() == groupon.getCreatorUserId() && groupon.getGrouponId() == 0) {
                 myGrouponVo.setCreator(true);
             }
@@ -99,7 +92,7 @@ public class GrouponServiceImpl implements GrouponService {
             myGrouponVo.setOrderId(order.getId());
             myGrouponVo.setOrderSn(order.getOrderSn());
             // 订单状态
-            myGrouponVo.setOrderStatusText(order.getOrderStatus().toString());
+            myGrouponVo.setOrderStatusText(order.getOrderStatus().toString() + "状态码");
             // 商品列表
             OrderGoodsExample orderGoodsExample = new OrderGoodsExample();
             orderGoodsExample.createCriteria().andOrderIdEqualTo(order.getId());
@@ -121,5 +114,48 @@ public class GrouponServiceImpl implements GrouponService {
         wxListBean.setData(myGrouponVos);
         wxListBean.setTotal(total);
         return wxListBean;
+    }
+
+    @Override
+    public GrouponDetailVo detail(int grouponId) {
+        GrouponDetailVo grouponDetailVo = new GrouponDetailVo();
+        // groupon
+        Groupon groupon = grouponMapper.selectByPrimaryKey(grouponId);
+        grouponDetailVo.setGroupon(groupon);
+        // creator
+        User user = userMapper.selectByPrimaryKey(groupon.getUserId());
+        Creator creator = new Creator();
+        creator.setAvatar(user.getAvatar());
+        creator.setNickname(user.getNickname());
+        grouponDetailVo.setCreator(creator);
+        // joiner
+        List<Creator> joiners = grouponMapper.queryAllJoiner(grouponId);
+        grouponDetailVo.setJoiners(joiners);
+        // linkGrouponId 不知道是个啥
+        grouponDetailVo.setLinkGrouponId(grouponId);
+        // orderGoods
+        List<OrderGood> orderGoodList = orderGoodsMapper.selectOrderGoodList(groupon.getOrderId());
+        for (OrderGood orderGood : orderGoodList) {
+            GoodsProductExample goodsProductExample = new GoodsProductExample();
+            goodsProductExample.createCriteria().andGoodsIdEqualTo(orderGood.getGoodsId());
+            List<GoodsProduct> goodsProducts = goodsProductMapper.selectByExample(goodsProductExample);
+            for (GoodsProduct goodsProduct : goodsProducts) {
+                orderGood.setGoodsSpecificationValues(goodsProduct.getSpecifications());
+            }
+        }
+        grouponDetailVo.setOrderGoods(orderGoodList);
+        // orderInfo
+        Order order = orderMapper.selectByPrimaryKey(groupon.getOrderId());
+        OrderHandleoptionExample orderHandleoptionExample = new OrderHandleoptionExample();
+        orderHandleoptionExample.createCriteria().andOrderIdEqualTo(order.getId());
+        List<OrderHandleoption> orderHandleoptions = orderHandleoptionMapper.selectByExample(orderHandleoptionExample);
+        for (OrderHandleoption orderHandleoption : orderHandleoptions) {
+            order.setOrderHandleoption(orderHandleoption);
+        }
+        grouponDetailVo.setOrderInfo(order);
+        // rules
+        GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(groupon.getRulesId());
+        grouponDetailVo.setRules(grouponRules);
+        return grouponDetailVo;
     }
 }
