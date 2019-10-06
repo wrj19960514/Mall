@@ -73,6 +73,7 @@ public class AuthController {
     @RequestMapping("/logout")
     public BaseRespVo logout() {
         Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
         subject.logout();
         return BaseRespVo.ok(null);
     }
