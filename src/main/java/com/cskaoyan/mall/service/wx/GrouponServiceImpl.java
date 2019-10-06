@@ -56,14 +56,7 @@ public class GrouponServiceImpl implements GrouponService {
         Subject subject = SecurityUtils.getSubject();
         // username
         String principal = (String) subject.getPrincipal();
-        UserExample userExample = new UserExample();
-        principal = "user";
-        userExample.createCriteria().andUsernameEqualTo(principal);
-        List<User> users = userMapper.selectByExample(userExample);
-        Integer userId = null;
-        for (User user : users) {
-            userId = user.getId();
-        }
+        int userId = userMapper.queryUserIdByUsername(principal);
         MyGrouponVo myGrouponVo = new MyGrouponVo();
         List<MyGrouponVo> myGrouponVos = new ArrayList<>();
         List<Groupon> groupons = null;
