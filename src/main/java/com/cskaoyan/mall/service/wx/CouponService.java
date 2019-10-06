@@ -12,4 +12,8 @@ public interface CouponService {
     Map getCouponList(int page, int size);
 
     BaseRespVo receive(int couponId);
+
+    Map myCouponList(short status, int page, int size);
+
+    BaseRespVo exchange(String code);
 }

@@ -1,10 +1,11 @@
 package com.cskaoyan.mall.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Coupon {
     private Integer id;
 

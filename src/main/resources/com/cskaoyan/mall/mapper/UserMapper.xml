@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.UserMapper">
   <select id = "queryUserIdByUsername" resultType="_int">
-    SELECT `id` FROM cskaoyan_mall_user WHERE `username` = #{name}
+    SELECT id FROM cskaoyan_mall_user WHERE username = #{username}
   </select>
   <select id="queryPasswordByUsername" resultType="string">
         SELECT `password` FROM cskaoyan_mall_user WHERE username = #{principal}

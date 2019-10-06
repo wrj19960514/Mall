@@ -6,7 +6,6 @@ import com.cskaoyan.mall.shiro.MallSessionManager;
 import com.cskaoyan.mall.shiro.WxRealm;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
-import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
@@ -25,7 +24,7 @@ public class CustomShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         //如果访问url没有通过认证，会重定向到loginUrl
-        shiroFilterFactoryBean.setLoginUrl("/fail");
+        shiroFilterFactoryBean.setLoginUrl("/");
         //安全控制器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //拦截器配置
@@ -38,10 +37,11 @@ public class CustomShiroConfig {
         filterChainDefinitionMap.put("/admin/auth/login", "anon");
 //        filterChainDefinitionMap.put("/admin/auth/info", "anon");
         filterChainDefinitionMap.put("/wx/storage/fetch/**", "anon");
-        filterChainDefinitionMap.put("/wx/auth/login", "anon");
+//        filterChainDefinitionMap.put("/wx/auth/login", "anon");
         filterChainDefinitionMap.put("/wx/user/index", "anon");
          //需要进行认证
         filterChainDefinitionMap.put("/admin/**","authc");
+//        filterChainDefinitionMap.put("/wx/coupon/**", "authc");
         filterChainDefinitionMap.put("/wx/user/**","authc");
         filterChainDefinitionMap.put("/wx/order/**","authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -76,13 +76,6 @@ public class CustomShiroConfig {
     }
     /*自定义realm*/
 
-    /*声明式使用鉴权注解的开关*/
-    @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
-        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
-        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
-        return authorizationAttributeSourceAdvisor;
-    }
 
     /*自定义的sessionManager*/
     @Bean
