@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service.wx;
 
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
+import com.cskaoyan.mall.service.wx.GrouponService;
 import com.cskaoyan.mall.vo.WxListBean;
 import com.cskaoyan.mall.vo.promote.*;
 import com.github.pagehelper.PageHelper;
