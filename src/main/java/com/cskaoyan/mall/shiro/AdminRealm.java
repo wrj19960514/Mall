@@ -40,7 +40,7 @@ public class AdminRealm extends AuthorizingRealm {
         String principal = (String) authenticationToken.getPrincipal();
         String password = adminMapper.queryPasswordByUsername(principal);
         // 进行认证
-        return new SimpleAuthenticationInfo(principal, password, this.getName());
+        return new SimpleAuthenticationInfo(principal,password,this.getName());
     }
 
     /**

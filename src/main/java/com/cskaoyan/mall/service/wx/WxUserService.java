@@ -6,6 +6,6 @@ import com.cskaoyan.mall.vo.wx.WxOrderstateVo;
 
 public interface WxUserService {
 
-    WxOrderstateVo getOrderstateForUser(String username);
+    WxOrderstateVo getOrderstateForUser();
 
 }
