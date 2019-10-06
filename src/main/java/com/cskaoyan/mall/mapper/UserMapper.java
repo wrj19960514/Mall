@@ -33,4 +33,6 @@ public interface UserMapper {
     List<UserStat> getUserStatement();
 
     String queryPasswordByUsername(@Param("principal")String principal);
+
+    int queryUserIdByUsername(@Param("username")String username);
 }

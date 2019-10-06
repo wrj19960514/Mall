@@ -1,4 +1,4 @@
-package com.cskaoyan.mall.vo.vx;
+package com.cskaoyan.mall.vo.wx;
 import java.util.Map;
 
 public class LoginRespVo {

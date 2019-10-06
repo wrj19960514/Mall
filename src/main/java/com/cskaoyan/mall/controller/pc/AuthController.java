@@ -40,7 +40,7 @@ public class AuthController {
     public BaseRespVo login(@RequestBody LoginVo loginVo) {
         String username = loginVo.getUsername();
         String password = loginVo.getPassword();
-        CustomToken token = new CustomToken(username, password,"pc");
+        CustomToken token = new CustomToken(username, password,"admin");
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
@@ -73,6 +73,7 @@ public class AuthController {
     @RequestMapping("/logout")
     public BaseRespVo logout() {
         Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
         subject.logout();
         return BaseRespVo.ok(null);
     }
