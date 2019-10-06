@@ -40,7 +40,7 @@ public class AuthController {
     public BaseRespVo login(@RequestBody LoginVo loginVo) {
         String username = loginVo.getUsername();
         String password = loginVo.getPassword();
-        CustomToken token = new CustomToken(username, password,"pc");
+        CustomToken token = new CustomToken(username, password,"admin");
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
