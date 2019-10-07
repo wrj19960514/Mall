@@ -31,4 +31,12 @@ public interface AddressMapper {
     List<Address> selectById(@Param("userId") String userId,
                              @Param("name") String name,
                              @Param("sort") String sort);
+
+    List<Address> getAddressList(@Param("userId") int userId);
+
+    Address getProvinceAndCityAndArea(@Param("userId") int userId,
+                                      @Param("id") int id);
+
+    int updateDefaultAddress(@Param("isDefault")Boolean isDefault,
+                             @Param("Default") Boolean Default);
 }

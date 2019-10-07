@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.Groupon;
 import com.cskaoyan.mall.bean.GrouponExample;
 import java.util.List;
 
+import com.cskaoyan.mall.vo.promote.Creator;
 import org.apache.ibatis.annotations.Param;
 
 public interface GrouponMapper {
@@ -32,4 +33,6 @@ public interface GrouponMapper {
     List<Groupon> queryCreatorGroupons(@Param("userId")Integer userId);
 
     List<Groupon> queryJoinerGroupons(@Param("userId")Integer userId);
+
+    List<Creator> queryAllJoiner(@Param("grouponId") int grouponId);
 }

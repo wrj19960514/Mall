@@ -42,7 +42,7 @@ public class WxAuthController {
         }
         // 返回session的id
         Serializable id = subject.getSession().getId();
-        String time = getTime();
+        String time = getdelayTime();
         LoginRespVo loginRespVo = new LoginRespVo();
         loginRespVo.setToken((String)id);
         loginRespVo.setTokenExpire(time);
@@ -54,8 +54,9 @@ public class WxAuthController {
         return ok;
     }
 
-    private String getTime() {
-        Date date = new Date();
+    private String getdelayTime() {
+        long dalaytime = System.currentTimeMillis() + 60*60*1000;
+        Date date = new Date(dalaytime);
         DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String s = simpleDateFormat.format(date);
         return s;
@@ -64,7 +65,33 @@ public class WxAuthController {
     @PostMapping("/logout")
     public BaseRespVo logout() {
         Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
         subject.logout();
         return BaseRespVo.exit();
+    }
+
+    @RequestMapping("/login_by_weixin")
+    public BaseRespVo wxLogin(){
+        return BaseRespVo.ok(null);
+    }
+
+    @RequestMapping("/register")
+    public BaseRespVo register(){
+        return BaseRespVo.ok(null);
+    }
+
+    @RequestMapping("/reset")
+    public BaseRespVo reset(){
+        return BaseRespVo.ok(null);
+    }
+
+    @RequestMapping("/regCaptcha")
+    public BaseRespVo regCaptcha(){
+        return BaseRespVo.ok(null);
+    }
+
+    @RequestMapping("bindPhone")
+    public BaseRespVo bindPhone(){
+        return BaseRespVo.ok(null);
     }
 }

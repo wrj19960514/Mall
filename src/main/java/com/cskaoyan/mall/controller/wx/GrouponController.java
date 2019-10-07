@@ -3,6 +3,7 @@ package com.cskaoyan.mall.controller.wx;
 import com.cskaoyan.mall.service.wx.GrouponService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.WxListBean;
+import com.cskaoyan.mall.vo.promote.GrouponDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,5 +28,11 @@ public class GrouponController {
     public BaseRespVo myGroupon(int showType) {
         WxListBean wxListBean = grouponService.myGroupon(showType);
         return BaseRespVo.ok(wxListBean);
+    }
+
+    @RequestMapping("detail")
+    public BaseRespVo detail(int grouponId) {
+         GrouponDetailVo grouponDetailVo = grouponService.detail(grouponId);
+        return BaseRespVo.ok(grouponDetailVo);
     }
 }
