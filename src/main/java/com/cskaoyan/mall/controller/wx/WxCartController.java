@@ -25,9 +25,9 @@ public class WxCartController {
 
     @RequestMapping("add")
     public BaseRespVo add(@RequestBody WxCartAddVo wxCartAddVo) {
-        boolean addCart = wxCartService.addCart(wxCartAddVo);
-        if (addCart) {
-            return BaseRespVo.ok(null);
+        long cartTotal = wxCartService.addCart(wxCartAddVo);
+        if (cartTotal != -1) {
+            return BaseRespVo.ok(cartTotal);
         } else {
             return BaseRespVo.fail();
         }
@@ -35,9 +35,9 @@ public class WxCartController {
 
     @RequestMapping("fastadd")
     public BaseRespVo fasstAddCart(@RequestBody WxCartAddVo wxCartAddVo) {
-        boolean fastAddCart = wxCartService.fastAddCart(wxCartAddVo);
-        if (fastAddCart) {
-            return BaseRespVo.ok(null);
+        long cartTotal = wxCartService.fastAddCart(wxCartAddVo);
+        if (cartTotal != -1) {
+            return BaseRespVo.ok(cartTotal);
         } else {
             return BaseRespVo.fail();
         }
@@ -64,12 +64,9 @@ public class WxCartController {
 
     @RequestMapping("checked")
     public BaseRespVo checked(@RequestBody WxCartCheckedVo wxCartCheckedVo) {
-        boolean checked = wxCartService.checked(wxCartCheckedVo);
-        if (checked) {
-            return BaseRespVo.ok(null);
-        } else {
-            return BaseRespVo.fail();
-        }
+        wxCartService.checked(wxCartCheckedVo);
+        WxCartListVo index = wxCartService.getIndex();
+        return BaseRespVo.ok(index);
     }
 
     @RequestMapping("goodscount")
@@ -79,11 +76,8 @@ public class WxCartController {
     }
 
     @RequestMapping("checkout")
-    public BaseRespVo checkout(int cartId, int addressId, int couponId, int grouponRulesId) {
-        wxCartService.checkOut(cartId, addressId, couponId, grouponRulesId);
-        BaseRespVo baseRespVo = new BaseRespVo();
-        baseRespVo.setErrmsg("系统内部错误");
-        baseRespVo.setErrno(502);
-        return baseRespVo;
+    public BaseRespVo checkout(CartCheckOutVo cartCheckOutVo) {
+        CartCheckOutRespVo checkOutRespVo = wxCartService.checkOut(cartCheckOutVo);
+        return BaseRespVo.ok(checkOutRespVo);
     }
 }
