@@ -9,8 +9,11 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
-public class WxUserServiceImpl implements WxUserService {
+public class WxIndexServiceImpl implements WxIndexService {
 
     @Autowired
     OrderMapper orderMapper;
@@ -19,9 +22,9 @@ public class WxUserServiceImpl implements WxUserService {
     UserMapper userMapper;
 
     @Override
-    public WxOrderstateVo getOrderstateForUser() {
+    public WxOrderstateVo getuserIndex() {
         WxOrderstateVo wxOrderstateVo = new WxOrderstateVo();
-        //
+        //userId
         Subject subject = SecurityUtils.getSubject();
         String principal = (String) subject.getPrincipal();
         int userId = userMapper.queryUserIdByUsername(principal);
@@ -46,5 +49,13 @@ public class WxUserServiceImpl implements WxUserService {
         int uncomment = (int)orderMapper.countByExample(orderExample1);
         wxOrderstateVo.setUncomment(uncomment);
         return wxOrderstateVo;
+    }
+
+    @Override
+    public Map<String, Object> gethomeIndex() {
+        Map<String,Object> map = new HashMap<>();
+        //link表,brand表,category表,goods表,goods和groupon,goods表,goods表,topic表
+
+        return null;
     }
 }

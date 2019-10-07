@@ -69,4 +69,29 @@ public class WxAuthController {
         subject.logout();
         return BaseRespVo.exit();
     }
+
+    @RequestMapping("/login_by_weixin")
+    public BaseRespVo wxLogin(){
+        return BaseRespVo.ok(null);
+    }
+
+    @RequestMapping("/register")
+    public BaseRespVo register(){
+        return BaseRespVo.ok(null);
+    }
+
+    @RequestMapping("/reset")
+    public BaseRespVo reset(){
+        return BaseRespVo.ok(null);
+    }
+
+    @RequestMapping("/regCaptcha")
+    public BaseRespVo regCaptcha(){
+        return BaseRespVo.ok(null);
+    }
+
+    @RequestMapping("bindPhone")
+    public BaseRespVo bindPhone(){
+        return BaseRespVo.ok(null);
+    }
 }
