@@ -22,7 +22,7 @@ public class FileController {
     @Autowired
     AliyunConfig aliyunConfig;
 
-    @RequestMapping("page")
+    @RequestMapping("/page")
     public String page(){
 
         return "page";
