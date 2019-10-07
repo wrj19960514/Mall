@@ -1,12 +1,9 @@
 package com.cskaoyan.mall.controller.wx;
 import com.cskaoyan.mall.service.wx.WxIndexService;
 import com.cskaoyan.mall.vo.BaseRespVo;
-import com.cskaoyan.mall.vo.wx.WxOrderstateVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -34,7 +31,9 @@ public class WxIndexController {
     }
 
     @RequestMapping("/wx/catalog/current")
-    public BaseRespVo catalogCurrent(){
-        return BaseRespVo.ok(null);
+    public BaseRespVo catalogCurrent(int id){
+        System.out.println(id);
+        Map<String,Object> map = wxIndexService.getcatalogCurrent(id);
+        return BaseRespVo.ok(map);
     }
 }

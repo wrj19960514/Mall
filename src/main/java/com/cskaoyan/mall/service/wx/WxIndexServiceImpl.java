@@ -1,16 +1,14 @@
 package com.cskaoyan.mall.service.wx;
 
-import com.cskaoyan.mall.bean.Category;
-import com.cskaoyan.mall.bean.CategoryExample;
-import com.cskaoyan.mall.bean.OrderExample;
-import com.cskaoyan.mall.mapper.CategoryMapper;
-import com.cskaoyan.mall.mapper.OrderMapper;
-import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.vo.wx.WxOrderstateVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +25,30 @@ public class WxIndexServiceImpl implements WxIndexService {
     @Autowired
     CategoryMapper categoryMapper;
 
+    @Autowired
+    AdMapper adMapper;
+
+    @Autowired
+    BrandMapper brandMapper;
+
+    @Autowired
+    GoodsMapper goodsMapper;
+
+    @Autowired
+    CouponMapper couponMapper;
+
+    @Autowired
+    GrouponMapper grouponMapper;
+
+    @Autowired
+    GrouponRulesMapper grouponRulesMapper;
+
+    @Autowired
+    OrderGoodsMapper orderGoodsMapper;
+
+    @Autowired
+    TopicMapper topicMapper;
+    //用户页
     @Override
     public Map<String,Object> getuserIndex() {
         Map<String,Object> map = new HashMap<>(20);
@@ -58,13 +80,81 @@ public class WxIndexServiceImpl implements WxIndexService {
         map.put("order",wxOrderstateVo);
         return map;
     }
-
+    //首页
     @Override
     public Map<String, Object> gethomeIndex() {
-        Map<String,Object> map = new HashMap<>();
-        //link表,brand表,category表,goods表,goods和groupon,goods表,goods表,topic表
+        Map<String,Object> map = new HashMap<>(100);
+        //ad表,brand表,category表,coupon表,goods和groupon,goods表,goods表,topic表
+        AdExample adExample  = new AdExample();
+        List<Ad> ad = adMapper.selectByExample(adExample);
+        map.put("banner",ad);
 
-        return null;
+        BrandExample brandExample = new BrandExample();
+        brandExample.setOrderByClause("update_time desc");
+        List<Brand> brands = brandMapper.selectByExample(brandExample);
+        map.put("brandList",brands);
+
+        CategoryExample categoryExample = new CategoryExample();
+        List<Category> categories = categoryMapper.selectByExample(categoryExample);
+        map.put("channel",categories);
+
+        CouponExample couponExample = new CouponExample();
+        List<Coupon> coupons = couponMapper.selectByExample(couponExample);
+        map.put("couponList",coupons);
+
+
+        List<Object> floorGoodsList = new ArrayList<>();
+        for (Category category : categories) {
+            Map<String,Object> categorymap = new HashMap<>();
+            GoodsExample goodsExample = new GoodsExample();
+            goodsExample.createCriteria().andCategoryIdEqualTo(category.getId());
+            List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
+            if(goodsList.size() != 0) {
+                categorymap.put("goodsList",goodsList);
+                categorymap.put("id",category.getId());
+                categorymap.put("name",category.getName());
+            }
+            if(categorymap.size() != 0) {
+                floorGoodsList.add(categorymap);
+            }
+        }
+        map.put("floorGoodsList",floorGoodsList);
+
+        List<Map<String,Object>> list = new ArrayList<>();
+        GrouponRulesExample grouponRulesExample = new GrouponRulesExample();
+        List<GrouponRules> grouponRulesList = grouponRulesMapper.selectByExample(grouponRulesExample);
+        for (GrouponRules grouponRules : grouponRulesList) {
+            Map<String,Object> grouponmap = new HashMap<>();
+            GoodsExample grouponGoodsExample = new GoodsExample();
+            grouponGoodsExample.createCriteria().andGoodsSnEqualTo(grouponRules.getGoodsId());
+            List<Goods> goods = goodsMapper.selectByExample(grouponGoodsExample);
+            Goods good = goods.get(0);
+            OrderGoodsExample orderGoodsExample = new OrderGoodsExample();
+            orderGoodsExample.createCriteria().andGoodsIdEqualTo(grouponRules.getId());
+            int member = (int)orderGoodsMapper.countByExample(orderGoodsExample);
+            int discount = grouponRules.getDiscount().intValue();
+            int grouponPrice = good.getRetailPrice().intValue() - discount;
+            grouponmap.put("goods",good);
+            grouponmap.put("groupon_member",member);
+            grouponmap.put("groupon_price",grouponPrice);
+            list.add(grouponmap);
+        }
+        map.put("grouponList",list);
+
+        GoodsExample hotGoodsExample = new GoodsExample();
+        hotGoodsExample.createCriteria().andIsHotEqualTo(true);
+        List<Goods> hotgoods = goodsMapper.selectByExample(hotGoodsExample);
+        map.put("hotGoodsList",hotgoods);
+
+        GoodsExample newGoodsExample = new GoodsExample();
+        newGoodsExample.createCriteria().andIsNewEqualTo(true);
+        List<Goods> newgoods = goodsMapper.selectByExample(newGoodsExample);
+        map.put("newGoodsList",newgoods);
+
+        TopicExample topicExample = new TopicExample();
+        List<Topic> topics = topicMapper.selectByExample(topicExample);
+        map.put("topicList",topics);
+        return map;
     }
 
     @Override
@@ -83,6 +173,18 @@ public class WxIndexServiceImpl implements WxIndexService {
         categoryExampleL1.createCriteria().andLevelEqualTo("L2").andDeletedEqualTo(false);
         List<Category> currentSubCategory = categoryMapper.selectByExample(categoryExampleL2);
         map.put("currentSubCategory",currentSubCategory);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> getcatalogCurrent(int id) {
+        Map<String,Object> map = new HashMap<>();
+        Category father = categoryMapper.selectByPrimaryKey(id);
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.createCriteria().andPidEqualTo(id);
+        List<Category> child = categoryMapper.selectByExample(categoryExample);
+        map.put("currentCategory",father);
+        map.put("currentSubCategory",child);
         return map;
     }
 }

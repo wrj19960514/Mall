@@ -10,4 +10,6 @@ public interface WxIndexService {
     Map<String, Object> gethomeIndex();
 
     Map<String, Object> getcatalogIndex();
+
+    Map<String, Object> getcatalogCurrent(int id);
 }
