@@ -29,7 +29,8 @@ public class WxIndexController {
 
     @RequestMapping("/wx/catalog/index")
     public BaseRespVo catalogIndex(){
-        return BaseRespVo.ok(null);
+        Map<String,Object> map = wxIndexService.getcatalogIndex();
+        return BaseRespVo.ok(map);
     }
 
     @RequestMapping("/wx/catalog/current")

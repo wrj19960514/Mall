@@ -10,4 +10,6 @@ public interface WxIndexService {
     WxOrderstateVo getuserIndex();
 
     Map<String, Object> gethomeIndex();
+
+    Map<String, Object> getcatalogIndex();
 }
