@@ -11,8 +11,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +28,8 @@ public class WxIndexServiceImpl implements WxIndexService {
     CategoryMapper categoryMapper;
 
     @Override
-    public WxOrderstateVo getuserIndex() {
+    public Map<String,Object> getuserIndex() {
+        Map<String,Object> map = new HashMap<>(20);
         WxOrderstateVo wxOrderstateVo = new WxOrderstateVo();
         //userId
         Subject subject = SecurityUtils.getSubject();
@@ -56,7 +55,8 @@ public class WxIndexServiceImpl implements WxIndexService {
         orderExample4.createCriteria().andUserIdEqualTo(userId).andOrderStatusEqualTo((short)4);
         int uncomment = (int)orderMapper.countByExample(orderExample4);
         wxOrderstateVo.setUncomment(uncomment);
-        return wxOrderstateVo;
+        map.put("order",wxOrderstateVo);
+        return map;
     }
 
     @Override
