@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.System;
 import java.util.*;
 
 @Service
@@ -34,8 +35,9 @@ public class WxGoodsServiceImpl implements WxGoodsService{
 
     @Override
     public long count() {
-        GoodsExample goodsExample = new GoodsExample();
-        return goodsMapper.countByExample(goodsExample);
+        Integer integer = goodsMapper.queryGoodsNumber();
+        System.out.println(integer);
+        return integer;
     }
 
     @Override
@@ -83,12 +85,22 @@ public class WxGoodsServiceImpl implements WxGoodsService{
     }
 
     @Override
-    public List<Goods> getGoodsList(int categoryId, int page, int size) {
+    public List<Goods> getGoodsListByCategory(int categoryId, int page, int size) {
         // 根据categoryId 查找商品pid == 该id的商品
         PageHelper.startPage(page, size);
         GoodsExample goodsExample = new GoodsExample();
         GoodsExample.Criteria criteria = goodsExample.createCriteria();
         criteria.andCategoryIdEqualTo(categoryId);
+        List<Goods> goods = goodsMapper.selectByExample(goodsExample);
+        return goods;
+    }
+    @Override
+    public List<Goods> getGoodsListByBrand(Integer brandId, int page, int size) {
+        // brandId 查找商品
+        PageHelper.startPage(page, size);
+        GoodsExample goodsExample = new GoodsExample();
+        GoodsExample.Criteria criteria = goodsExample.createCriteria();
+        criteria.andBrandIdEqualTo(brandId);
         List<Goods> goods = goodsMapper.selectByExample(goodsExample);
         return goods;
     }
@@ -129,4 +141,6 @@ public class WxGoodsServiceImpl implements WxGoodsService{
         goodsDetailVo.setInfo(goods);
         return goodsDetailVo;
     }
+
+
 }

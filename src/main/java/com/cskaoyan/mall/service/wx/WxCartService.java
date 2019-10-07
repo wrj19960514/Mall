@@ -13,13 +13,15 @@ public interface WxCartService {
 
     WxCartListVo getIndex();
 
-    boolean addCart(WxCartAddVo wxCartAddVo);
+    long addCart(WxCartAddVo wxCartAddVo);
 
-    boolean fastAddCart(WxCartAddVo wxCartAddVo);
+    long fastAddCart(WxCartAddVo wxCartAddVo);
 
     void checkOut(int cartId, int addressId, int couponId, int grouponRulesId);
 
     BigDecimal goodsCount();
 
     boolean checked(WxCartCheckedVo wxCartCheckedVo);
+
+    CartCheckOutRespVo checkOut(CartCheckOutVo cartCheckOutVo);
 }
