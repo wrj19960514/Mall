@@ -1,6 +1,9 @@
 package com.cskaoyan.mall.service.wx;
 
+import com.cskaoyan.mall.bean.Category;
+import com.cskaoyan.mall.bean.CategoryExample;
 import com.cskaoyan.mall.bean.OrderExample;
+import com.cskaoyan.mall.mapper.CategoryMapper;
 import com.cskaoyan.mall.mapper.OrderMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.vo.wx.WxOrderstateVo;
@@ -8,8 +11,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -21,8 +24,12 @@ public class WxIndexServiceImpl implements WxIndexService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    CategoryMapper categoryMapper;
+
     @Override
-    public WxOrderstateVo getuserIndex() {
+    public Map<String,Object> getuserIndex() {
+        Map<String,Object> map = new HashMap<>(20);
         WxOrderstateVo wxOrderstateVo = new WxOrderstateVo();
         //userId
         Subject subject = SecurityUtils.getSubject();
@@ -48,7 +55,8 @@ public class WxIndexServiceImpl implements WxIndexService {
         orderExample4.createCriteria().andUserIdEqualTo(userId).andOrderStatusEqualTo((short)4);
         int uncomment = (int)orderMapper.countByExample(orderExample4);
         wxOrderstateVo.setUncomment(uncomment);
-        return wxOrderstateVo;
+        map.put("order",wxOrderstateVo);
+        return map;
     }
 
     @Override
@@ -57,5 +65,24 @@ public class WxIndexServiceImpl implements WxIndexService {
         //link表,brand表,category表,goods表,goods和groupon,goods表,goods表,topic表
 
         return null;
+    }
+
+    @Override
+    public Map<String, Object> getcatalogIndex() {
+        //Category表
+        Map<String,Object> map = new HashMap<>();
+        CategoryExample categoryExampleL1 = new CategoryExample();
+        categoryExampleL1.setOrderByClause("update_time desc");
+        categoryExampleL1.createCriteria().andLevelEqualTo("L1").andDeletedEqualTo(false);
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExampleL1);
+
+        map.put("categoryList",categoryList);
+        map.put("currentCategory",categoryList.get(0));
+
+        CategoryExample categoryExampleL2 = new CategoryExample();
+        categoryExampleL1.createCriteria().andLevelEqualTo("L2").andDeletedEqualTo(false);
+        List<Category> currentSubCategory = categoryMapper.selectByExample(categoryExampleL2);
+        map.put("currentSubCategory",currentSubCategory);
+        return map;
     }
 }

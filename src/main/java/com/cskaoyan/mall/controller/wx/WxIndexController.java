@@ -17,8 +17,8 @@ public class WxIndexController {
 
     @RequestMapping("/wx/user/index")
     public BaseRespVo userIndex(){
-       WxOrderstateVo wxOrderstateVo = wxIndexService.getuserIndex();
-       return BaseRespVo.ok(wxOrderstateVo);
+        Map<String,Object> map = wxIndexService.getuserIndex();
+       return BaseRespVo.ok(map);
     }
 
     @RequestMapping("/wx/home/index")
@@ -29,7 +29,8 @@ public class WxIndexController {
 
     @RequestMapping("/wx/catalog/index")
     public BaseRespVo catalogIndex(){
-        return BaseRespVo.ok(null);
+        Map<String,Object> map = wxIndexService.getcatalogIndex();
+        return BaseRespVo.ok(map);
     }
 
     @RequestMapping("/wx/catalog/current")

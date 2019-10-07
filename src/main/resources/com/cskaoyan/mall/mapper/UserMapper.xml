@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.UserMapper">
+<<<<<<< HEAD
   <select id = "queryUserIdByUsername" resultType="Integer">
+=======
+  <select id = "queryUserIdByUsername" resultType="int">
+>>>>>>> be3de219256d4b2bad9331d9cf7567fa1bea35e9
     SELECT `id` FROM cskaoyan_mall_user WHERE `username` = #{username}
   </select>
   <select id="queryPasswordByUsername" resultType="string">
