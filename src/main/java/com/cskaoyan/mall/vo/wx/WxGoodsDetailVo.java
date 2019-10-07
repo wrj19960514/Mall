@@ -8,7 +8,7 @@ public class WxGoodsDetailVo {
 
     private boolean userHasCollect;
     private String shareImage;
-    private Comment comment;
+    private CommentVo comment;
     private Brand brand;
     private List<SpecificationList> specificationList;
     private List<GrouponRules> groupon;
@@ -17,10 +17,11 @@ public class WxGoodsDetailVo {
     private List<GoodsProduct> productList;
     private Goods info;
 
+
     public WxGoodsDetailVo() {
     }
 
-    public WxGoodsDetailVo(boolean userHasCollect, String shareImage, Comment comment, Brand brand, List<SpecificationList> specificationList, List<GrouponRules> groupon, List<com.cskaoyan.mall.bean.Issue> issue, List<GoodsAttribute> attributes, List<GoodsProduct> productList, Goods info) {
+    public WxGoodsDetailVo(boolean userHasCollect, String shareImage, CommentVo comment, Brand brand, List<SpecificationList> specificationList, List<GrouponRules> groupon, List<com.cskaoyan.mall.bean.Issue> issue, List<GoodsAttribute> attributes, List<GoodsProduct> productList, Goods info) {
         this.userHasCollect = userHasCollect;
         this.shareImage = shareImage;
         this.comment = comment;
@@ -31,6 +32,14 @@ public class WxGoodsDetailVo {
         this.attributes = attributes;
         this.productList = productList;
         this.info = info;
+    }
+
+    public List<SpecificationList> getSpecificationList() {
+        return specificationList;
+    }
+
+    public void setSpecificationList(List<SpecificationList> specificationList) {
+        this.specificationList = specificationList;
     }
 
     public boolean isUserHasCollect() {
@@ -49,11 +58,11 @@ public class WxGoodsDetailVo {
         this.shareImage = shareImage;
     }
 
-    public Comment getComment() {
+    public CommentVo getComment() {
         return comment;
     }
 
-    public void setComment(Comment comment) {
+    public void setComment(CommentVo comment) {
         this.comment = comment;
     }
 
@@ -63,14 +72,6 @@ public class WxGoodsDetailVo {
 
     public void setBrand(Brand brand) {
         this.brand = brand;
-    }
-
-    public List<SpecificationList> getSpecificationList() {
-        return specificationList;
-    }
-
-    public void setSpecificationList(List<SpecificationList> specificationList) {
-        this.specificationList = specificationList;
     }
 
     public List<GrouponRules> getGroupon() {

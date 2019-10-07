@@ -1,19 +1,15 @@
 package com.cskaoyan.mall.service.wx;
 
 
-import com.cskaoyan.mall.vo.wx.WxCartAddVo;
-import com.cskaoyan.mall.vo.wx.WxCartCheckedVo;
-import com.cskaoyan.mall.vo.wx.WxCartDeleteVo;
-import com.cskaoyan.mall.vo.wx.WxCartListVo;
+import com.cskaoyan.mall.vo.wx.*;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 public interface WxCartService {
 
-    boolean updateCart(int goodsId, int productId, int number, int id);
+    boolean updateCart(WxCartUpdateVo wxCartUpdateVo);
 
-    void deleteCart(WxCartDeleteVo wxCartDeleteVo);
+    Boolean deleteCart(WxCartDeleteVo wxCartDeleteVo);
 
     WxCartListVo getIndex();
 

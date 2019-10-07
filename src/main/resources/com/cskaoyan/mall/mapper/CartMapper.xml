@@ -408,7 +408,8 @@
   </update>
   <update id="updateById">
     update cskaoyan_mall_cart
-    set goods_id = #{goodsId},
+    set
+    goods_id = #{goodsId},
     product_id = #{productId},
     number = #{number},
     where id = #{id}

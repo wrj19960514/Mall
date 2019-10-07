@@ -2,10 +2,7 @@ package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.service.wx.WxCartService;
 import com.cskaoyan.mall.vo.BaseRespVo;
-import com.cskaoyan.mall.vo.wx.WxCartAddVo;
-import com.cskaoyan.mall.vo.wx.WxCartCheckedVo;
-import com.cskaoyan.mall.vo.wx.WxCartDeleteVo;
-import com.cskaoyan.mall.vo.wx.WxCartListVo;
+import com.cskaoyan.mall.vo.wx.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,8 +44,8 @@ public class WxCartController {
     }
 
     @RequestMapping("update")
-    public BaseRespVo update(int goodsId, int productId, int number, int id) {
-        boolean update = wxCartService.updateCart(goodsId, productId, number, id);
+    public BaseRespVo update(@RequestBody WxCartUpdateVo wxCartUpdateVo) {
+        boolean update = wxCartService.updateCart(wxCartUpdateVo);
         if (update) {
             return BaseRespVo.ok(null);
         }
@@ -57,9 +54,12 @@ public class WxCartController {
 
     @RequestMapping("delete")
     public BaseRespVo delete(@RequestBody WxCartDeleteVo wxCartDeleteVo) {
-        wxCartService.deleteCart(wxCartDeleteVo);
-        WxCartListVo index = wxCartService.getIndex();
-        return BaseRespVo.ok(index);
+        Boolean deleteCart = wxCartService.deleteCart(wxCartDeleteVo);
+        if (deleteCart) {
+            WxCartListVo index = wxCartService.getIndex();
+            return BaseRespVo.ok(index);
+        }
+        return BaseRespVo.error("系统错误");
     }
 
     @RequestMapping("checked")
@@ -78,10 +78,12 @@ public class WxCartController {
         return BaseRespVo.ok(goodsCount);
     }
 
-//    @RequestMapping("checkout")
-//    public BaseRespVo checkout(int cartId, int addressId, int couponId, int grouponRulesId) {
-//        wxCartService.checkOut(cartId, addressId, couponId, grouponRulesId);
-//        return
-//    }
-
+    @RequestMapping("checkout")
+    public BaseRespVo checkout(int cartId, int addressId, int couponId, int grouponRulesId) {
+        wxCartService.checkOut(cartId, addressId, couponId, grouponRulesId);
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrmsg("系统内部错误");
+        baseRespVo.setErrno(502);
+        return baseRespVo;
+    }
 }

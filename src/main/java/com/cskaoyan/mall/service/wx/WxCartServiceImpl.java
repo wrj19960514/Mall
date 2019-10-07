@@ -5,10 +5,7 @@ import com.cskaoyan.mall.mapper.CartMapper;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.mapper.GoodsProductMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
-import com.cskaoyan.mall.vo.wx.WxCartAddVo;
-import com.cskaoyan.mall.vo.wx.WxCartCheckedVo;
-import com.cskaoyan.mall.vo.wx.WxCartDeleteVo;
-import com.cskaoyan.mall.vo.wx.WxCartListVo;
+import com.cskaoyan.mall.vo.wx.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +28,14 @@ public class WxCartServiceImpl implements WxCartService{
     GoodsProductMapper goodsProductMapper;
 
     @Override
-    public boolean updateCart(int goodsId, int productId, int number, int id) {
-        int update = cartMapper.updateById(goodsId, productId, number, id);
+    public boolean updateCart(WxCartUpdateVo wxCartUpdateVo) {
+        Cart cart = new Cart();
+        cart.setId(wxCartUpdateVo.getId());
+        cart.setNumber(wxCartUpdateVo.getNumber());
+        cart.setUpdateTime(new Date());
+        cart.setGoodsId(wxCartUpdateVo.getGoodsId());
+        cart.setProductId(wxCartUpdateVo.getProductId());
+        int update = cartMapper.updateByPrimaryKeySelective(cart);
         if (update == 1) {
             return true;
         }
@@ -40,12 +43,17 @@ public class WxCartServiceImpl implements WxCartService{
     }
 
     @Override
-    public void deleteCart(WxCartDeleteVo wxCartDeleteVo) {
+    public Boolean deleteCart(WxCartDeleteVo wxCartDeleteVo) {
         int userId = 1;
         List<Integer> productIds = wxCartDeleteVo.getProductIds();
+        Boolean flag = false;
         for (int productId : productIds) {
-            cartMapper.deleteByUserIdandProductId(userId, productId);
+            int delete = cartMapper.deleteByUserIdandProductId(userId, productId);
+            if (delete == 1) {
+                flag = true;
+            }
         }
+        return flag;
     }
 
     @Override

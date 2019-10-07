@@ -3,6 +3,7 @@ package com.cskaoyan.mall.controller.wx;
 import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.service.wx.WxGoodsService;
 import com.cskaoyan.mall.vo.BaseRespVo;
+import com.cskaoyan.mall.vo.wx.WxGoodsDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,10 +39,11 @@ public class WxGoodsController {
         return  BaseRespVo.ok(category);
     }
 
-//    @RequestMapping("detail")
-//    public BaseRespVo goodsDetail(int id) {
-//        wxGoodsService.getGoodsDetail(id);
-//    }
+    @RequestMapping("detail")
+    public BaseRespVo goodsDetail(int id) {
+        WxGoodsDetailVo goodsDetail = wxGoodsService.getGoodsDetail(id);
+        return BaseRespVo.ok(goodsDetail);
+    }
 
     @RequestMapping("related")
     public BaseRespVo relatedGoods(int id) {

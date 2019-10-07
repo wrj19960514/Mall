@@ -1,21 +1,14 @@
 package com.cskaoyan.mall.service.wx;
 
-import com.cskaoyan.mall.bean.Category;
-import com.cskaoyan.mall.bean.CategoryExample;
-import com.cskaoyan.mall.bean.Goods;
-import com.cskaoyan.mall.bean.GoodsExample;
-import com.cskaoyan.mall.mapper.CartMapper;
-import com.cskaoyan.mall.mapper.CategoryMapper;
-import com.cskaoyan.mall.mapper.GoodsMapper;
+import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.mapper.*;
+import com.cskaoyan.mall.vo.wx.CommentVo;
 import com.cskaoyan.mall.vo.wx.WxGoodsDetailVo;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class WxGoodsServiceImpl implements WxGoodsService{
@@ -24,6 +17,20 @@ public class WxGoodsServiceImpl implements WxGoodsService{
     GoodsMapper goodsMapper;
     @Autowired
     CategoryMapper categoryMapper;
+    @Autowired
+    GoodsSpecificationMapper goodsSpecificationMapper;
+    @Autowired
+    GrouponRulesMapper grouponRulesMapper;
+    @Autowired
+    IssueMapper issueMapper;
+    @Autowired
+    CommentMapper commentMapper;
+    @Autowired
+    GoodsAttributeMapper goodsAttributeMapper;
+    @Autowired
+    BrandMapper brandMapper;
+    @Autowired
+    GoodsProductMapper goodsProductMapper;
 
     @Override
     public long count() {
@@ -87,9 +94,39 @@ public class WxGoodsServiceImpl implements WxGoodsService{
     }
 
     @Override
-    public void getGoodsDetail(int id) {
+    public WxGoodsDetailVo getGoodsDetail(int id) {
         WxGoodsDetailVo goodsDetailVo = new WxGoodsDetailVo();
-
+        List<GoodsSpecification> specifications = goodsSpecificationMapper.selectSpecificationsByGoodsId(id);
+        Set<String> set = new TreeSet<>();
+        for (GoodsSpecification specification : specifications) {//商品规格的name
+            set.add(specification.getSpecification());
+        }
+        List<SpecificationList> specificationLists = new ArrayList<>();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            String name = (String) iterator.next();
+            List<GoodsSpecification> newSpec = new ArrayList<>();
+            for (GoodsSpecification specification : specifications) {
+                if (name.equals(specification.getSpecification())) {
+                    newSpec.add(specification);
+                }
+            }
+            specificationLists.add(new SpecificationList(name, newSpec));
+        }
+        goodsDetailVo.setSpecificationList(specificationLists);
+        List<GrouponRules> grouponRules = grouponRulesMapper.queryGrouponRuless(id);
+        goodsDetailVo.setGroupon(grouponRules);
+        List<Issue> issue = issueMapper.selectAllIssues();
+        goodsDetailVo.setIssue(issue);
+        goodsDetailVo.setUserHasCollect(false);
+        //查找商品评论
+        List<Comment> commentList = commentMapper.selectCommentByGoodsId(id);
+        goodsDetailVo.setComment(new CommentVo(commentList, commentList.size()));
+        Goods goods = goodsMapper.selectByPrimaryKey(id);
+        goodsDetailVo.setAttributes(goodsAttributeMapper.selectAttributesByGoodsId(id));
+        goodsDetailVo.setBrand(brandMapper.selectByPrimaryKey(goods.getBrandId()));
+        goodsDetailVo.setProductList(goodsProductMapper.selectProductsByGoodsId(id));
+        goodsDetailVo.setInfo(goods);
+        return goodsDetailVo;
     }
-
 }
