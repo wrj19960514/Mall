@@ -33,6 +33,6 @@ public interface UserMapper {
 
     String queryPasswordByUsername(@Param("principal")String principal);
 
-    int queryUserIdByUsername(@Param("name")String username);
+    int queryUserIdByUsername(@Param("username")String username);
 
 }

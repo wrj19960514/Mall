@@ -54,6 +54,7 @@ public class AuthController {
 
     @RequestMapping("/info")
     public BaseRespVo info(String token) {
+
         Subject subject = SecurityUtils.getSubject();
         // username
         String principal = (String) subject.getPrincipal();
