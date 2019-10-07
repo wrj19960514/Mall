@@ -7,6 +7,7 @@ import com.cskaoyan.mall.bean.GoodsExample;
 import com.cskaoyan.mall.mapper.CartMapper;
 import com.cskaoyan.mall.mapper.CategoryMapper;
 import com.cskaoyan.mall.mapper.GoodsMapper;
+import com.cskaoyan.mall.vo.wx.WxGoodsDetailVo;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,5 +86,10 @@ public class WxGoodsServiceImpl implements WxGoodsService{
         return goods;
     }
 
+    @Override
+    public void getGoodsDetail(int id) {
+        WxGoodsDetailVo goodsDetailVo = new WxGoodsDetailVo();
+
+    }
 
 }

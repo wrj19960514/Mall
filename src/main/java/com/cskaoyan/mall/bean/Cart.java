@@ -32,6 +32,25 @@ public class Cart {
 
     private Boolean deleted;
 
+    public Cart() {
+    }
+
+    public Cart(Integer userId, Integer goodsId, String goodsSn, String goodsName, Integer productId, BigDecimal price, Short number, String[] specifications, Boolean checked, String picUrl, Date addTime, Date updateTime, Boolean deleted) {
+        this.userId = userId;
+        this.goodsId = goodsId;
+        this.goodsSn = goodsSn;
+        this.goodsName = goodsName;
+        this.productId = productId;
+        this.price = price;
+        this.number = number;
+        this.specifications = specifications;
+        this.checked = checked;
+        this.picUrl = picUrl;
+        this.addTime = addTime;
+        this.updateTime = updateTime;
+        this.deleted = deleted;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,9 @@ public class WxGoodsController {
     @RequestMapping("count")
     public BaseRespVo count() {
         long goodsCount = wxGoodsService.count();
-        return BaseRespVo.ok(goodsCount);
+        Map<String, Long> data = new HashMap<>();
+        data.put("goodsCount", goodsCount);
+        return BaseRespVo.ok(data);
     }
 
     @RequestMapping("list")
@@ -34,10 +37,10 @@ public class WxGoodsController {
         Map<String, Object> category = wxGoodsService.getCategory(id);
         return  BaseRespVo.ok(category);
     }
-//
+
 //    @RequestMapping("detail")
 //    public BaseRespVo goodsDetail(int id) {
-//
+//        wxGoodsService.getGoodsDetail(id);
 //    }
 
     @RequestMapping("related")

@@ -10,4 +10,5 @@ public interface WxGoodsService {
     List<Goods> getRelatedGoods(int id);
     Map<String, Object> getCategory(int id);
     List<Goods> getGoodsList(int categoryId, int page, int size);
+    void getGoodsDetail(int id);
 }

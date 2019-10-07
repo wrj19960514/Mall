@@ -36,17 +36,17 @@ public class WxIndexServiceImpl implements WxIndexService {
         //待发货
         OrderExample orderExample2 = new OrderExample();
         orderExample2.createCriteria().andUserIdEqualTo(userId).andOrderStatusEqualTo((short)2);
-        int unship = (int)orderMapper.countByExample(orderExample1);
+        int unship = (int)orderMapper.countByExample(orderExample2);
         wxOrderstateVo.setUnship(unship);
         //待收货
         OrderExample orderExample3 = new OrderExample();
         orderExample3.createCriteria().andUserIdEqualTo(userId).andOrderStatusEqualTo((short)3);
-        int unrecv = (int)orderMapper.countByExample(orderExample1);
+        int unrecv = (int)orderMapper.countByExample(orderExample3);
         wxOrderstateVo.setUnrecv(unrecv);
         //待评论
         OrderExample orderExample4 = new OrderExample();
         orderExample4.createCriteria().andUserIdEqualTo(userId).andOrderStatusEqualTo((short)4);
-        int uncomment = (int)orderMapper.countByExample(orderExample1);
+        int uncomment = (int)orderMapper.countByExample(orderExample4);
         wxOrderstateVo.setUncomment(uncomment);
         return wxOrderstateVo;
     }

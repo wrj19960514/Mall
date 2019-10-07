@@ -19,7 +19,7 @@ public interface CartMapper {
     List<Cart> selectByExample(CartExample example);
 
     Cart selectByPrimaryKey(Integer id);
-    Cart selectAll();
+//    Cart selectAll();
 
     int updateByExampleSelective(@Param("record") Cart record, @Param("example") CartExample example);
 
@@ -30,4 +30,10 @@ public interface CartMapper {
     int updateByPrimaryKey(Cart record);
 
     int updateById(int goodsId, int productId, int number, int id);
+
+    int updateByProductIdUserIdSelective(Cart cart);
+
+    int deleteByUserIdandProductId(int userId, int productId);
+
+    List<Cart> selectByUserId(@Param("userId") int userId);
 }
