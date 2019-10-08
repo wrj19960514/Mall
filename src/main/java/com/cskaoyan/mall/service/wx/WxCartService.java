@@ -15,7 +15,7 @@ public interface WxCartService {
 
     boolean addCart(WxCartAddVo wxCartAddVo);
 
-    boolean fastAddCart(WxCartAddVo wxCartAddVo);
+    int fastAddCart(WxCartAddVo wxCartAddVo);
 
     WxCartCheckoutReturnVo checkOut(WxCartCheckOutVo wxCartCheckOutVo);
 
