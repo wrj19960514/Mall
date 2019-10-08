@@ -13,11 +13,8 @@
      <result column="brief" property="brief"/>
    </association>
  </resultMap>
-  <select id="queryCollectList" resultMap="collectMap">
-    select c.id,c.type,c.value_id,g.brief,g.pic_url,g.name,g.retail_price
-    from cskaoyan_mall_collect c left join cskaoyan_mall_goods g
-    on c.value_id = g.id
-    where c.type = #{type}
+  <select id="queryCollectList" resultMap="com.cskaoyan.mall.vo.collectManage.collectAndGood">
+   SELECT  id,value_id as valueId,`type` from cskaoyan_mall_collect where user_id = 1
   </select>
 
   <select id="queryCollectByValueId" resultType="com.cskaoyan.mall.bean.Collect">

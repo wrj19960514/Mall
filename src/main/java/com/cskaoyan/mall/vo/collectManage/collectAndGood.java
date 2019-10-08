@@ -2,11 +2,16 @@ package com.cskaoyan.mall.vo.collectManage;
 
 import com.cskaoyan.mall.bean.Goods;
 
+import java.math.BigDecimal;
+
 public class collectAndGood {
   private int id;
   private int type;
   private int valueId;
-  private Goods goods;
+  private String name ;
+  private String brief;
+  private String picUrl;
+  private BigDecimal retailPrice;
 
     public int getId() {
         return id;
@@ -32,11 +37,35 @@ public class collectAndGood {
         this.valueId = valueId;
     }
 
-    public Goods getGoods() {
-        return goods;
+    public String getName() {
+        return name;
     }
 
-    public void setGoods(Goods goods) {
-        this.goods = goods;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBrief() {
+        return brief;
+    }
+
+    public void setBrief(String brief) {
+        this.brief = brief;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+    public BigDecimal getRetailPrice() {
+        return retailPrice;
+    }
+
+    public void setRetailPrice(BigDecimal retailPrice) {
+        this.retailPrice = retailPrice;
     }
 }
