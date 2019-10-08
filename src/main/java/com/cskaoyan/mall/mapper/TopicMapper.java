@@ -33,4 +33,10 @@ public interface TopicMapper {
     int updateByPrimaryKeyWithBLOBs(Topic record);
 
     int updateByPrimaryKey(Topic record);
+
+    List<Topic> queryAllTopic();
+
+    Topic queryTopicById(@Param("id")Integer id);
+
+    List queryTopicRelatedList(@Param("id")Integer id);
 }
