@@ -1,9 +1,7 @@
 package com.cskaoyan.mall.service.wx;
 
-import com.cskaoyan.mall.bean.Coupon;
-import com.cskaoyan.mall.bean.CouponExample;
-import com.cskaoyan.mall.bean.CouponUser;
-import com.cskaoyan.mall.bean.CouponUserExample;
+import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.mapper.CartMapper;
 import com.cskaoyan.mall.mapper.CouponMapper;
 import com.cskaoyan.mall.mapper.CouponUserMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
@@ -31,6 +29,8 @@ public class CouponServiceImpl implements CouponService {
     CouponUserMapper couponUserMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    CartMapper cartMapper;
 
     @Override
     public Map getCouponList(int page, int size) {
@@ -140,5 +140,12 @@ public class CouponServiceImpl implements CouponService {
             return baseRespVo;
         }
         return BaseRespVo.ok(null);
+    }
+
+    @Override
+    public List<Coupon> selectList(int cartId, int grouponRulesId) {
+        Cart cart = cartMapper.selectByPrimaryKey(cartId);
+        List<Coupon> coupons = couponUserMapper.queryCouponList(cartId);
+        return coupons;
     }
 }

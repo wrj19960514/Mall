@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,10 +46,8 @@ public class CouponController {
 
     @RequestMapping("selectlist")
     public BaseRespVo selectList(int cartId, int grouponRulesId) {
-        BaseRespVo baseRespVo = new BaseRespVo();
-        baseRespVo.setErrmsg("系统内部错误");
-        baseRespVo.setErrno(502);
-        return baseRespVo;
+        List<Coupon> coupons = couponService.selectList(cartId, grouponRulesId);
+        return BaseRespVo.ok(coupons);
     }
 
 }

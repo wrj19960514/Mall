@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.CouponUserMapper">
+  <select id="queryCouponList" resultType="com.cskaoyan.mall.bean.Coupon">
+    select c.id,c.name,c.desc,c.tag,c.total,c.discount,c.min,c.limit,c.type,c.status,c.goods_type as goodsType,c.goods_value as goodsValue,c.code,
+    c.time_type as timeType,c.days,c.start_time as startTime,c.end_time as endTime,c.add_time as addTime,c.update_time as updateTime,c.deleted
+     from cskaoyan_mall_coupon_user cu left join cskaoyan_mall_coupon c on cu.coupon_id = c.id where cu.user_id = #{cartId}
+  </select>
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.CouponUser">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
