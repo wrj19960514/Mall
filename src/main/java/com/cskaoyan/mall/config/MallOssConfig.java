@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @date 2019/10/7 15:05
  */
 @Component
-@ConfigurationProperties(prefix = "mall.aliyun.oss")
+@ConfigurationProperties(prefix = "mall.aliyun.oos")
 public class MallOssConfig {
     String bucket;
     String endPoint;

@@ -33,11 +33,12 @@ logging:
 mybatis:
   type-handlers-package: com.cskaoyan.mall.util
 
-#oss
+#oos
 mall:
   aliyun:
-    oss:
-      access-key-id: LTAI4FnveVphaSkUmcAipBQn
-      bucket: cspat
-      end-point: oss-cn-shenzhen.aliyuncs.com
-      access-secret: 75HtjwSFG6xpD5rLjHs8uipLIdaKOq
+    oos:
+      access-key-id: LTAI4Fr5gfYhcVjLMqeRGbuT
+      bucket: cskaoyan
+      end-point: oss-cn-beijing.aliyuncs.com
+      access-secret: IrkcHu6dZyrjPZRushgO76P5392HJ1
+

@@ -85,7 +85,7 @@ public class AddressController {
 
     //图片上传
     @RequestMapping("/wx/storage/upload")
-    public BaseRespVo storeUpload(@RequestParam("file") MultipartFile file) throws IOException {
+    public BaseRespVo storeUpload(MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         Storage storage = addressService.storeUpload(file);
         BaseRespVo ok = BaseRespVo.ok(storage);
