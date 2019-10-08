@@ -169,7 +169,7 @@ public class WxIndexServiceImpl implements WxIndexService {
         map.put("currentCategory",categoryList.get(0));
 
         CategoryExample categoryExampleL2 = new CategoryExample();
-        categoryExampleL1.createCriteria().andLevelEqualTo("L2").andDeletedEqualTo(false);
+        categoryExampleL1.createCriteria().andLevelEqualTo("L2").andDeletedEqualTo(false).andPidEqualTo(categoryList.get(0).getId());
         List<Category> currentSubCategory = categoryMapper.selectByExample(categoryExampleL2);
         map.put("currentSubCategory",currentSubCategory);
         return map;
