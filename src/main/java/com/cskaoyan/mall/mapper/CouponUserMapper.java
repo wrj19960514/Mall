@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.mapper;
 
+import com.cskaoyan.mall.bean.Coupon;
 import com.cskaoyan.mall.bean.CouponUser;
 import com.cskaoyan.mall.bean.CouponUserExample;
 import java.util.List;
@@ -27,4 +28,7 @@ public interface CouponUserMapper {
     int updateByPrimaryKeySelective(CouponUser record);
 
     int updateByPrimaryKey(CouponUser record);
+
+    List<Coupon> queryCouponList(@Param("cartId") int cartId);
+
 }

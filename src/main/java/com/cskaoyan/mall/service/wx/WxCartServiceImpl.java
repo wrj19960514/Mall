@@ -108,12 +108,12 @@ public class WxCartServiceImpl implements WxCartService{
     }
 
     @Override
-    public boolean fastAddCart(WxCartAddVo wxCartAddVo) {
+    public int fastAddCart(WxCartAddVo wxCartAddVo) {
         int userId = 1;
         // 首先查询库存
         GoodsProduct goodsProduct = goodsProductMapper.selectByPrimaryKey(wxCartAddVo.getProductId());
         if (goodsProduct.getNumber() < wxCartAddVo.getNumber()) {
-            return false;
+            return -1;
         }
         // 和add的区别是直接添加到购物车 无需判断是否有重复的购物车
         Date date = new Date();
@@ -122,7 +122,8 @@ public class WxCartServiceImpl implements WxCartService{
                 wxCartAddVo.getProductId(), goodsProduct.getPrice(), (short)wxCartAddVo.getNumber(), goodsProduct.getSpecifications(),
                     true, goods.getPicUrl(), date, date, false);
         cartMapper.insert(cart1);
-        return true;
+        Integer id = cart1.getId();
+        return id;
     }
 
     @Override

@@ -35,9 +35,9 @@ public class WxCartController {
 
     @RequestMapping("fastadd")
     public BaseRespVo fasstAddCart(@RequestBody WxCartAddVo wxCartAddVo) {
-        boolean fastAddCart = wxCartService.fastAddCart(wxCartAddVo);
-        if (fastAddCart) {
-            return BaseRespVo.ok(null);
+        int goodsId = wxCartService.fastAddCart(wxCartAddVo);
+        if (goodsId != -1) {
+            return BaseRespVo.ok(goodsId);
         } else {
             return BaseRespVo.fail();
         }

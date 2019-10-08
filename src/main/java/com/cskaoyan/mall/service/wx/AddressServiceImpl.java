@@ -52,8 +52,13 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<Address> getAddressList() {
+        //获取username
+        Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        //从username中拿到id
+        int userId = userMapper.queryUserIdByUsername(principal);
         AddressExample addressExample = new AddressExample();
-        List<Address> addresses = addressMapper.getAddressList(1);
+        List<Address> addresses = addressMapper.getAddressList(userId);
         for (Address address : addresses) {
             String province = address.getProvinceName();
             String city = address.getCityName();
@@ -76,6 +81,32 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void saveAddress(Address address) {
+        //获取username
+        Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        //从username中拿到id
+        int userId = userMapper.queryUserIdByUsername(principal);
+        AddressExample addressExample = new AddressExample();
+        //userId不能为空
+        address.setUserId(userId);
+        address.setUserId(address.getUserId());
+        //如果修改或者插入的地址是默认地址,需要对原来的默认地址进行修改
+        if (address.getDefault()) {
+            addressMapper.updateDefaultAddress(false, address.getDefault());
+        }
+        if (address.getId() != 0) {
+            int i = addressMapper.updateByPrimaryKey(address);
+        } else {
+            int insert = addressMapper.insert(address);
+            //获取相对应的code,并把原来的id改为code
+            Region provinceCode = regionMapper.selectByPrimaryKey(address.getProvinceId());
+            Region cityCode = regionMapper.selectByPrimaryKey(address.getCityId());
+            Region areaCode = regionMapper.selectByPrimaryKey(address.getAreaId());
+            address.setProvinceId(provinceCode.getCode());
+            address.setCityId(cityCode.getCode());
+            address.setAreaId(areaCode.getCode());
+            int i = addressMapper.updateByPrimaryKey(address);
+        }
 
     }
 
@@ -105,12 +136,14 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void addFeedback(Feedback feedback) {
+        //获取username
+        Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        //从username中拿到id
+        int userId = userMapper.queryUserIdByUsername(principal);
         UserExample userExample = new UserExample();
-        UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andUsernameEqualTo("user");
-        int userId = userMapper.queryUserIdByUsername("user");
         feedback.setUserId(userId);
-        feedback.setUsername("user");
+        feedback.setUsername(principal);
         feedback.setStatus(0);
         int insert = feedbackMapper.insert(feedback);
     }

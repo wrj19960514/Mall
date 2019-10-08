@@ -87,19 +87,45 @@ public class WxAuthController {
         boolean flag;
         Session session = SecurityUtils.getSubject().getSession();
         String codeFromSession = (String) session.getAttribute("code");
-        if(!registerVo.getCode().equals(codeFromSession)){
+        if(!registerVo.getCode().trim().equals(codeFromSession)){
             return BaseRespVo.fail();
         }else {
            flag = authService.register(registerVo);
+            if(flag){
+                Subject subject = SecurityUtils.getSubject();
+                Serializable id = subject.getSession().getId();
+                LoginRespVo loginRespVo = new LoginRespVo();
+                loginRespVo.setToken((String)id);
+                loginRespVo.setTokenExpire(getdelayTime());
+                Map<String,String> map = new HashMap<>(10);
+                map.put("avatarUrl","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+                map.put("nickName",registerVo.getUsername());
+                loginRespVo.setUserInfo(map);
+                CustomToken token = new CustomToken(registerVo.getUsername(), registerVo.getPassword(),"wx");
+                subject.login(token);
+                return BaseRespVo.ok(loginRespVo);
+            }
+        }
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrmsg("注册失败");
+        baseRespVo.setErrno(703);
+        return baseRespVo;
+    }
+
+    @RequestMapping("/reset")
+    public BaseRespVo reset(@RequestBody RegisterVo registerVo){
+        boolean flag;
+        Session session = SecurityUtils.getSubject().getSession();
+        String codeFromSession = (String) session.getAttribute("code");
+        if(!registerVo.getCode().equals(codeFromSession)){
+            return BaseRespVo.fail();
+        }else {
+            flag = authService.reset(registerVo);
         }
         if(flag == true){
             return BaseRespVo.ok(null);
         }
         return BaseRespVo.fail();
-    }
-    @RequestMapping("/reset")
-    public BaseRespVo reset(){
-        return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/regCaptcha")
@@ -120,8 +146,10 @@ public class WxAuthController {
         return baseRespVo;
     }
 
-    @RequestMapping("bindPhone")
-    public BaseRespVo bindPhone(){
+    @RequestMapping("/bindPhone")
+    public BaseRespVo bindPhone(Map<String,String> map){
+        map.get("encryptedData");
+        map.get("iv");
         return BaseRespVo.ok(null);
     }
 }

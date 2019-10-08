@@ -1,7 +1,9 @@
 package com.cskaoyan.mall.service.wx;
 
+import com.cskaoyan.mall.bean.Coupon;
 import com.cskaoyan.mall.vo.BaseRespVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,4 +18,6 @@ public interface CouponService {
     Map myCouponList(short status, int page, int size);
 
     BaseRespVo exchange(String code);
+
+    List<Coupon> selectList(int cartId, int grouponRulesId);
 }

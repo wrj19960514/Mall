@@ -1,9 +1,7 @@
 package com.cskaoyan.mall.service.wx;
 
-import com.cskaoyan.mall.bean.Coupon;
-import com.cskaoyan.mall.bean.CouponExample;
-import com.cskaoyan.mall.bean.CouponUser;
-import com.cskaoyan.mall.bean.CouponUserExample;
+import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.mapper.CartMapper;
 import com.cskaoyan.mall.mapper.CouponMapper;
 import com.cskaoyan.mall.mapper.CouponUserMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
@@ -17,6 +15,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -31,6 +30,8 @@ public class CouponServiceImpl implements CouponService {
     CouponUserMapper couponUserMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    CartMapper cartMapper;
 
     @Override
     public Map getCouponList(int page, int size) {
@@ -140,5 +141,21 @@ public class CouponServiceImpl implements CouponService {
             return baseRespVo;
         }
         return BaseRespVo.ok(null);
+    }
+
+    @Override
+    public List<Coupon> selectList(int cartId, int grouponRulesId) {
+        Cart cart = cartMapper.selectByPrimaryKey(cartId);
+        Short number = cart.getNumber();
+        BigDecimal price = cart.getPrice();
+        BigDecimal multiply = price.multiply(new BigDecimal(number));
+        List<Coupon> coupons = couponUserMapper.queryCouponList(cart.getUserId());
+        List<Coupon> coupons1 = new ArrayList<>();
+        for (Coupon coupon : coupons) {
+            if (coupon.getMin().compareTo(multiply) == -1) {
+                coupons1.add(coupon);
+            }
+        }
+        return coupons1;
     }
 }
