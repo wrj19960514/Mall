@@ -92,7 +92,10 @@ public class GrouponServiceImpl implements GrouponService {
             myGrouponVo.setOrderId(order.getId());
             myGrouponVo.setOrderSn(order.getOrderSn());
             // 订单状态
-            myGrouponVo.setOrderStatusText(order.getOrderStatus().toString() + "状态码");
+            Short orderStatus = order.getOrderStatus();// 根据状态码查询状态
+            if (orderStatus == 103) {
+                myGrouponVo.setOrderStatusText("已取消(系统)");
+            }
             // 商品列表
             OrderGoodsExample orderGoodsExample = new OrderGoodsExample();
             orderGoodsExample.createCriteria().andOrderIdEqualTo(order.getId());
