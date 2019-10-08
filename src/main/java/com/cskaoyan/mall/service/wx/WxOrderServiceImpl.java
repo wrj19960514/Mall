@@ -235,17 +235,17 @@ public class WxOrderServiceImpl implements WxOrderService {
         for (Cart c : carts) {
             GoodsProduct goodsProduct =
                     goodsProductMapper.selectProductsByGoodsId(cart.getGoodsId()).get(0);
-            int singlePrice = goodsProduct.getPrice().intValue();
-            int priceN = singlePrice * c.getNumber();
+            double singlePrice = goodsProduct.getPrice().doubleValue();
+            double priceN = singlePrice * c.getNumber();
             price = price.add(new BigDecimal(priceN));
         }
         order.setGoodsPrice(price);
         order.setFreightPrice(new BigDecimal(10));
         Coupon coupon = couponMapper.selectByPrimaryKey(orderSubmitVo.getCouponId());
-        int discount = coupon.getDiscount().intValue();
-        int totalPrice = price.intValue();
+        double discount = coupon.getDiscount().doubleValue();
+        double totalPrice = price.doubleValue();
         totalPrice = (1 - discount/100) * totalPrice;
-        int actualPrice = totalPrice - 10;
+        double actualPrice = totalPrice + 10;
         order.setCouponPrice(new BigDecimal(totalPrice));
         order.setIntegralPrice(new BigDecimal(0));
         order.setGrouponPrice(new BigDecimal(0));
@@ -293,6 +293,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         order.setOrderStatus((short) 2);
         order.setDeleted(false);
         order.setAddTime(new Date());
+        order.setUpdateTime(new Date());
         order.setPayTime(new Date());
         orderMapper.updateByPrimaryKey(order);
         optionsMapper.updateCancelByOrderId(orderId, true);

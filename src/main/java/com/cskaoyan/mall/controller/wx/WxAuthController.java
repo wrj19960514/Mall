@@ -84,14 +84,18 @@ public class WxAuthController {
 
     @RequestMapping("/register")
     public BaseRespVo register(@RequestBody RegisterVo registerVo){
+        boolean flag;
         Session session = SecurityUtils.getSubject().getSession();
         String codeFromSession = (String) session.getAttribute("code");
         if(!registerVo.getCode().equals(codeFromSession)){
             return BaseRespVo.fail();
         }else {
-           //authService.register(registerVo);
+           flag = authService.register(registerVo);
         }
-        return BaseRespVo.ok(null);
+        if(flag == true){
+            return BaseRespVo.ok(null);
+        }
+        return BaseRespVo.fail();
     }
     @RequestMapping("/reset")
     public BaseRespVo reset(){
