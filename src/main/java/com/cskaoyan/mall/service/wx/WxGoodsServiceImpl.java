@@ -63,21 +63,38 @@ public class WxGoodsServiceImpl implements WxGoodsService{
 //        CategoryExample.Criteria criteria = categoryExample.createCriteria();
 //        criteria.andIdEqualTo(id);
 //        Category currentCategory = (Category) categoryMapper.selectByExample(categoryExample);
-        Category currentCategory = categoryMapper.selectByPrimaryKey(id);
+        Category parentCategory = categoryMapper.selectByPrimaryKey(id);
+        Category currentCategory = null;
+        List<Category> brotherCategory = null;
+        Integer pid = parentCategory.getPid();
+        if (pid == 0) {
+            currentCategory = categoryMapper.selectByPrimaryKey(id);
 
-        Integer pid = currentCategory.getPid();
+            CategoryExample categoryExample = new CategoryExample();
+            CategoryExample.Criteria criteria = categoryExample.createCriteria();
+            criteria.andPidEqualTo(id);
+            brotherCategory = categoryMapper.selectByExample(categoryExample);
+        } else {
+            currentCategory = categoryMapper.selectByPrimaryKey(id);
+            Integer pid1 = currentCategory.getPid();
+            parentCategory = categoryMapper.selectByPrimaryKey(pid);
+            CategoryExample categoryExample = new CategoryExample();
+            CategoryExample.Criteria criteria = categoryExample.createCriteria();
+            criteria.andPidEqualTo(pid1);
+            brotherCategory = categoryMapper.selectByExample(categoryExample);
+        }
 
 
 //        CategoryExample categoryExample1 = new CategoryExample();
 //        CategoryExample.Criteria criteria1 = categoryExample1.createCriteria();
 //        criteria1.andIdEqualTo(id);
 //        criteria1.andPidEqualTo(0);
-        Category parentCategory = categoryMapper.selectByPrimaryKey(pid);
-
-        CategoryExample categoryExample2 = new CategoryExample();
-        CategoryExample.Criteria criteria2 = categoryExample2.createCriteria();
-        criteria2.andPidEqualTo(pid);
-        List<Category> brotherCategory = categoryMapper.selectByExample(categoryExample2);
+//        Category parentCategory = categoryMapper.selectByPrimaryKey(pid);
+//
+//        CategoryExample categoryExample2 = new CategoryExample();
+//        CategoryExample.Criteria criteria2 = categoryExample2.createCriteria();
+//        criteria2.andPidEqualTo(pid);
+//        List<Category> brotherCategory = categoryMapper.selectByExample(categoryExample2);
 
 //        Integer pid = currentCategory.getPid();
 //        CategoryExample categoryExample = new CategoryExample();
