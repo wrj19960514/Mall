@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.CollectMapper">
+
+ <resultMap id="collectMap" type="com.cskaoyan.mall.vo.collectManage.collectAndGood">
+   <result column="id" property="id"/>
+   <result column="type" property="type"/>
+   <result column="value_id" property="valueId"/>
+   <association property="goods" javaType="com.cskaoyan.mall.bean.Goods">
+     <result column="pic_url" property="picUrl"/>
+     <result column="name" property="name"/>
+     <result column="retail_price" property="retailPrice"/>
+     <result column="brief" property="brief"/>
+   </association>
+ </resultMap>
+  <select id="queryCollectList" resultMap="collectMap">
+    select c.id,c.type,c.value_id,g.brief,g.pic_url,g.name,g.retail_price
+    from cskaoyan_mall_collect c left join cskaoyan_mall_goods g
+    on c.value_id = g.id
+    where c.type = #{type}
+  </select>
+
+  <select id="queryCollectByValueId" resultType="com.cskaoyan.mall.bean.Collect">
+    select id from cskaoyan_mall_collect where value_id = #{valueId}
+  </select>
+  <delete id="delectCollectByValueId">
+    delete from cskaoyan_mall_collect where value_id =  #{valueId}
+  </delete>
+  <insert id="insertCollect">
+    insert into cskaoyan_mall_collect (user_id,value_id,type,add_time,update_time,deleted) values (#{collect.userId},#{collect.valueId},#{collect.type},#{collect.addTime},#{collect.updateTime},#{collect.deleted})
+  </insert>
+
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Collect">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
@@ -240,4 +269,5 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>
