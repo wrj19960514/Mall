@@ -17,7 +17,7 @@ public interface WxCartService {
 
     boolean fastAddCart(WxCartAddVo wxCartAddVo);
 
-    void checkOut(int cartId, int addressId, int couponId, int grouponRulesId);
+    WxCartCheckoutReturnVo checkOut(WxCartCheckOutVo wxCartCheckOutVo);
 
     BigDecimal goodsCount();
 

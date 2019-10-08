@@ -35,5 +35,6 @@ public interface CartMapper {
 
     int deleteByUserIdandProductId(int userId, int productId);
 
-    List<Cart> selectByUserId(@Param("userId") int userId);
+    List<Cart> selectByUserId(@Param("userId") int userId,
+                              @Param("checked") boolean checked);
 }

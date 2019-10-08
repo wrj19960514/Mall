@@ -28,8 +28,15 @@ public class WxGoodsController {
     }
 
     @RequestMapping("list")
-    public BaseRespVo getList(int categoryId, int page, int size) {
-        List<Goods> goodsList = wxGoodsService.getGoodsList(categoryId, page, size);
+    public BaseRespVo getList(String brandId, String categoryId, int page, int size) {
+        List<Goods> goodsList = null;
+        if ("".equals(brandId) || brandId == null) {
+            goodsList = wxGoodsService.getGoodsList(Integer.valueOf(categoryId), page, size);
+
+        }
+        if ("".equals(categoryId) || categoryId == null) {
+            goodsList = wxGoodsService.getGoodsListByBrand(Integer.valueOf(brandId), page, size);
+        }
         return BaseRespVo.ok(goodsList);
     }
 

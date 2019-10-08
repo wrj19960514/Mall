@@ -79,11 +79,8 @@ public class WxCartController {
     }
 
     @RequestMapping("checkout")
-    public BaseRespVo checkout(int cartId, int addressId, int couponId, int grouponRulesId) {
-        wxCartService.checkOut(cartId, addressId, couponId, grouponRulesId);
-        BaseRespVo baseRespVo = new BaseRespVo();
-        baseRespVo.setErrmsg("系统内部错误");
-        baseRespVo.setErrno(502);
-        return baseRespVo;
+    public BaseRespVo checkout(WxCartCheckOutVo wxCartCheckOutVo) {
+        WxCartCheckoutReturnVo checkOut = wxCartService.checkOut(wxCartCheckOutVo);
+        return BaseRespVo.ok(checkOut);
     }
 }

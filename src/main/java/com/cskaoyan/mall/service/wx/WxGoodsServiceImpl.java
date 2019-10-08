@@ -92,6 +92,16 @@ public class WxGoodsServiceImpl implements WxGoodsService{
         List<Goods> goods = goodsMapper.selectByExample(goodsExample);
         return goods;
     }
+    @Override
+    public List<Goods> getGoodsListByBrand(Integer brandId, int page, int size) {
+        // 根据brandId 查找
+        PageHelper.startPage(page, size);
+        GoodsExample goodsExample = new GoodsExample();
+        GoodsExample.Criteria criteria = goodsExample.createCriteria();
+        criteria.andBrandIdEqualTo(brandId);
+        List<Goods> goods = goodsMapper.selectByExample(goodsExample);
+        return goods;
+    }
 
     @Override
     public WxGoodsDetailVo getGoodsDetail(int id) {
@@ -129,4 +139,6 @@ public class WxGoodsServiceImpl implements WxGoodsService{
         goodsDetailVo.setInfo(goods);
         return goodsDetailVo;
     }
+
+
 }

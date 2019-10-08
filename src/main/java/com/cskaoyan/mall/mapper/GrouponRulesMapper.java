@@ -32,5 +32,5 @@ public interface GrouponRulesMapper {
 
     List<WxGrouponVo>  queryWxGrouponVoList();
 
-    List<GrouponRules> queryGrouponRuless(@Param("id") int id);
+    List<GrouponRules> queryGrouponRuless(@Param("goodsId") int goodsId);
 }

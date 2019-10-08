@@ -1,16 +1,19 @@
 package com.cskaoyan.mall.controller.wx;
 
-import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.service.wx.AuthService;
 import com.cskaoyan.mall.shiro.CustomToken;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.LoginVo;
 import com.cskaoyan.mall.vo.wx.LoginRespVo;
+import com.cskaoyan.mall.vo.wx.RegisterVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,8 +29,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("wx/auth")
 public class WxAuthController {
+
     @Autowired
-    UserMapper userMapper;
+    AuthService authService;
     /*登陆*/
     @PostMapping("/login")
     public BaseRespVo login(@RequestBody LoginVo loginVo){
@@ -76,18 +80,30 @@ public class WxAuthController {
     }
 
     @RequestMapping("/register")
-    public BaseRespVo register(){
+    public BaseRespVo register(@RequestBody RegisterVo registerVo, HttpSession httpSession){
+        String id = httpSession.getId();
+        String codeFromSession = (String) httpSession.getAttribute("code");
+        if(!registerVo.getCode().equals(codeFromSession)){
+            return BaseRespVo.fail();
+        }else {
+           //authService.register(registerVo);
+        }
+        System.out.println(id);
         return BaseRespVo.ok(null);
     }
-
     @RequestMapping("/reset")
     public BaseRespVo reset(){
         return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/regCaptcha")
-    public BaseRespVo regCaptcha(){
-        return BaseRespVo.ok(null);
+    public BaseRespVo regCaptcha(String mobile){
+        Session session = SecurityUtils.getSubject().getSession();
+        Serializable id = session.getId();
+        int code = (int) ((Math.random()*9+1)*100000);
+        session.setAttribute("code",code);
+        System.out.println(id);
+        return BaseRespVo.ok(id);
     }
 
     @RequestMapping("bindPhone")

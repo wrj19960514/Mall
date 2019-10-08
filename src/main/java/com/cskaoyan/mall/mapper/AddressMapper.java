@@ -36,6 +36,7 @@ public interface AddressMapper {
 
     Address getProvinceAndCityAndArea(@Param("userId") int userId,
                                       @Param("id") int id);
+    Address selectDefaultAddressByUserId(@Param("userId") int userId);
 
     int updateDefaultAddress(@Param("isDefault")Boolean isDefault,
                              @Param("Default") Boolean Default);

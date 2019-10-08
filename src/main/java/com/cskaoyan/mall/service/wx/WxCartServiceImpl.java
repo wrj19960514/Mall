@@ -1,19 +1,13 @@
 package com.cskaoyan.mall.service.wx;
 
 import com.cskaoyan.mall.bean.*;
-import com.cskaoyan.mall.mapper.CartMapper;
-import com.cskaoyan.mall.mapper.GoodsMapper;
-import com.cskaoyan.mall.mapper.GoodsProductMapper;
-import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.vo.wx.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class WxCartServiceImpl implements WxCartService{
@@ -26,6 +20,12 @@ public class WxCartServiceImpl implements WxCartService{
     GoodsMapper goodsMapper;
     @Autowired
     GoodsProductMapper goodsProductMapper;
+    @Autowired
+    AddressMapper addressMapper;
+    @Autowired
+    GrouponRulesMapper grouponRulesMapper;
+    @Autowired
+    CouponMapper couponMapper;
 
     @Override
     public boolean updateCart(WxCartUpdateVo wxCartUpdateVo) {
@@ -63,7 +63,7 @@ public class WxCartServiceImpl implements WxCartService{
 //        int userId = userMapper.queryUserIdByUsername(principal);
         int userId = 1;
         // 根据userId查找该用户的购物车
-        List<Cart> carts = cartMapper.selectByUserId(userId);
+        List<Cart> carts = cartMapper.selectByUserId(userId, false);
         WxCartListVo wxCartListVo = new WxCartListVo();
         wxCartListVo.setCartList(carts);
         BigDecimal checkedGoodsAmount = BigDecimal.ZERO;
@@ -126,8 +126,59 @@ public class WxCartServiceImpl implements WxCartService{
     }
 
     @Override
-    public void checkOut(int cartId, int addressId, int couponId, int grouponRulesId) {
-
+    public WxCartCheckoutReturnVo checkOut(WxCartCheckOutVo vo) {
+        int userId = 1;
+        WxCartCheckoutReturnVo returnVo = new WxCartCheckoutReturnVo();
+        //商品总价
+        BigDecimal goodsTotalPrice = BigDecimal.ZERO;
+        if (vo.getCartId() != 0) {
+            Cart cart = cartMapper.selectByPrimaryKey(vo.getCartId());
+            List<Cart> carts = new ArrayList<>();
+            carts.add(cart);
+            returnVo.setCheckedGoodsList(carts);
+            goodsTotalPrice = cart.getPrice().multiply(new BigDecimal(cart.getNumber()));
+        } else {
+            List<Cart> carts = cartMapper.selectByUserId(userId, true);
+            returnVo.setCheckedGoodsList(carts);
+            for (Cart cart : carts) {
+                goodsTotalPrice = goodsTotalPrice.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
+            }
+        }
+        returnVo.setGoodsTotalPrice(goodsTotalPrice);
+        //地址
+        Address address;
+        if (vo.getAddressId() != 0) {
+            address = addressMapper.selectByPrimaryKey(vo.getAddressId());
+        } else {
+            address = addressMapper.selectDefaultAddressByUserId(userId);
+        }
+        returnVo.setCheckedAddress(address);
+        returnVo.setAddressId(address.getId());
+        //团购优惠价格
+        BigDecimal grouponPrice = BigDecimal.ZERO;
+        if (vo.getGrouponRulesId() != 0) {
+            GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(vo.getGrouponRulesId());
+            returnVo.setGrouponRulesId(grouponRules.getId());
+            grouponPrice = grouponRules.getDiscount();
+        }
+        returnVo.setGrouponPrice(grouponPrice);
+        //优惠券的价格
+        BigDecimal couponPrice = BigDecimal.ZERO;
+        if (vo.getCouponId() != 0 && vo.getCouponId() != -1) {
+            Coupon coupon = couponMapper.selectByPrimaryKey(vo.getCouponId());
+            returnVo.setCouponId(coupon.getId());
+            couponPrice = coupon.getDiscount();
+        }
+        returnVo.setCouponPrice(couponPrice);
+        //订单总价
+        BigDecimal orderTotalPrice = BigDecimal.ZERO;
+        returnVo.setOrderTotalPrice(orderTotalPrice);
+        //快递费
+        BigDecimal freightPrice = new BigDecimal(10);
+        returnVo.setFreightPrice(freightPrice);
+        //实际需要支付的总价
+        returnVo.setActualPrice(goodsTotalPrice.add(freightPrice).subtract(couponPrice));
+        return returnVo;
     }
 
     @Override
