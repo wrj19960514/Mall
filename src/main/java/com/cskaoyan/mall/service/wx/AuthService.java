@@ -4,4 +4,6 @@ import com.cskaoyan.mall.vo.wx.RegisterVo;
 
 public interface AuthService {
     boolean register(RegisterVo registerVo);
+
+    boolean reset(RegisterVo registerVo);
 }
