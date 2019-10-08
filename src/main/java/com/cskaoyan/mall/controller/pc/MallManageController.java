@@ -73,6 +73,11 @@ public class MallManageController {
         return BaseRespVo.ok(brandListBean);
     }
 
+    @RequestMapping("/admin/order/ship")
+    public BaseRespVo orderShip() {
+        return BaseRespVo.ok(null);
+    }
+
     @RequestMapping("/admin/order/detail")
     public BaseRespVo orderDetail(int id) {
         OrderDetailedVo orderDetailed = mallManageService.getOrderDetailed(id);
