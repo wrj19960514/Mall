@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/wx/comment")
+@RequestMapping("wx/comment")
 public class CommentController {
     @Autowired
     CommentService commentService;

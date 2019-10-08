@@ -1,20 +1,21 @@
 package com.cskaoyan.mall.vo.commentManage;
 
+import com.cskaoyan.mall.vo.UserInfo;
+
 import java.util.Date;
 import java.util.List;
 
 public class CommentVo {
-    List userInfo;
+    UserInfo userInfo;
     Date addTime;
     String content;
     String[] picList;
 
-
-    public List getUserInfo() {
+    public UserInfo getUserInfo() {
         return userInfo;
     }
 
-    public void setUserInfo(List userInfo) {
+    public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
 

@@ -39,7 +39,7 @@ public interface CommentMapper {
 
     List<Comment> selectCommentHasPic(int valueId, int type);
 
-    void insertComment(@Param("comment") Comment comment);
+    int insertComment(@Param("comment")Comment comment);
 
 }
 

@@ -38,5 +38,5 @@ public interface TopicMapper {
 
     Topic queryTopicById(@Param("id")Integer id);
 
-    List queryTopicRelatedList(@Param("id")Integer id);
+    List queryTopicRelatedList(@Param("id1")Integer id1,@Param("id2")Integer id2);
 }

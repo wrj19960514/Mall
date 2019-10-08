@@ -49,14 +49,8 @@ public class CommentServiceImpl implements CommentService {
         Date date = new Date();
         comment.setUpdateTime(date);
         comment.setAddTime(date);
-        comment.setUserId(11);
-        int length = comment.getPicUrls().length;
-        if(length != 0){
-            comment.setHasPicture(true);
-        }else{
-            comment.setHasPicture(false);
-        }
-        commentMapper.insertComment(comment);
+        comment.setUserId(1);
+        int i = commentMapper.insertComment(comment);
         return comment;
     }
 }

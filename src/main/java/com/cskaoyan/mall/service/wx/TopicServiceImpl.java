@@ -6,11 +6,13 @@ import com.cskaoyan.mall.vo.TopicManage.ListBeanVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class TopicServiceImpl implements TopicService {
     @Autowired
     TopicMapper topicMapper;
@@ -40,7 +42,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public List<Topic> getRelatedTopic(int id) {
 
-        List<Topic> topiclist = topicMapper.queryTopicRelatedList(id);
+        List<Topic> topiclist = topicMapper.queryTopicRelatedList(id+1,id+4);
         return topiclist;
     }
 }

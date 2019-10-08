@@ -24,10 +24,10 @@ public class SearchServiceImpl implements SearchService {
     public Map getSearchList() {
         Keyword keyword = keywordMapper.queryDefaultKeyWord();
         List<Keyword> keywords = keywordMapper.queryHotKeyWord();
-        String[] strings = searchHistoryMapper.querySearchHistory();
+        List list = searchHistoryMapper.querySearchHistory();
         HashMap<String, Object> map = new HashMap<>();
         map.put("defaultKeyword",keyword);
-        map.put("historyKeywordList",strings);
+        map.put("historyKeywordList",list);
         map.put("hotKeywordList",keywords);
         return map;
     }
@@ -38,8 +38,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public void cleanHistory(SearchHistory searchHistory) {
-        Integer id = searchHistory.getId();
+    public void cleanHistory(Integer id) {
         searchHistoryMapper.deleteSearchHistoryById(id);
     }
 }

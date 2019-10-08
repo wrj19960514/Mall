@@ -31,7 +31,7 @@ public interface SearchHistoryMapper {
 
     int updateByPrimaryKey(SearchHistory record);
 
-    String[] querySearchHistory();
+    List querySearchHistory();
 
     void deleteSearchHistoryById(Integer id);
 }

@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface SearchService {
+
     Map getSearchList();
 
     List searchHelper(String keyword);
 
-    void cleanHistory(SearchHistory searchHistory);
+    void cleanHistory(Integer id);
 }
