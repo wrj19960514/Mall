@@ -6,6 +6,7 @@ import com.cskaoyan.mall.mapper.CategoryMapper;
 import com.cskaoyan.mall.mapper.IssueMapper;
 import com.cskaoyan.mall.mapper.KeywordMapper;
 import com.cskaoyan.mall.mapper.OrderGoodsMapper;
+import com.cskaoyan.mall.mapper.OrderHandleOptionsMapper;
 import com.cskaoyan.mall.mapper.OrderMapper;
 import com.cskaoyan.mall.mapper.RegionMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
@@ -53,6 +54,9 @@ public class MallManageServiceImpl implements MallManageService {
 
     @Autowired
     CategoryMapper categoryMapper;
+
+    @Autowired
+    OrderHandleOptionsMapper optionsMapper;
 
     @Override
     public List getRegionList(int i, int i2) {
@@ -400,6 +404,15 @@ public class MallManageServiceImpl implements MallManageService {
         BrandExample brandExample = new BrandExample();
         brandExample.createCriteria().andIdEqualTo(brand.getId());
         brandMapper.updateByExample(brand, brandExample);
+    }
+
+    @Override
+    public void ship(Integer orderId) {
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        order.setOrderStatus((short) 3);
+        orderMapper.updateByPrimaryKey(order);
+        optionsMapper.updateConfirmByOrderId(orderId,true);
+        optionsMapper.updateRefundByOrderId(orderId,true);
     }
 
     private List getListChildren(Integer id) {

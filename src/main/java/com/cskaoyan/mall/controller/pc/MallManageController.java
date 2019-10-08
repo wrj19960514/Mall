@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class MallManageController {
@@ -74,7 +75,9 @@ public class MallManageController {
     }
 
     @RequestMapping("/admin/order/ship")
-    public BaseRespVo orderShip() {
+    public BaseRespVo orderShip(@RequestBody Map map) {
+        Integer orderId = (Integer) map.get("orderId");
+        mallManageService.ship(orderId);
         return BaseRespVo.ok(null);
     }
 

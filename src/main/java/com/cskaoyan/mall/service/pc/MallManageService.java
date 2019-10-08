@@ -54,4 +54,6 @@ public interface MallManageService {
     void updateCategory(CategoryVo categoryVo);
 
     void updateBrand(Brand brand);
+
+    void ship(Integer orderId);
 }
