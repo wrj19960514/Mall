@@ -83,24 +83,34 @@ public class WxGoodsServiceImpl implements WxGoodsService{
     }
 
     @Override
-    public List<Goods> getGoodsList(int categoryId, int page, int size) {
+    public GoodsByCategory getGoodsList(int categoryId, int page, int size) {
         // 根据categoryId 查找商品pid == 该id的商品
-        PageHelper.startPage(page, size);
         GoodsExample goodsExample = new GoodsExample();
         GoodsExample.Criteria criteria = goodsExample.createCriteria();
         criteria.andCategoryIdEqualTo(categoryId);
-        List<Goods> goods = goodsMapper.selectByExample(goodsExample);
-        return goods;
+        List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
+        int count = goodsList.size();
+        List<Category> filterCategoryList = null;
+        return new GoodsByCategory(goodsList, count, filterCategoryList);
     }
     @Override
-    public List<Goods> getGoodsListByBrand(Integer brandId, int page, int size) {
+    public GoodsByCategory getGoodsListByBrand(Integer brandId, int page, int size) {
         // 根据brandId 查找
         PageHelper.startPage(page, size);
         GoodsExample goodsExample = new GoodsExample();
         GoodsExample.Criteria criteria = goodsExample.createCriteria();
         criteria.andBrandIdEqualTo(brandId);
-        List<Goods> goods = goodsMapper.selectByExample(goodsExample);
-        return goods;
+        List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
+        int count = goodsList.size();
+        List<Category> filterCategoryList = null;
+        for (Goods goods : goodsList) {
+            Category category = categoryMapper.selectByPrimaryKey(goods.getCategoryId());
+            if (filterCategoryList == null) {
+                filterCategoryList = new ArrayList<>();
+            }
+            filterCategoryList.add(category);
+        }
+        return new GoodsByCategory(goodsList, count, filterCategoryList);
     }
 
     @Override

@@ -51,7 +51,7 @@ public class WxAuthController {
         loginRespVo.setToken((String)id);
         loginRespVo.setTokenExpire(time);
         Map<String,String> map = new HashMap<>(10);
-        map.put("avatarUrl","");
+        map.put("avatarUrl","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
         map.put("nickName",username);
         loginRespVo.setUserInfo(map);
         BaseRespVo ok = BaseRespVo.ok(loginRespVo);

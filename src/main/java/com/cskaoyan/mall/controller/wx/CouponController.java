@@ -43,4 +43,12 @@ public class CouponController {
         return couponService.exchange(coupon.getCode());
     }
 
+    @RequestMapping("selectlist")
+    public BaseRespVo selectList(int cartId, int grouponRulesId) {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrmsg("系统内部错误");
+        baseRespVo.setErrno(502);
+        return baseRespVo;
+    }
+
 }
