@@ -1,16 +1,14 @@
 package com.cskaoyan.mall.controller.wx;
 
-import com.cskaoyan.mall.bean.Address;
-import com.cskaoyan.mall.bean.Footprint;
-import com.cskaoyan.mall.bean.Region;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.service.wx.AddressService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.address.FootListBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,6 +16,7 @@ import java.util.List;
  * @date 2019/10/5 16:26
  */
 @RestController
+@CrossOrigin
 public class AddressController {
 
     @Autowired
@@ -78,6 +77,25 @@ public class AddressController {
     @RequestMapping("/wx/footprint/delete")
     public BaseRespVo deleteFootprint(@RequestBody Footprint footprint) {
         addressService.deleteFootprint(footprint);
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+        respVo.setErrmsg("成功");
+        respVo.setErrno(0);
+        return respVo;
+    }
+
+    //图片上传
+    @RequestMapping("/wx/storage/upload")
+    public BaseRespVo storeUpload(@RequestParam("file") MultipartFile file) throws IOException {
+        String originalFilename = file.getOriginalFilename();
+        Storage storage = addressService.storeUpload(file);
+        BaseRespVo ok = BaseRespVo.ok(storage);
+        return ok;
+    }
+
+    //意见反馈
+    @RequestMapping("/wx/feedback/submit")
+    public BaseRespVo addFeedback(@RequestBody Feedback feedback) {
+        addressService.addFeedback(feedback);
         BaseRespVo<Object> respVo = new BaseRespVo<>();
         respVo.setErrmsg("成功");
         respVo.setErrno(0);
