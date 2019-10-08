@@ -1,25 +1,15 @@
 package com.cskaoyan.mall.service.wx;
 
-import com.cskaoyan.mall.bean.Cart;
-import com.cskaoyan.mall.bean.CartExample;
-import com.cskaoyan.mall.bean.Comment;
-import com.cskaoyan.mall.bean.GoodsProduct;
-import com.cskaoyan.mall.bean.Order;
-import com.cskaoyan.mall.bean.OrderExample;
-import com.cskaoyan.mall.bean.OrderGoods;
-import com.cskaoyan.mall.bean.OrderGoodsExample;
-import com.cskaoyan.mall.mapper.CartMapper;
-import com.cskaoyan.mall.mapper.CommentMapper;
-import com.cskaoyan.mall.mapper.GoodsProductMapper;
-import com.cskaoyan.mall.mapper.OrderGoodsMapper;
-import com.cskaoyan.mall.mapper.OrderHandleOptionsMapper;
-import com.cskaoyan.mall.mapper.OrderMapper;
+import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.util.DateUtils;
 import com.cskaoyan.mall.vo.OrderComment;
 import com.cskaoyan.mall.vo.OrderSubmitVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,10 +31,22 @@ public class WxOrderServiceImpl implements WxOrderService {
     CartMapper cartMapper;
 
     @Autowired
+    GoodsMapper goodsMapper;
+
+    @Autowired
     GoodsProductMapper goodsProductMapper;
 
     @Autowired
     CommentMapper commentMapper;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    CouponMapper couponMapper;
+
+    @Autowired
+    AddressMapper addressMapper;
 
     private String[] strings = new String[]{"", "待付款", "待发货", "待收货", "待评价"};
 
@@ -137,7 +139,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         optionsMapper.updatePayByOrderId(orderId, false);
         optionsMapper.updateDeleteByOrderId(orderId, true);
         optionsMapper.updateConfirmByOrderId(orderId, false);
-        optionsMapper.updateCommentlByOrderId(orderId, false);
+        optionsMapper.updateCommentByOrderId(orderId, false);
     }
 
     @Override
@@ -151,7 +153,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         optionsMapper.updatePayByOrderId(orderId, false);
         optionsMapper.updateDeleteByOrderId(orderId, false);
         optionsMapper.updateConfirmByOrderId(orderId, false);
-        optionsMapper.updateCommentlByOrderId(orderId, false);
+        optionsMapper.updateCommentByOrderId(orderId, false);
     }
 
     @Override
@@ -166,7 +168,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         optionsMapper.updatePayByOrderId(orderId, false);
         optionsMapper.updateDeleteByOrderId(orderId, true);
         optionsMapper.updateConfirmByOrderId(orderId, false);
-        optionsMapper.updateCommentlByOrderId(orderId, true);
+        optionsMapper.updateCommentByOrderId(orderId, true);
     }
 
     @Override
@@ -181,37 +183,125 @@ public class WxOrderServiceImpl implements WxOrderService {
         optionsMapper.updatePayByOrderId(orderId, false);
         optionsMapper.updateDeleteByOrderId(orderId, true);
         optionsMapper.updateConfirmByOrderId(orderId, false);
-        optionsMapper.updateCommentlByOrderId(orderId, true);
+        optionsMapper.updateCommentByOrderId(orderId, true);
     }
 
     @Override
-    public boolean submitOrder(OrderSubmitVo orderSubmitVo) {
-        // TODO 添加多个商品至Order_Goods表
+    public int submitOrder(OrderSubmitVo orderSubmitVo) {
         List<Cart> carts = cartMapper.selectByExample(new CartExample());
         for (Cart cart : carts) {
-            GoodsProduct goodsProduct = goodsProductMapper.selectByPrimaryKey(cart.getGoodsId());
+            GoodsProduct goodsProduct =
+                    goodsProductMapper.selectProductsByGoodsId(cart.getGoodsId()).get(0);
             if ((goodsProduct.getNumber() - cart.getNumber()) < 0) {
-                return false;
+                return 0;
             }
+            goodsProduct.setNumber(goodsProduct.getNumber() - cart.getNumber());
+            goodsProductMapper.updateByPrimaryKey(goodsProduct);
         }
-        return true;
+
+        // 插入记录到order、order_goods、order_handleOption
+        // 查找order表最新的记录
+        OrderExample example = new OrderExample();
+        example.setOrderByClause("id DESC");
+        List<Order> orders = orderMapper.selectByExample(example);
+        if (orders.size() == 0) {
+            Order order = new Order();
+            order.setId(0);
+            order.setOrderSn("20191008000000001");
+            order.setPayId(Integer.toString(1));
+            orders.add(order);
+        }
+        Order lastOrder = orders.get(0);
+        Integer lastId = lastOrder.getId();
+        String s = lastOrder.getOrderSn().substring(8);
+        int lastOrderSn = Integer.parseInt(s);
+        Cart cart = carts.get(0);
+
+        // 查询User
+        User user = userMapper.selectByPrimaryKey(cart.getUserId());
+        // 插入记录到order表
+        Order order = new Order();
+        order.setId(lastId + 1);
+        order.setUserId(user.getId());
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        String s1 = format.format(new Date());
+        order.setOrderSn(s1 + (lastOrderSn + 1));
+        order.setOrderStatus((short) 1);
+        order.setConsignee(user.getUsername());
+        order.setMobile(user.getMobile());
+        order.setAddress("湖北省武汉市洪山区花山镇花山大道软件新城2期C13");
+        order.setMessage(orderSubmitVo.getMessage());
+        BigDecimal price = new BigDecimal(0);
+        for (Cart c : carts) {
+            GoodsProduct goodsProduct =
+                    goodsProductMapper.selectProductsByGoodsId(cart.getGoodsId()).get(0);
+            int singlePrice = goodsProduct.getPrice().intValue();
+            int priceN = singlePrice * c.getNumber();
+            price = price.add(new BigDecimal(priceN));
+        }
+        order.setGoodsPrice(price);
+        order.setFreightPrice(new BigDecimal(10));
+        Coupon coupon = couponMapper.selectByPrimaryKey(orderSubmitVo.getCouponId());
+        int discount = coupon.getDiscount().intValue();
+        int totalPrice = price.intValue();
+        totalPrice = (1 - discount/100) * totalPrice;
+        int actualPrice = totalPrice + 10;
+        order.setCouponPrice(new BigDecimal(totalPrice));
+        order.setIntegralPrice(new BigDecimal(0));
+        order.setGrouponPrice(new BigDecimal(0));
+        order.setActualPrice(new BigDecimal(actualPrice));
+        order.setOrderPrice(new BigDecimal(actualPrice));
+        order.setPayId(Integer.toString(Integer.parseInt(lastOrder.getPayId()) + 1));
+        order.setShipSn("快递备注");
+        order.setComments((short) 0);
+        order.setAddTime(new Date());
+        order.setUpdateTime(new Date());
+        order.setDeleted(false);
+        orderMapper.insert(order);
+
+        // 插入记录到order_handleOption表
+        optionsMapper.insertRecord(lastId + 1);
+        optionsMapper.updateCancelByOrderId(lastId + 1, true);
+        optionsMapper.updatePayByOrderId(lastId + 1, true);
+
+        // 插入记录到order_goods表
+        for (Cart c : carts) {
+            OrderGoods orderGoods = new OrderGoods();
+            orderGoods.setOrderId(lastId + 1);
+            orderGoods.setGoodsId(c.getGoodsId());
+            orderGoods.setGoodsName(c.getGoodsName());
+            orderGoods.setGoodsSn(c.getGoodsSn());
+            orderGoods.setProductId(c.getProductId());
+            orderGoods.setNumber(c.getNumber());
+            orderGoods.setPrice(c.getPrice());
+            orderGoods.setSpecifications(c.getSpecifications());
+            orderGoods.setPicUrl(new String[]{c.getPicUrl()});
+            orderGoods.setUpdateTime(new Date());
+            orderGoods.setAddTime(new Date());
+            orderGoods.setDeleted(false);
+            orderGoodsMapper.insert(orderGoods);
+        }
+        // 清空购物车
+        cartMapper.deleteByExample(new CartExample());
+        return order.getId();
     }
 
     @Override
     public void prepayOrder(Integer orderId) {
-        Order order = new Order();
+        Order order = orderMapper.selectByPrimaryKey(orderId);
         order.setId(orderId);
-        order.setOrderStatus((short) 1);
+        order.setOrderStatus((short) 2);
         order.setDeleted(false);
         order.setAddTime(new Date());
-        // order.setUserId(); TODO 添加三张表
-        orderMapper.insert(order);
+        order.setUpdateTime(new Date());
+        order.setPayTime(new Date());
+        orderMapper.updateByPrimaryKey(order);
         optionsMapper.updateCancelByOrderId(orderId, true);
         optionsMapper.updateRefundByOrderId(orderId, false);
-        optionsMapper.updatePayByOrderId(orderId, true);
+        optionsMapper.updatePayByOrderId(orderId, false);
         optionsMapper.updateDeleteByOrderId(orderId, false);
         optionsMapper.updateConfirmByOrderId(orderId, false);
-        optionsMapper.updateCommentlByOrderId(orderId, false);
+        optionsMapper.updateCommentByOrderId(orderId, false);
     }
 
     @Override
@@ -241,7 +331,7 @@ public class WxOrderServiceImpl implements WxOrderService {
 
     @Override
     public boolean setGoodsComment(OrderComment orderComment) {
-        if(orderComment.getPicUrls().length>3) {
+        if (orderComment.getPicUrls().length > 3) {
             return false;
         }
         Comment comment = new Comment();
@@ -249,7 +339,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         comment.setType((byte) 0);
         comment.setContent(orderComment.getContent());
         comment.setUserId(0); // TODO 无法判断
-        if(orderComment.isHasPicture()){
+        if (orderComment.isHasPicture()) {
             comment.setPicUrls(orderComment.getPicUrls());
             comment.setHasPicture(true);
         }

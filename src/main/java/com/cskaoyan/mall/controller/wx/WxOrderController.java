@@ -69,22 +69,17 @@ public class WxOrderController {
 
     @RequestMapping("/submit")
     public BaseRespVo submitOrder(@RequestBody OrderSubmitVo orderSubmitVo) {
-        boolean success = wxOrderServiceImpl.submitOrder(orderSubmitVo);
-        if (success) {
-            return BaseRespVo.ok(null);
-        } else {
-            BaseRespVo vo = new BaseRespVo();
-            vo.setErrno(-1);
-            vo.setErrmsg("数量不足");
-            return vo;
-        }
+        int orderId = wxOrderServiceImpl.submitOrder(orderSubmitVo);
+        HashMap map = new HashMap();
+        map.put("orderId", orderId);
+        return BaseRespVo.ok(map);
     }
 
     @RequestMapping("/prepay")
     public BaseRespVo prepayOrder(@RequestBody Map map) {
-        Integer orderId = (Integer) map.get("orderId");
-        wxOrderServiceImpl.prepayOrder(orderId);
-        return BaseRespVo.ok(null);
+        String orderId = map.get("orderId") + "";
+        wxOrderServiceImpl.prepayOrder(Integer.parseInt(orderId));
+        return BaseRespVo.error(null);
     }
 
     @RequestMapping("/goods")
@@ -96,9 +91,9 @@ public class WxOrderController {
     @RequestMapping("/comment")
     public BaseRespVo setGoodsComment(@RequestBody OrderComment orderComment) {
         boolean pass = wxOrderServiceImpl.setGoodsComment(orderComment);
-        if(pass) {
+        if (pass) {
             return BaseRespVo.ok(null);
-        }else {
+        } else {
             BaseRespVo vo = new BaseRespVo();
             vo.setErrno(-1);
             vo.setErrmsg("图片数量应小于三张！！！");

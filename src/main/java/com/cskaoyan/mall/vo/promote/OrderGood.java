@@ -13,7 +13,7 @@ public class OrderGood{
     int id;
     int number;
     int orderId;
-    String picUrl;
+    String[] picUrl;
     BigDecimal retailPrice;
 
     public int getGoodsId() {
@@ -64,11 +64,11 @@ public class OrderGood{
         this.orderId = orderId;
     }
 
-    public String getPicUrl() {
+    public String[] getPicUrl() {
         return picUrl;
     }
 
-    public void setPicUrl(String picUrl) {
+    public void setPicUrl(String[] picUrl) {
         this.picUrl = picUrl;
     }
 

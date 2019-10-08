@@ -19,7 +19,7 @@ public interface OrderHandleOptionsMapper {
     int updateCancelByOrderId(@Param("order_id")int orderId, @Param("cancel")boolean cancel);
 
     @Update("UPDATE cskaoyan_mall_order_handleOption SET comment = #{comment} WHERE order_id = #{order_id}")
-    int updateCommentlByOrderId(@Param("order_id")int orderId, @Param("comment")boolean comment);
+    int updateCommentByOrderId(@Param("order_id")int orderId, @Param("comment")boolean comment);
 
     @Update("UPDATE cskaoyan_mall_order_handleOption SET confirm = #{confirm} WHERE order_id = #{order_id}")
     int updateConfirmByOrderId(@Param("order_id")int orderId, @Param("confirm")boolean confirm);

@@ -99,7 +99,7 @@
         from cskaoyan_mall_address
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <select id="selectDefaultAddressByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectDefaultAddressByUserId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from cskaoyan_mall_address
