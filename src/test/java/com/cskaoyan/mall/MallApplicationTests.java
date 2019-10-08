@@ -26,7 +26,7 @@ public class MallApplicationTests {
     @Test
     public void contextLoads() {
         mapper.updateCancelByOrderId(2,true);
-        mapper.updateCommentlByOrderId(2,true);
+        mapper.updateCommentByOrderId(2,true);
         mapper.updateConfirmByOrderId(2,true);
         mapper.updateDeleteByOrderId(2,true);
         mapper.updatePayByOrderId(2,true);
