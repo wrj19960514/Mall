@@ -241,10 +241,13 @@ public class WxOrderServiceImpl implements WxOrderService {
         }
         order.setGoodsPrice(price);
         order.setFreightPrice(new BigDecimal(10));
-        Coupon coupon = couponMapper.selectByPrimaryKey(orderSubmitVo.getCouponId());
-        double discount = coupon.getDiscount().doubleValue();
+        double discount = 0;
+        if (orderSubmitVo.getCouponId() != 0) {
+            Coupon coupon = couponMapper.selectByPrimaryKey(orderSubmitVo.getCouponId());
+            discount = coupon.getDiscount().doubleValue();
+        }
         double totalPrice = price.doubleValue();
-        totalPrice = (1 - discount/100) * totalPrice;
+        totalPrice = (1 - discount / 100) * totalPrice;
         double actualPrice = totalPrice + 10;
         order.setCouponPrice(new BigDecimal(totalPrice));
         order.setIntegralPrice(new BigDecimal(0));

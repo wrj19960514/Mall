@@ -180,7 +180,7 @@ public class WxIndexServiceImpl implements WxIndexService {
         Map<String,Object> map = new HashMap<>();
         Category father = categoryMapper.selectByPrimaryKey(id);
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andPidEqualTo(id);
+        categoryExample.createCriteria().andPidEqualTo(id).andLevelEqualTo("L2");
         List<Category> child = categoryMapper.selectByExample(categoryExample);
         map.put("currentCategory",father);
         map.put("currentSubCategory",child);
