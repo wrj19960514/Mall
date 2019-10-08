@@ -14,7 +14,7 @@
         </association>
     </resultMap>
     <select id="queryWxGrouponVoList" resultMap="grouponMap">
-    select g.id,g.brief,g.counter_price,g.name,g.retail_price,g.pic_url,gr.discount_member,g.retail_price as groupon_price
+    select g.id,g.brief,g.counter_price,g.name,g.retail_price,g.pic_url,gr.discount_member,g.retail_price - gr.discount as groupon_price
     from cskaoyan_mall_groupon_rules gr left join cskaoyan_mall_goods g on gr.goods_id = g.id
   </select>
     <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.GrouponRules">
