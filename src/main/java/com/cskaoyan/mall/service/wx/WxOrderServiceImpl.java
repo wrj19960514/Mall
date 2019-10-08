@@ -280,6 +280,7 @@ public class WxOrderServiceImpl implements WxOrderService {
             orderGoods.setSpecifications(c.getSpecifications());
             orderGoods.setPicUrl(new String[]{c.getPicUrl()});
             orderGoods.setUpdateTime(new Date());
+            orderGoods.setComment(0);
             orderGoods.setAddTime(new Date());
             orderGoods.setDeleted(false);
             orderGoodsMapper.insert(orderGoods);
