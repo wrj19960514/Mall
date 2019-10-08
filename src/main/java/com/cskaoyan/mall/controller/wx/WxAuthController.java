@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.service.wx.AuthService;
+import com.cskaoyan.mall.service.wx.SmsService;
 import com.cskaoyan.mall.shiro.CustomToken;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.LoginVo;
@@ -31,6 +32,8 @@ import java.util.Map;
 public class WxAuthController {
 
     @Autowired
+    SmsService smsService;
+    @Autowired
     AuthService authService;
     /*登陆*/
     @PostMapping("/login")
@@ -51,7 +54,7 @@ public class WxAuthController {
         loginRespVo.setToken((String)id);
         loginRespVo.setTokenExpire(time);
         Map<String,String> map = new HashMap<>(10);
-        map.put("avatarUrl","");
+        map.put("avatarUrl","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
         map.put("nickName",username);
         loginRespVo.setUserInfo(map);
         BaseRespVo ok = BaseRespVo.ok(loginRespVo);
@@ -80,16 +83,19 @@ public class WxAuthController {
     }
 
     @RequestMapping("/register")
-    public BaseRespVo register(@RequestBody RegisterVo registerVo, HttpSession httpSession){
-        String id = httpSession.getId();
-        String codeFromSession = (String) httpSession.getAttribute("code");
+    public BaseRespVo register(@RequestBody RegisterVo registerVo){
+        boolean flag;
+        Session session = SecurityUtils.getSubject().getSession();
+        String codeFromSession = (String) session.getAttribute("code");
         if(!registerVo.getCode().equals(codeFromSession)){
             return BaseRespVo.fail();
         }else {
-           boolean flag = authService.register(registerVo);
+           flag = authService.register(registerVo);
         }
-        System.out.println(id);
-        return BaseRespVo.ok(null);
+        if(flag == true){
+            return BaseRespVo.ok(null);
+        }
+        return BaseRespVo.fail();
     }
     @RequestMapping("/reset")
     public BaseRespVo reset(){
@@ -97,13 +103,21 @@ public class WxAuthController {
     }
 
     @RequestMapping("/regCaptcha")
-    public BaseRespVo regCaptcha(String mobile){
+    public BaseRespVo regCaptcha(@RequestBody Map map){
         Session session = SecurityUtils.getSubject().getSession();
-        Serializable id = session.getId();
-        int code = (int) ((Math.random()*9+1)*100000);
-        session.setAttribute("code",code);
-        System.out.println(id);
-        return BaseRespVo.ok(id);
+        String mobile = (String) map.get("mobile");
+        // 验证码
+        String code = (int) ((Math.random()*9+1)*100000) + "";
+        boolean b = smsService.sendMessage(mobile, code);
+        if (b) {
+            session.setAttribute("code",code);
+            Serializable id = session.getId();
+            return BaseRespVo.ok(id);
+        }
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrmsg("发送验证码失败");
+        baseRespVo.setErrno(500);
+        return baseRespVo;
     }
 
     @RequestMapping("bindPhone")

@@ -34,10 +34,9 @@ public interface AddressMapper {
 
     List<Address> getAddressList(@Param("userId") int userId);
 
-    Address selectDefaultAddressByUserId(@Param("userId") int userId);
-
     Address getProvinceAndCityAndArea(@Param("userId") int userId,
                                       @Param("id") int id);
+    Address selectDefaultAddressByUserId(@Param("userId") int userId);
 
     int updateDefaultAddress(@Param("isDefault")Boolean isDefault,
                              @Param("Default") Boolean Default);

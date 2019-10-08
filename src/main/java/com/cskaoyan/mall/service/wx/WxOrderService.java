@@ -19,7 +19,7 @@ public interface WxOrderService {
 
     void refundOrder(Integer orderId);
 
-    boolean submitOrder(OrderSubmitVo orderSubmitVo);
+    int submitOrder(OrderSubmitVo orderSubmitVo);
 
     void prepayOrder(Integer orderId);
 
