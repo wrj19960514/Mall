@@ -175,6 +175,9 @@ public class WxCartServiceImpl implements WxCartService{
         returnVo.setOrderTotalPrice(orderTotalPrice);
         //快递费
         BigDecimal freightPrice = new BigDecimal(10);
+        if (orderTotalPrice.compareTo(BigDecimal.valueOf(88)) == -1) {
+            freightPrice = new BigDecimal(0);
+        }
         returnVo.setFreightPrice(freightPrice);
         //实际需要支付的总价
         returnVo.setActualPrice(goodsTotalPrice.add(freightPrice).subtract(couponPrice));
