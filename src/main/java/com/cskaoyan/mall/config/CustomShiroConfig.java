@@ -33,11 +33,7 @@ public class CustomShiroConfig {
         //authc认证
         //perms权限
         HashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/admin/auth/login","anon");
-        filterChainDefinitionMap.put("/wx/auth/login","anon");
-        filterChainDefinitionMap.put("/wx/user/index","anon");
         //认证
-
         filterChainDefinitionMap.put("/admin/auth/login", "anon");
 //        filterChainDefinitionMap.put("/admin/auth/info", "anon");
         filterChainDefinitionMap.put("/wx/storage/fetch/**", "anon");
@@ -45,9 +41,12 @@ public class CustomShiroConfig {
         filterChainDefinitionMap.put("/wx/user/index", "anon");
          //需要进行认证
         filterChainDefinitionMap.put("/admin/**","authc");
-//        filterChainDefinitionMap.put("/wx/coupon/**", "authc");
-//        filterChainDefinitionMap.put("/wx/user/**","authc");
-//        filterChainDefinitionMap.put("/wx/order/**","authc");
+        filterChainDefinitionMap.put("/wx/coupon/**", "authc");
+        filterChainDefinitionMap.put("/wx/user/**","authc");
+        filterChainDefinitionMap.put("/wx/order/**","authc");
+        filterChainDefinitionMap.put("/wx/cart/**","authc");
+        filterChainDefinitionMap.put("/wx/comment/**","authc");
+        filterChainDefinitionMap.put("/wx/address/**","authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return shiroFilterFactoryBean;

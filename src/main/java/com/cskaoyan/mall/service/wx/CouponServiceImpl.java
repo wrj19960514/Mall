@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -145,7 +146,16 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public List<Coupon> selectList(int cartId, int grouponRulesId) {
         Cart cart = cartMapper.selectByPrimaryKey(cartId);
-        List<Coupon> coupons = couponUserMapper.queryCouponList(cartId);
-        return coupons;
+        Short number = cart.getNumber();
+        BigDecimal price = cart.getPrice();
+        BigDecimal multiply = price.multiply(new BigDecimal(number));
+        List<Coupon> coupons = couponUserMapper.queryCouponList(cart.getUserId());
+        List<Coupon> coupons1 = new ArrayList<>();
+        for (Coupon coupon : coupons) {
+            if (coupon.getMin().compareTo(multiply) == -1) {
+                coupons1.add(coupon);
+            }
+        }
+        return coupons1;
     }
 }
