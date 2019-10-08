@@ -2,7 +2,10 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.CommentExample;
+
 import java.util.List;
+
+import com.cskaoyan.mall.vo.commentManage.CommentVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CommentMapper {
@@ -29,4 +32,14 @@ public interface CommentMapper {
     int updateByPrimaryKeySelective(Comment record);
 
     int updateByPrimaryKey(Comment record);
+
+    List<CommentVo> queryCommentList(@Param("valueId") int valueId, @Param("type") int type);
+
+    List<Comment> selectComment(int valueId, int type);
+
+    List<Comment> selectCommentHasPic(int valueId, int type);
+
+    int insertComment(@Param("comment")Comment comment);
+
 }
+

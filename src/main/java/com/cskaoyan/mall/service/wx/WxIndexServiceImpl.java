@@ -95,6 +95,7 @@ public class WxIndexServiceImpl implements WxIndexService {
         map.put("brandList",brands);
 
         CategoryExample categoryExample = new CategoryExample();
+        categoryExample.createCriteria().andLevelEqualTo("L1");
         List<Category> categories = categoryMapper.selectByExample(categoryExample);
         map.put("channel",categories);
 
@@ -105,7 +106,7 @@ public class WxIndexServiceImpl implements WxIndexService {
 
         List<Object> floorGoodsList = new ArrayList<>();
         for (Category category : categories) {
-            Map<String,Object> categorymap = new HashMap<>();
+            Map<String,Object> categorymap = new HashMap<>(20);
             GoodsExample goodsExample = new GoodsExample();
             goodsExample.createCriteria().andCategoryIdEqualTo(category.getId());
             List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
@@ -129,9 +130,7 @@ public class WxIndexServiceImpl implements WxIndexService {
             grouponGoodsExample.createCriteria().andGoodsSnEqualTo(grouponRules.getGoodsId());
             List<Goods> goods = goodsMapper.selectByExample(grouponGoodsExample);
             Goods good = goods.get(0);
-            OrderGoodsExample orderGoodsExample = new OrderGoodsExample();
-            orderGoodsExample.createCriteria().andGoodsIdEqualTo(grouponRules.getId());
-            int member = (int)orderGoodsMapper.countByExample(orderGoodsExample);
+            int member = grouponRules.getDiscountMember();
             int discount = grouponRules.getDiscount().intValue();
             int grouponPrice = good.getRetailPrice().intValue() - discount;
             grouponmap.put("goods",good);
@@ -156,7 +155,7 @@ public class WxIndexServiceImpl implements WxIndexService {
         map.put("topicList",topics);
         return map;
     }
-
+    //分类页面
     @Override
     public Map<String, Object> getcatalogIndex() {
         //Category表

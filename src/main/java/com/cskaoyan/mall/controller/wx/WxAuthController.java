@@ -84,18 +84,36 @@ public class WxAuthController {
 
     @RequestMapping("/register")
     public BaseRespVo register(@RequestBody RegisterVo registerVo){
+        boolean flag;
+        Session session = SecurityUtils.getSubject().getSession();
+        String codeFromSession = (String) session.getAttribute("code");
+        System.out.println(registerVo.getCode());
+        System.out.println(codeFromSession);
+        if(!registerVo.getCode().equals(codeFromSession)){
+            return BaseRespVo.fail();
+        }else {
+           flag = authService.register(registerVo);
+        }
+        if(flag == true){
+            return BaseRespVo.ok(null);
+        }
+        return BaseRespVo.fail();
+    }
+
+    @RequestMapping("/reset")
+    public BaseRespVo reset(@RequestBody RegisterVo registerVo){
+        boolean flag;
         Session session = SecurityUtils.getSubject().getSession();
         String codeFromSession = (String) session.getAttribute("code");
         if(!registerVo.getCode().equals(codeFromSession)){
             return BaseRespVo.fail();
         }else {
-           //authService.register(registerVo);
+            flag = authService.reset(registerVo);
         }
-        return BaseRespVo.ok(null);
-    }
-    @RequestMapping("/reset")
-    public BaseRespVo reset(){
-        return BaseRespVo.ok(null);
+        if(flag == true){
+            return BaseRespVo.ok(null);
+        }
+        return BaseRespVo.fail();
     }
 
     @RequestMapping("/regCaptcha")
@@ -116,8 +134,10 @@ public class WxAuthController {
         return baseRespVo;
     }
 
-    @RequestMapping("bindPhone")
-    public BaseRespVo bindPhone(){
+    @RequestMapping("/bindPhone")
+    public BaseRespVo bindPhone(Map<String,String> map){
+        map.get("encryptedData");
+        map.get("iv");
         return BaseRespVo.ok(null);
     }
 }

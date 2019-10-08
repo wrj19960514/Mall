@@ -12,6 +12,7 @@ public class AliyunConfig {
 
     @Autowired
     MallOssConfig ossConfig;
+
     @Autowired
     SmsConfig smsConfig;
 

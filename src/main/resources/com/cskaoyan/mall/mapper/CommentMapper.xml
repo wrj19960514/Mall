@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.CommentMapper">
+
+
+<resultMap id="commentMap" type="com.cskaoyan.mall.vo.commentManage.CommentVo">
+  <result column="content" property="content"/>
+  <result column="add_time" property="addTime"/>
+  <result column="pic_urls" property="picList"/>
+  <association property="userInfo" javaType="com.cskaoyan.mall.vo.UserInfo">
+    <result column="nickname" property="nickName"/>
+    <result column="avatar" property="avatarUrl"/>
+  </association>
+</resultMap>
+  <select id="queryCommentList" resultMap="commentMap">
+    select c.content,c.add_time,c.pic_urls,u.nickname,u.avatar
+    from cskaoyan_mall_comment c left join cskaoyan_mall_user u on c.user_id =u.id
+    where type = #{type} and value_id = #{valueId}
+</select>
+
+  <select id="selectComment" resultMap="BaseResultMap">
+    select id,value_id,`type`,content,user_id,has_picture,pic_urls,star,add_time,update_time
+    from cskaoyan_mall_comment
+    where value_id = #{valueId} and type = #{type}
+  </select>
+
+  <select id="selectCommentHasPic" resultMap="BaseResultMap">
+    select id,value_id,`type`,content,user_id,has_picture,pic_urls,star,add_time,update_time
+    from cskaoyan_mall_comment
+    where value_id = #{valueId} and type = #{type} and has_picture = true
+  </select>
+  <insert id="insertComment">
+    <selectKey keyProperty="comment.id" order="AFTER" resultType="java.lang.Integer" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into cskaoyan_mall_comment(value_id,`type`,content,user_id,has_picture,pic_urls,star,add_time,update_time)
+    values(#{comment.valueId},#{comment.type},#{comment.content},#{comment.userId},#{comment.hasPicture},#{comment.picUrls},#{comment.star},#{comment.addTime},#{comment.updateTime})
+  </insert>
+  
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Comment">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="value_id" jdbcType="INTEGER" property="valueId" />
