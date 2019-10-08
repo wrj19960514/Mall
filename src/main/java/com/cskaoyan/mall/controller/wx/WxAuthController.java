@@ -86,7 +86,7 @@ public class WxAuthController {
         if(!registerVo.getCode().equals(codeFromSession)){
             return BaseRespVo.fail();
         }else {
-           //authService.register(registerVo);
+           boolean flag = authService.register(registerVo);
         }
         System.out.println(id);
         return BaseRespVo.ok(null);
