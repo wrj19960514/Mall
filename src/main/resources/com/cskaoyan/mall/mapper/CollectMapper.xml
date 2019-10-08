@@ -13,7 +13,7 @@
      <result column="brief" property="brief"/>
    </association>
  </resultMap>
-  <select id="queryCollectList" resultMap="com.cskaoyan.mall.vo.collectManage.collectAndGood">
+  <select id="queryCollectList" resultType="com.cskaoyan.mall.vo.collectManage.collectAndGood">
    SELECT  id,value_id as valueId,`type` from cskaoyan_mall_collect where user_id = 1
   </select>
 

@@ -27,6 +27,10 @@ public class AuthServiceImpl implements AuthService{
         user.setGender((byte)1);
         user.setNickname(registerVo.getUsername());
         user.setWeixinOpenid(registerVo.getWxCode());
+        user.setLastLoginIp("ip");
+        user.setAvatar("用户");
+        byte status = 0;
+        user.setStatus(status);
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUsernameEqualTo(registerVo.getUsername());
         int count = (int)userMapper.countByExample(userExample);
