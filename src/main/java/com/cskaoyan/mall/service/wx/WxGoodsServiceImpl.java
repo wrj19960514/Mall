@@ -59,26 +59,62 @@ public class WxGoodsServiceImpl implements WxGoodsService{
     @Override
     public Map<String, Object> getCategory(int id) {
         Map<String, Object> map = new HashMap<>();
-        Category currentCategory = categoryMapper.selectByPrimaryKey(id);
-        Integer pid = currentCategory.getPid();
-        CategoryExample categoryExample = new CategoryExample();
-        CategoryExample.Criteria criteria = categoryExample.createCriteria();
-        CategoryExample categoryExample1 = new CategoryExample();
-        CategoryExample.Criteria criteria1 = categoryExample1.createCriteria();
-        if (pid == 0) { // 一级种类 查找pid == 该类id的子类
+//        CategoryExample categoryExample = new CategoryExample();
+//        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+//        criteria.andIdEqualTo(id);
+//        Category currentCategory = (Category) categoryMapper.selectByExample(categoryExample);
+        Category parentCategory = categoryMapper.selectByPrimaryKey(id);
+        Category currentCategory = null;
+        List<Category> brotherCategory = null;
+        Integer pid = parentCategory.getPid();
+        if (pid == 0) {
+            currentCategory = categoryMapper.selectByPrimaryKey(id);
+
+            CategoryExample categoryExample = new CategoryExample();
+            CategoryExample.Criteria criteria = categoryExample.createCriteria();
             criteria.andPidEqualTo(id);
-            List<Category> currentSubCategory = categoryMapper.selectByExample(categoryExample);
-            map.put("currentCategory", currentCategory);
-            map.put("currentSubCategory", currentSubCategory);
-        } else { // 二级种类
-            criteria.andIdEqualTo(pid); // 根据pid查找id == pid的父类
-            List<Category> parentCategory = categoryMapper.selectByExample(categoryExample);
-            criteria1.andPidEqualTo(pid);// 查找其他类pid==该pid的brother类
-            List<Category> brotherCategory = categoryMapper.selectByExample(categoryExample1);
+            brotherCategory = categoryMapper.selectByExample(categoryExample);
+        } else {
+            currentCategory = categoryMapper.selectByPrimaryKey(id);
+            Integer pid1 = currentCategory.getPid();
+            parentCategory = categoryMapper.selectByPrimaryKey(pid);
+            CategoryExample categoryExample = new CategoryExample();
+            CategoryExample.Criteria criteria = categoryExample.createCriteria();
+            criteria.andPidEqualTo(pid1);
+            brotherCategory = categoryMapper.selectByExample(categoryExample);
+        }
+
+
+//        CategoryExample categoryExample1 = new CategoryExample();
+//        CategoryExample.Criteria criteria1 = categoryExample1.createCriteria();
+//        criteria1.andIdEqualTo(id);
+//        criteria1.andPidEqualTo(0);
+//        Category parentCategory = categoryMapper.selectByPrimaryKey(pid);
+//
+//        CategoryExample categoryExample2 = new CategoryExample();
+//        CategoryExample.Criteria criteria2 = categoryExample2.createCriteria();
+//        criteria2.andPidEqualTo(pid);
+//        List<Category> brotherCategory = categoryMapper.selectByExample(categoryExample2);
+
+//        Integer pid = currentCategory.getPid();
+//        CategoryExample categoryExample = new CategoryExample();
+//        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+//        CategoryExample categoryExample1 = new CategoryExample();
+//        CategoryExample.Criteria criteria1 = categoryExample1.createCriteria();
+//        if (pid == 0) { // 一级种类 查找pid == 该类id的子类
+//            criteria.andPidEqualTo(id);
+//            List<Category> currentSubCategory = categoryMapper.selectByExample(categoryExample);
+//            map.put("currentCategory", currentCategory);
+//            map.put("currentSubCategory", currentSubCategory);
+//        } else { // 二级种类
+//            criteria.andIdEqualTo(pid); // 根据pid查找id == pid的父类
+//            List<Category> parentCategory = categoryMapper.selectByExample(categoryExample);
+//            criteria1.andPidEqualTo(pid);// 查找其他类pid==该pid的brother类
+//            List<Category> brotherCategory = categoryMapper.selectByExample(categoryExample1);
             map.put("brotherCategory", brotherCategory);
             map.put("currentCategory", currentCategory);
             map.put("parentCategory", parentCategory);
-        }
+//        }
         return map;
     }
 

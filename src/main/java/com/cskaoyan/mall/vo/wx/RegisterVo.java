@@ -1,13 +1,18 @@
 package com.cskaoyan.mall.vo.wx;
 
-public class RegisterVo {
+import javax.validation.constraints.NotNull;
 
+public class RegisterVo {
+    @NotNull
     String username;
 
+    @NotNull
     String password;
 
+    @NotNull
     String mobile;
 
+    @NotNull
     String code;
 
     String wxCode;

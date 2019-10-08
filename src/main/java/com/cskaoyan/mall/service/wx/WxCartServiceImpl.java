@@ -3,6 +3,8 @@ package com.cskaoyan.mall.service.wx;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.vo.wx.*;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +46,10 @@ public class WxCartServiceImpl implements WxCartService{
 
     @Override
     public Boolean deleteCart(WxCartDeleteVo wxCartDeleteVo) {
-        int userId = 1;
+        Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        int userId = userMapper.queryUserIdByUsername(principal);
+
         List<Integer> productIds = wxCartDeleteVo.getProductIds();
         Boolean flag = false;
         for (int productId : productIds) {
@@ -61,7 +66,9 @@ public class WxCartServiceImpl implements WxCartService{
 //        Subject subject = SecurityUtils.getSubject();
 //        String principal = (String) subject.getPrincipal();
 //        int userId = userMapper.queryUserIdByUsername(principal);
-        int userId = 1;
+        Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        int userId = userMapper.queryUserIdByUsername(principal);
         // 根据userId查找该用户的购物车
         List<Cart> carts = cartMapper.selectByUserId(userId, false);
         WxCartListVo wxCartListVo = new WxCartListVo();
@@ -85,7 +92,9 @@ public class WxCartServiceImpl implements WxCartService{
 
     @Override
     public boolean addCart(WxCartAddVo wxCartAddVo) {
-        int userId = 1;
+        Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        int userId = userMapper.queryUserIdByUsername(principal);
         // 首先查询库存
         GoodsProduct goodsProduct = goodsProductMapper.selectByPrimaryKey(wxCartAddVo.getProductId());
         if (goodsProduct.getNumber() < wxCartAddVo.getNumber()) {
@@ -109,7 +118,9 @@ public class WxCartServiceImpl implements WxCartService{
 
     @Override
     public int fastAddCart(WxCartAddVo wxCartAddVo) {
-        int userId = 1;
+        Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        int userId = userMapper.queryUserIdByUsername(principal);
         // 首先查询库存
         GoodsProduct goodsProduct = goodsProductMapper.selectByPrimaryKey(wxCartAddVo.getProductId());
         if (goodsProduct.getNumber() < wxCartAddVo.getNumber()) {
@@ -128,7 +139,10 @@ public class WxCartServiceImpl implements WxCartService{
 
     @Override
     public WxCartCheckoutReturnVo checkOut(WxCartCheckOutVo vo) {
-        int userId = 1;
+        Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        int userId = userMapper.queryUserIdByUsername(principal);
+
         WxCartCheckoutReturnVo returnVo = new WxCartCheckoutReturnVo();
         //商品总价
         BigDecimal goodsTotalPrice = BigDecimal.ZERO;
@@ -187,7 +201,10 @@ public class WxCartServiceImpl implements WxCartService{
 
     @Override
     public BigDecimal goodsCount() {
-        int userId = 1;
+        Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        int userId = userMapper.queryUserIdByUsername(principal);
+
         CartExample cartExample = new CartExample();
         CartExample.Criteria criteria = cartExample.createCriteria();
         criteria.andUserIdEqualTo(userId);
@@ -201,7 +218,10 @@ public class WxCartServiceImpl implements WxCartService{
 
     @Override
     public boolean checked(WxCartCheckedVo wxCartCheckedVo) {
-        int userId = 1;
+        Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        int userId = userMapper.queryUserIdByUsername(principal);
+
         List<Integer> productIds = wxCartCheckedVo.getProductIds();
         Date date = new Date();
         for (Integer productId : productIds) {
