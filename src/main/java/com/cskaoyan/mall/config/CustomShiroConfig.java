@@ -35,6 +35,7 @@ public class CustomShiroConfig {
         HashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //认证
         filterChainDefinitionMap.put("/admin/auth/login", "anon");
+        filterChainDefinitionMap.put("/admin/auth/logout", "anon");
 //        filterChainDefinitionMap.put("/admin/auth/info", "anon");
         filterChainDefinitionMap.put("/wx/storage/fetch/**", "anon");
 //        filterChainDefinitionMap.put("/wx/auth/login", "anon");
