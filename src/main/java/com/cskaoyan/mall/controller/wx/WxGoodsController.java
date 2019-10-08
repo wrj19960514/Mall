@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.bean.Goods;
+import com.cskaoyan.mall.bean.GoodsByCategory;
 import com.cskaoyan.mall.service.wx.WxGoodsService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.wx.WxGoodsDetailVo;
@@ -29,7 +30,7 @@ public class WxGoodsController {
 
     @RequestMapping("list")
     public BaseRespVo getList(String brandId, String categoryId, int page, int size) {
-        List<Goods> goodsList = null;
+        GoodsByCategory goodsList = null;
         if ("".equals(brandId) || brandId == null) {
             goodsList = wxGoodsService.getGoodsList(Integer.valueOf(categoryId), page, size);
 

@@ -1,10 +1,10 @@
 package com.cskaoyan.mall.service.wx;
 
-import com.cskaoyan.mall.bean.Address;
-import com.cskaoyan.mall.bean.Footprint;
-import com.cskaoyan.mall.bean.Region;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.vo.address.FootListBean;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -24,7 +24,9 @@ public interface AddressService {
     void deleteAddress(Address address);
     //物流查询
     //添加反馈
+    void addFeedback(Feedback feedback);
     //图片上传
+    Storage storeUpload(MultipartFile myfile) throws IOException;
     //足迹列表
     FootListBean getFootPrint(int page, int size);
     //删除足迹
