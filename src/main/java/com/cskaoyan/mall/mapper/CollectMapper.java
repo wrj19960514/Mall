@@ -2,7 +2,10 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Collect;
 import com.cskaoyan.mall.bean.CollectExample;
+
 import java.util.List;
+
+import com.cskaoyan.mall.vo.collectManage.collectAndGood;
 import org.apache.ibatis.annotations.Param;
 
 public interface CollectMapper {
@@ -27,4 +30,12 @@ public interface CollectMapper {
     int updateByPrimaryKeySelective(Collect record);
 
     int updateByPrimaryKey(Collect record);
+
+    List<collectAndGood> queryCollectList(@Param("type") Integer type);
+
+    Collect queryCollectByValueId(@Param("valueId") Integer valueId);
+
+    void delectCollectByValueId(@Param("valueId") Integer valueId);
+
+    void insertCollect(@Param("collect") Collect collect);
 }

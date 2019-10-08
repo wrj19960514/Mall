@@ -1,8 +1,11 @@
 package com.cskaoyan.mall.mapper;
 
+import com.cskaoyan.mall.bean.Keyword;
 import com.cskaoyan.mall.bean.SearchHistory;
 import com.cskaoyan.mall.bean.SearchHistoryExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface SearchHistoryMapper {
@@ -27,4 +30,8 @@ public interface SearchHistoryMapper {
     int updateByPrimaryKeySelective(SearchHistory record);
 
     int updateByPrimaryKey(SearchHistory record);
+
+    List querySearchHistory();
+
+    void deleteSearchHistoryById(Integer id);
 }

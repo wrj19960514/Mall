@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.TopicMapper">
+
+  <select id="queryAllTopic" resultType="com.cskaoyan.mall.bean.Topic">
+    select id,title,subtitle,price,read_count as readCount,pic_url as picUrl from cskaoyan_mall_topic
+  </select>
+
+<select id="queryTopicById" resultMap="BaseResultMap">
+  select id,title,subtitle,content,price,read_count,pic_url,sort_order,goods,add_time,update_time,deleted from cskaoyan_mall_topic
+  where id =#{id}
+</select>
+
+  <select id="queryTopicRelatedList" resultMap="BaseResultMap">
+      select id,title,subtitle,content,price,read_count,pic_url,sort_order,goods,add_time,update_time,deleted from cskaoyan_mall_topic
+where id between #{id1} and #{id2}
+  </select>
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Topic">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />

@@ -9,13 +9,13 @@ public class Collect {
 
     private Integer valueId;
 
-    private Byte type;
+    private Integer type;
 
     private Date addTime;
 
     private Date updateTime;
 
-    private Boolean deleted;
+    private Integer deleted;
 
     public Integer getId() {
         return id;
@@ -41,11 +41,11 @@ public class Collect {
         this.valueId = valueId;
     }
 
-    public Byte getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -65,11 +65,11 @@ public class Collect {
         this.updateTime = updateTime;
     }
 
-    public Boolean getDeleted() {
+    public Integer getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(Integer deleted) {
         this.deleted = deleted;
     }
 }

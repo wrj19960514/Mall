@@ -2,7 +2,9 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Keyword;
 import com.cskaoyan.mall.bean.KeywordExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface KeywordMapper {
@@ -27,4 +29,9 @@ public interface KeywordMapper {
     int updateByPrimaryKeySelective(Keyword record);
 
     int updateByPrimaryKey(Keyword record);
+
+    Keyword queryDefaultKeyWord();
+
+    List<Keyword> queryHotKeyWord();
+
 }
