@@ -31,4 +31,6 @@ public interface GrouponRulesMapper {
     int updateByPrimaryKey(GrouponRules record);
 
     List<WxGrouponVo>  queryWxGrouponVoList();
+
+    List<GrouponRules> queryGrouponRuless(@Param("goodsId") int goodsId);
 }

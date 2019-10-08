@@ -46,8 +46,8 @@ public class CustomShiroConfig {
          //需要进行认证
         filterChainDefinitionMap.put("/admin/**","authc");
 //        filterChainDefinitionMap.put("/wx/coupon/**", "authc");
-        filterChainDefinitionMap.put("/wx/user/**","authc");
-        filterChainDefinitionMap.put("/wx/order/**","authc");
+//        filterChainDefinitionMap.put("/wx/user/**","authc");
+//        filterChainDefinitionMap.put("/wx/order/**","authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return shiroFilterFactoryBean;

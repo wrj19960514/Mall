@@ -90,7 +90,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, goods_id, goods_name, pic_url, discount, discount_member, add_time, update_time, 
+    id, goods_id, goods_name, pic_url, discount, discount_member, add_time, update_time,
     expire_time, deleted
   </sql>
     <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.GrouponRulesExample" resultMap="BaseResultMap">
@@ -208,6 +208,15 @@
         select count(*) from cskaoyan_mall_groupon_rules
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <select id="queryGrouponRuless" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from cskaoyan_mall_groupon_rules
+        where deleted = 0
+        <if test="goodsId != null">
+            and goods_id = #{goodsId}
         </if>
     </select>
     <update id="updateByExampleSelective" parameterType="map">
