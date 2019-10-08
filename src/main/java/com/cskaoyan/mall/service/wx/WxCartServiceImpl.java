@@ -122,7 +122,8 @@ public class WxCartServiceImpl implements WxCartService{
                 wxCartAddVo.getProductId(), goodsProduct.getPrice(), (short)wxCartAddVo.getNumber(), goodsProduct.getSpecifications(),
                     true, goods.getPicUrl(), date, date, false);
         cartMapper.insert(cart1);
-        return wxCartAddVo.getProductId();
+        Integer id = cart1.getId();
+        return id;
     }
 
     @Override
