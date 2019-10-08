@@ -155,7 +155,7 @@ public class WxIndexServiceImpl implements WxIndexService {
         map.put("topicList",topics);
         return map;
     }
-
+    //分类页面
     @Override
     public Map<String, Object> getcatalogIndex() {
         //Category表
