@@ -20,11 +20,11 @@ public class CollectionServiceImpl implements CollectionService {
     @Autowired
     CollectMapper collectMapper;
     @Override
-    public ListBean queryCollectList(int type,int page,int size) {
+    public Map queryCollectList(int type,int page,int size) {
         //分页
         PageHelper.startPage(page,size);
         //收藏跟商品一对一多表查询到的List
-        List<collectAndGood> collects = collectMapper.queryCollectList(type);
+        List<collectAndGood> collects = collectMapper.queryCollectList();
         //求和
         PageInfo<collectAndGood> collectAndGoodPageInfo = new PageInfo<>(collects);
         long total = collectAndGoodPageInfo.getTotal();
@@ -39,7 +39,9 @@ public class CollectionServiceImpl implements CollectionService {
     public Map addOrDeleteCollect(CollectVo collectVo) {
         HashMap<Object, Object> map = new HashMap<>();
         int valueId = collectVo.getValueId();
+        //查看数据库是否有该数据
         Collect collect = collectMapper.queryCollectByValueId(valueId);
+       //有的话进行删除
         if(collect != null){
             collectMapper.delectCollectByValueId(valueId);
             map.put("type","delete");
@@ -48,11 +50,11 @@ public class CollectionServiceImpl implements CollectionService {
             Collect collect1 = new Collect();
             Date date = new Date();
             collect1.setDeleted(0);
-            collect.setAddTime(date);
-            collect.setUpdateTime(date);
-            collect.setType(0);
-            collect.setUserId(11);
-            collect.setValueId(valueId);
+            collect1.setAddTime(date);
+            collect1.setUpdateTime(date);
+            collect1.setType(0);
+            collect1.setUserId(1);
+            collect1.setValueId(valueId);
             collectMapper.insertCollect(collect1);
             map.put("type","add");
             return map;

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface CollectionService {
-    ListBean queryCollectList(int type, int page, int size);
+    Map queryCollectList(int type, int page, int size);
 
     Map addOrDeleteCollect(CollectVo collectVo);
 }

@@ -18,8 +18,8 @@ public class CollectionController {
     CollectionService collectionService;
     @RequestMapping("/list")
     public BaseRespVo getCollectionList(int type,int page,int size){
-        ListBean listBean = collectionService.queryCollectList(type, page, size);
-        BaseRespVo ok = BaseRespVo.ok(listBean);
+        Map map = collectionService.queryCollectList(type, page, size);
+        BaseRespVo ok = BaseRespVo.ok(map);
         return ok;
     }
    @RequestMapping("/addordelete")
@@ -27,6 +27,6 @@ public class CollectionController {
         Map data = collectionService.addOrDeleteCollect(collectVo);
        BaseRespVo ok = BaseRespVo.ok(data);
        return ok;
-    }
+}
 
 }

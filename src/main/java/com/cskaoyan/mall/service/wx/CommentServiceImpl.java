@@ -38,8 +38,8 @@ public class CommentServiceImpl implements CommentService {
         int size = comments.size();
         List<Comment> comments1 = commentMapper.selectCommentHasPic(valueId, type);
         int size1 = comments1.size();
-        HashMap<Object, Object> map = new HashMap<>();
-        map.put("allCount",size1);
+        Map<Object, Object> map = new HashMap<>();
+        map.put("allCount",size);
         map.put("hasPicCount",size1);
         return map;
     }

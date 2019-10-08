@@ -33,9 +33,9 @@ public interface CollectMapper {
 
     List<collectAndGood> queryCollectList(@Param("type") Integer type);
 
-    Collect queryCollectByValueId(@Param("typeId") Integer typeId);
+    Collect queryCollectByValueId(@Param("valueId") Integer valueId);
 
-    void delectCollectByValueId(@Param("typeId") Integer typeId);
+    void delectCollectByValueId(@Param("valueId") Integer valueId);
 
     void insertCollect(@Param("collect") Collect collect);
 }

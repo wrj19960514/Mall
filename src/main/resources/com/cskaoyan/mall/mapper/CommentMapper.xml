@@ -18,10 +18,17 @@
     where type = #{type} and value_id = #{valueId}
 </select>
 
-  <select id="selectComment" resultType="com.cskaoyan.mall.bean.Comment">
-    select comment from cskaoyan_mall_comment where value_id = #{valueId} and type = #{type}
+  <select id="selectComment" resultMap="BaseResultMap">
+    select id,value_id,`type`,content,user_id,has_picture,pic_urls,star,add_time,update_time
+    from cskaoyan_mall_comment
+    where value_id = #{valueId} and type = #{type}
   </select>
 
+  <select id="selectCommentHasPic" resultMap="BaseResultMap">
+    select id,value_id,`type`,content,user_id,has_picture,pic_urls,star,add_time,update_time
+    from cskaoyan_mall_comment
+    where value_id = #{valueId} and type = #{type} and has_picture = true
+  </select>
   <insert id="insertComment">
     <selectKey keyProperty="comment.id" order="AFTER" resultType="java.lang.Integer" >
       SELECT LAST_INSERT_ID()

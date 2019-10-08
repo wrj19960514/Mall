@@ -1,7 +1,7 @@
 package com.cskaoyan.mall.vo.collectManage;
 
 public class CollectVo {
-    int type ;
+    int type;
     int valueId;
 
     public int getType() {
