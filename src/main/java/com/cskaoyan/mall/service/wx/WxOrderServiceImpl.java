@@ -245,7 +245,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         int discount = coupon.getDiscount().intValue();
         int totalPrice = price.intValue();
         totalPrice = (1 - discount/100) * totalPrice;
-        int actualPrice = totalPrice - 10;
+        int actualPrice = totalPrice + 10;
         order.setCouponPrice(new BigDecimal(totalPrice));
         order.setIntegralPrice(new BigDecimal(0));
         order.setGrouponPrice(new BigDecimal(0));
@@ -293,6 +293,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         order.setOrderStatus((short) 2);
         order.setDeleted(false);
         order.setAddTime(new Date());
+        order.setUpdateTime(new Date());
         order.setPayTime(new Date());
         orderMapper.updateByPrimaryKey(order);
         optionsMapper.updateCancelByOrderId(orderId, true);
