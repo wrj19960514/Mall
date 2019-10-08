@@ -102,7 +102,7 @@ public class WxCartServiceImpl implements WxCartService{
             cartMapper.insert(cart1);
         } else {
             cart.setNumber((short) (cart.getNumber() + wxCartAddVo.getNumber()));
-            cartMapper.updateByPrimaryKey(cart);
+            cartMapper.updateByPrimaryKeySelective(cart);
         }
         return true;
     }
