@@ -76,27 +76,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void saveAddress(Address address) {
-        AddressExample addressExample = new AddressExample();
-        //userId不能为空
-        address.setUserId(1);
-        address.setUserId(address.getUserId());
-        //如果修改或者插入的地址是默认地址,需要对原来的默认地址进行修改
-        if (address.getDefault()) {
-            addressMapper.updateDefaultAddress(false, address.getDefault());
-        }
-        if (address.getId() != 0) {
-            int i = addressMapper.updateByPrimaryKey(address);
-        } else {
-            int insert = addressMapper.insert(address);
-            //获取相对应的code,并把原来的id改为code
-            Region provinceCode = regionMapper.selectByPrimaryKey(address.getProvinceId());
-            Region cityCode = regionMapper.selectByPrimaryKey(address.getCityId());
-            Region areaCode = regionMapper.selectByPrimaryKey(address.getAreaId());
-            address.setProvinceId(provinceCode.getCode());
-            address.setCityId(cityCode.getCode());
-            address.setAreaId(areaCode.getCode());
-            int i = addressMapper.updateByPrimaryKey(address);
-        }
 
     }
 
