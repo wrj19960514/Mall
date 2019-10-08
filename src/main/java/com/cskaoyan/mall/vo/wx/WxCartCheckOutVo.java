@@ -1,6 +1,6 @@
 package com.cskaoyan.mall.vo.wx;
 
-public class CartCheckOutVo {
+public class WxCartCheckOutVo {
     private int cartId;
     private int addressId;
     private int couponId;

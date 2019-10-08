@@ -46,8 +46,10 @@ public class SmsServiceImpl implements SmsService {
         request.putQueryParameter("TemplateCode", templateCode);
         request.putQueryParameter("TemplateParam", "{\"code\":\""+code+"\"}");
         try {
+            //将响应报文封装成json
             CommonResponse response = client.getCommonResponse(request);
             System.out.println(response.getData());
+            // json 转 map 返回ok
             ObjectMapper objectMapper = new ObjectMapper();
             Map map = objectMapper.readValue(response.getData(), Map.class);
             String message = (String) map.get("Message");

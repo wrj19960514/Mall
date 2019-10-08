@@ -1,16 +1,20 @@
 package com.cskaoyan.mall.controller.wx;
 
-import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.service.wx.AuthService;
+import com.cskaoyan.mall.service.wx.SmsService;
 import com.cskaoyan.mall.shiro.CustomToken;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.LoginVo;
 import com.cskaoyan.mall.vo.wx.LoginRespVo;
+import com.cskaoyan.mall.vo.wx.RegisterVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,8 +30,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("wx/auth")
 public class WxAuthController {
+
     @Autowired
-    UserMapper userMapper;
+    SmsService smsService;
+    @Autowired
+    AuthService authService;
     /*登陆*/
     @PostMapping("/login")
     public BaseRespVo login(@RequestBody LoginVo loginVo){
@@ -47,7 +54,7 @@ public class WxAuthController {
         loginRespVo.setToken((String)id);
         loginRespVo.setTokenExpire(time);
         Map<String,String> map = new HashMap<>(10);
-        map.put("avatarUrl","");
+        map.put("avatarUrl","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
         map.put("nickName",username);
         loginRespVo.setUserInfo(map);
         BaseRespVo ok = BaseRespVo.ok(loginRespVo);
@@ -76,18 +83,37 @@ public class WxAuthController {
     }
 
     @RequestMapping("/register")
-    public BaseRespVo register(){
+    public BaseRespVo register(@RequestBody RegisterVo registerVo){
+        Session session = SecurityUtils.getSubject().getSession();
+        String codeFromSession = (String) session.getAttribute("code");
+        if(!registerVo.getCode().equals(codeFromSession)){
+            return BaseRespVo.fail();
+        }else {
+           //authService.register(registerVo);
+        }
         return BaseRespVo.ok(null);
     }
-
     @RequestMapping("/reset")
     public BaseRespVo reset(){
         return BaseRespVo.ok(null);
     }
 
     @RequestMapping("/regCaptcha")
-    public BaseRespVo regCaptcha(){
-        return BaseRespVo.ok(null);
+    public BaseRespVo regCaptcha(@RequestBody Map map){
+        Session session = SecurityUtils.getSubject().getSession();
+        String mobile = (String) map.get("mobile");
+        // 验证码
+        String code = (int) ((Math.random()*9+1)*100000) + "";
+        boolean b = smsService.sendMessage(mobile, code);
+        if (b) {
+            session.setAttribute("code",code);
+            Serializable id = session.getId();
+            return BaseRespVo.ok(id);
+        }
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrmsg("发送验证码失败");
+        baseRespVo.setErrno(500);
+        return baseRespVo;
     }
 
     @RequestMapping("bindPhone")
