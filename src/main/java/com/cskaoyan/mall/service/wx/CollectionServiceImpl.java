@@ -24,15 +24,15 @@ public class CollectionServiceImpl implements CollectionService {
         //分页
         PageHelper.startPage(page,size);
         //收藏跟商品一对一多表查询到的List
-        List<collectAndGood> collects = collectMapper.queryCollectList();
+      /*  List<collectAndGood> collects = collectMapper.queryCollectList();
         //求和
         PageInfo<collectAndGood> collectAndGoodPageInfo = new PageInfo<>(collects);
         long total = collectAndGoodPageInfo.getTotal();
         //封装到ListBean中返回到controller层
         ListBean listBean = new ListBean();
         listBean.setTotal(total);
-        listBean.setItems(collects);
-        return listBean;
+        listBean.setItems(collects);*/
+        return null;
     }
 
     @Override
