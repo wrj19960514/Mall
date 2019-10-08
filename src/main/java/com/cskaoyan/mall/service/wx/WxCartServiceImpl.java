@@ -92,7 +92,7 @@ public class WxCartServiceImpl implements WxCartService{
             return false;
         }
         // 判断购物车中是否有该商品 无则添加 有则相加
-        Cart cart = cartMapper.selectByPrimaryKey(wxCartAddVo.getProductId());
+        Cart cart = cartMapper.queryByProductId(userId, wxCartAddVo.getProductId());
         if (cart == null) {
             Date date = new Date();
             Goods goods = goodsMapper.selectByPrimaryKey(wxCartAddVo.getGoodsId());
@@ -102,7 +102,7 @@ public class WxCartServiceImpl implements WxCartService{
             cartMapper.insert(cart1);
         } else {
             cart.setNumber((short) (cart.getNumber() + wxCartAddVo.getNumber()));
-            cartMapper.updateByPrimaryKey(cart);
+            cartMapper.updateByPrimaryKeySelective(cart);
         }
         return true;
     }

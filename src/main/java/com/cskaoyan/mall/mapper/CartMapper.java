@@ -19,6 +19,8 @@ public interface CartMapper {
     List<Cart> selectByExample(CartExample example);
 
     Cart selectByPrimaryKey(Integer id);
+
+    Cart queryByProductId(@Param("userId") int userId, @Param("productId") int productId);
 //    Cart selectAll();
 
     int updateByExampleSelective(@Param("record") Cart record, @Param("example") CartExample example);
