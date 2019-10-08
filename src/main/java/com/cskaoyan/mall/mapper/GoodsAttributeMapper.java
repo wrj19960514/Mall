@@ -18,6 +18,8 @@ public interface GoodsAttributeMapper {
 
     List<GoodsAttribute> selectByExample(GoodsAttributeExample example);
 
+    List<GoodsAttribute> selectAttributesByGoodsId(@Param("goodsId") int goodsId);
+
     GoodsAttribute selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") GoodsAttribute record, @Param("example") GoodsAttributeExample example);

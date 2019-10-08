@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cskaoyan.mall.mapper.FootprintMapper">
+  <select id="queryHistory" resultType="com.cskaoyan.mall.vo.address.History">
+    SELECT
+	f.goods_id AS goodsId,f.id,g.`name`,g.pic_url AS picUrl,
+	g.retail_price AS retailPrice,
+	f.add_time AS addTime ,g.brief
+FROM
+	cskaoyan_mall_goods g LEFT JOIN
+	cskaoyan_mall_footprint f ON g.id = f.goods_id where f.user_id = #{userId}
+
+  </select>
   <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Footprint">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />

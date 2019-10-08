@@ -3,7 +3,6 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.bean.UserExample;
 import java.util.List;
-
 import com.cskaoyan.mall.vo.Statement.UserStat;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,4 +30,9 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     List<UserStat> getUserStatement();
+
+    String queryPasswordByUsername(@Param("principal")String principal);
+
+    int queryUserIdByUsername(@Param("username")String username);
+
 }

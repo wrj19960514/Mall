@@ -3,6 +3,7 @@ package com.cskaoyan.mall.controller.pc;
 import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.mapper.PermissionMapper;
 import com.cskaoyan.mall.mapper.RoleMapper;
+import com.cskaoyan.mall.shiro.CustomToken;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.LoginVo;
 import com.cskaoyan.mall.vo.RoleIdsVo;
@@ -39,10 +40,10 @@ public class AuthController {
     public BaseRespVo login(@RequestBody LoginVo loginVo) {
         String username = loginVo.getUsername();
         String password = loginVo.getPassword();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
+        CustomToken token = new CustomToken(username, password,"admin");
         Subject subject = SecurityUtils.getSubject();
         try {
-            subject.login(usernamePasswordToken);
+            subject.login(token);
         } catch (AuthenticationException e) {
             return BaseRespVo.fail();
         }
@@ -53,9 +54,11 @@ public class AuthController {
 
     @RequestMapping("/info")
     public BaseRespVo info(String token) {
+
         Subject subject = SecurityUtils.getSubject();
         // username
         String principal = (String) subject.getPrincipal();
+        // 获取管理员角色权限信息
         RoleIdsVo roleIdsVo = adminMapper.queryRoleIdsByUsername(principal);
         Integer[] roleIds = roleIdsVo.getRoleIds();
         List<String> roleNames = roleMapper.queryRoleNameByRoleIds(roleIds);

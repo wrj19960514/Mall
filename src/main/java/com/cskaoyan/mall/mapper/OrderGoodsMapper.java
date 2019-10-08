@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.cskaoyan.mall.vo.Statement.GoodsStat;
 import com.cskaoyan.mall.vo.Statement.OrderStat;
+import com.cskaoyan.mall.vo.promote.OrderGood;
 import org.apache.ibatis.annotations.Param;
 
 public interface OrderGoodsMapper {
@@ -32,4 +33,6 @@ public interface OrderGoodsMapper {
     int updateByPrimaryKey(OrderGoods record);
 
     List<GoodsStat> getGoodsStatement();
+
+    List<OrderGood> selectOrderGoodList(@Param("orderId") Integer orderId);
 }

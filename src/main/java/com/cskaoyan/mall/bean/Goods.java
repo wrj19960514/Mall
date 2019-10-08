@@ -1,14 +1,13 @@
 package com.cskaoyan.mall.bean;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Goods {
     private Integer id;
 

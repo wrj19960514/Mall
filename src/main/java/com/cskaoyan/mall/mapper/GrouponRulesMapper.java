@@ -3,6 +3,8 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.GrouponRules;
 import com.cskaoyan.mall.bean.GrouponRulesExample;
 import java.util.List;
+
+import com.cskaoyan.mall.vo.promote.WxGrouponVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface GrouponRulesMapper {
@@ -27,4 +29,8 @@ public interface GrouponRulesMapper {
     int updateByPrimaryKeySelective(GrouponRules record);
 
     int updateByPrimaryKey(GrouponRules record);
+
+    List<WxGrouponVo>  queryWxGrouponVoList();
+
+    List<GrouponRules> queryGrouponRuless(@Param("goodsId") int goodsId);
 }

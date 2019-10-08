@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cskaoyan.mall.mapper.OrderHandleoptionMapper">
+  <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.OrderHandleoption">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="cancel" jdbcType="BIT" property="cancel" />
+    <result column="comment" jdbcType="BIT" property="comment" />
+    <result column="confirm" jdbcType="BIT" property="confirm" />
+    <result column="delete" jdbcType="BIT" property="delete" />
+    <result column="pay" jdbcType="BIT" property="pay" />
+    <result column="rebuy" jdbcType="BIT" property="rebuy" />
+    <result column="refund" jdbcType="BIT" property="refund" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, order_id, cancel, comment, confirm, `delete`, pay, rebuy, refund
+  </sql>
+  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.OrderHandleoptionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_order_handleoption
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_order_handleoption
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cskaoyan_mall_order_handleoption
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cskaoyan.mall.bean.OrderHandleoptionExample">
+    delete from cskaoyan_mall_order_handleoption
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cskaoyan.mall.bean.OrderHandleoption">
+    insert into cskaoyan_mall_order_handleoption (id, order_id, cancel, 
+      comment, confirm, delete, pay, 
+      rebuy, refund)
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{cancel,jdbcType=BIT}, 
+      #{comment,jdbcType=BIT}, #{confirm,jdbcType=BIT}, #{delete,jdbcType=BIT}, #{pay,jdbcType=BIT}, 
+      #{rebuy,jdbcType=BIT}, #{refund,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.OrderHandleoption">
+    insert into cskaoyan_mall_order_handleoption
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="cancel != null">
+        cancel,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+      <if test="confirm != null">
+        confirm,
+      </if>
+      <if test="delete != null">
+        delete,
+      </if>
+      <if test="pay != null">
+        pay,
+      </if>
+      <if test="rebuy != null">
+        rebuy,
+      </if>
+      <if test="refund != null">
+        refund,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="cancel != null">
+        #{cancel,jdbcType=BIT},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=BIT},
+      </if>
+      <if test="confirm != null">
+        #{confirm,jdbcType=BIT},
+      </if>
+      <if test="delete != null">
+        #{delete,jdbcType=BIT},
+      </if>
+      <if test="pay != null">
+        #{pay,jdbcType=BIT},
+      </if>
+      <if test="rebuy != null">
+        #{rebuy,jdbcType=BIT},
+      </if>
+      <if test="refund != null">
+        #{refund,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cskaoyan.mall.bean.OrderHandleoptionExample" resultType="java.lang.Long">
+    select count(*) from cskaoyan_mall_order_handleoption
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cskaoyan_mall_order_handleoption
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cancel != null">
+        cancel = #{record.cancel,jdbcType=BIT},
+      </if>
+      <if test="record.comment != null">
+        comment = #{record.comment,jdbcType=BIT},
+      </if>
+      <if test="record.confirm != null">
+        confirm = #{record.confirm,jdbcType=BIT},
+      </if>
+      <if test="record.delete != null">
+        delete = #{record.delete,jdbcType=BIT},
+      </if>
+      <if test="record.pay != null">
+        pay = #{record.pay,jdbcType=BIT},
+      </if>
+      <if test="record.rebuy != null">
+        rebuy = #{record.rebuy,jdbcType=BIT},
+      </if>
+      <if test="record.refund != null">
+        refund = #{record.refund,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cskaoyan_mall_order_handleoption
+    set id = #{record.id,jdbcType=INTEGER},
+      order_id = #{record.orderId,jdbcType=INTEGER},
+      cancel = #{record.cancel,jdbcType=BIT},
+      comment = #{record.comment,jdbcType=BIT},
+      confirm = #{record.confirm,jdbcType=BIT},
+      delete = #{record.delete,jdbcType=BIT},
+      pay = #{record.pay,jdbcType=BIT},
+      rebuy = #{record.rebuy,jdbcType=BIT},
+      refund = #{record.refund,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.OrderHandleoption">
+    update cskaoyan_mall_order_handleoption
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="cancel != null">
+        cancel = #{cancel,jdbcType=BIT},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=BIT},
+      </if>
+      <if test="confirm != null">
+        confirm = #{confirm,jdbcType=BIT},
+      </if>
+      <if test="delete != null">
+        delete = #{delete,jdbcType=BIT},
+      </if>
+      <if test="pay != null">
+        pay = #{pay,jdbcType=BIT},
+      </if>
+      <if test="rebuy != null">
+        rebuy = #{rebuy,jdbcType=BIT},
+      </if>
+      <if test="refund != null">
+        refund = #{refund,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.OrderHandleoption">
+    update cskaoyan_mall_order_handleoption
+    set order_id = #{orderId,jdbcType=INTEGER},
+      cancel = #{cancel,jdbcType=BIT},
+      comment = #{comment,jdbcType=BIT},
+      confirm = #{confirm,jdbcType=BIT},
+      delete = #{delete,jdbcType=BIT},
+      pay = #{pay,jdbcType=BIT},
+      rebuy = #{rebuy,jdbcType=BIT},
+      refund = #{refund,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

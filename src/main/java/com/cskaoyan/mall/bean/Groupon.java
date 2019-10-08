@@ -112,4 +112,21 @@ public class Groupon {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
+
+    @Override
+    public String toString() {
+        return "Groupon{" +
+                "id=" + id +
+                ", orderId=" + orderId +
+                ", grouponId=" + grouponId +
+                ", rulesId=" + rulesId +
+                ", userId=" + userId +
+                ", creatorUserId=" + creatorUserId +
+                ", addTime=" + addTime +
+                ", updateTime=" + updateTime +
+                ", shareUrl='" + shareUrl + '\'' +
+                ", payed=" + payed +
+                ", deleted=" + deleted +
+                '}';
+    }
 }

@@ -21,6 +21,8 @@ public interface CommentMapper {
 
     List<Comment> selectByExample(CommentExample example);
 
+    List<Comment> selectCommentByGoodsId(@Param("goodsId") int goodsId);
+
     Comment selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") Comment record, @Param("example") CommentExample example);
@@ -36,6 +38,8 @@ public interface CommentMapper {
     List<Comment> selectComment(int valueId, int type);
 
     List<Comment> selectCommentHasPic(int valueId, int type);
-    void insertComment(@Param("comment")Comment comment);
+
+    void insertComment(@Param("comment") Comment comment);
 
 }
+
