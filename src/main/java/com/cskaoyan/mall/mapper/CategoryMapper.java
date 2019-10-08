@@ -23,6 +23,8 @@ public interface CategoryMapper {
 
     Category selectByPrimaryKey(Integer id);
 
+    Category selectByPid(Integer pid);
+
     int updateByExampleSelective(@Param("record") Category record, @Param("example") CategoryExample example);
 
     int updateByExample(@Param("record") Category record, @Param("example") CategoryExample example);

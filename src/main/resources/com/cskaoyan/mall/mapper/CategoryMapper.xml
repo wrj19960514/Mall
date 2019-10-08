@@ -103,6 +103,12 @@
     from cskaoyan_mall_category
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByPid"  parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_category
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyan_mall_category
     where id = #{id,jdbcType=INTEGER}
