@@ -91,7 +91,7 @@ public class MallManageServiceImpl implements MallManageService {
             boolean integer = IntegerUtils.isInteger(id);
             if (integer) {
                 criteria.andIdEqualTo(Integer.parseInt(brandInfoVo.getId()));
-            }else {
+            } else {
                 criteria.andIdEqualTo(0);
             }
         }
@@ -149,7 +149,7 @@ public class MallManageServiceImpl implements MallManageService {
             boolean integer = IntegerUtils.isInteger(userId);
             if (integer) {
                 criteria.andUserIdEqualTo(Integer.parseInt(userId));
-            }else {
+            } else {
                 criteria.andUserIdEqualTo(9999999);
             }
         }
@@ -161,6 +161,20 @@ public class MallManageServiceImpl implements MallManageService {
         }
         criteria.andOrderSnLike(orderListVo.getOrderSn());
         List<Order> orders = orderMapper.selectByExample(orderExample);
+        for (Order order : orders) {
+            if (order.getOrderStatus() == 1) {
+                order.setOrderStatus((short) 101);
+            }
+            if (order.getOrderStatus() == 2) {
+                order.setOrderStatus((short) 201);
+            }
+            if (order.getOrderStatus() == 3) {
+                order.setOrderStatus((short) 401);
+            }
+            if (order.getOrderStatus() == 4) {
+                order.setOrderStatus((short) 402);
+            }
+        }
         return orders;
     }
 
@@ -168,6 +182,18 @@ public class MallManageServiceImpl implements MallManageService {
     public OrderDetailedVo getOrderDetailed(int id) {
         OrderDetailedVo orderDetailedVo = new OrderDetailedVo();
         Order order = orderMapper.selectByPrimaryKey(id);
+        if (order.getOrderStatus() == 1) {
+            order.setOrderStatus((short) 101);
+        }
+        if (order.getOrderStatus() == 2) {
+            order.setOrderStatus((short) 201);
+        }
+        if (order.getOrderStatus() == 3) {
+            order.setOrderStatus((short) 401);
+        }
+        if (order.getOrderStatus() == 4) {
+            order.setOrderStatus((short) 402);
+        }
         orderDetailedVo.setOrder(order);
         OrderGoods orderGoods = orderGoodsMapper.selectByPrimaryKey(id);
         ArrayList<Object> objects = new ArrayList<>();
