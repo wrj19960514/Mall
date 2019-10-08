@@ -31,7 +31,7 @@ public interface CollectMapper {
 
     int updateByPrimaryKey(Collect record);
 
-    List<collectAndGood> queryCollectList(@Param("type") Integer type);
+    List<collectAndGood> queryCollectList();
 
     Collect queryCollectByValueId(@Param("valueId") Integer valueId);
 
