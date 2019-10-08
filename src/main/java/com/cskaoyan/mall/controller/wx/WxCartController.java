@@ -25,9 +25,9 @@ public class WxCartController {
 
     @RequestMapping("add")
     public BaseRespVo add(@RequestBody WxCartAddVo wxCartAddVo) {
-        long cartTotal = wxCartService.addCart(wxCartAddVo);
-        if (cartTotal != -1) {
-            return BaseRespVo.ok(cartTotal);
+        boolean addCart = wxCartService.addCart(wxCartAddVo);
+        if (addCart) {
+            return BaseRespVo.ok(null);
         } else {
             return BaseRespVo.fail();
         }
@@ -35,9 +35,9 @@ public class WxCartController {
 
     @RequestMapping("fastadd")
     public BaseRespVo fasstAddCart(@RequestBody WxCartAddVo wxCartAddVo) {
-        long cartTotal = wxCartService.fastAddCart(wxCartAddVo);
-        if (cartTotal != -1) {
-            return BaseRespVo.ok(cartTotal);
+        boolean fastAddCart = wxCartService.fastAddCart(wxCartAddVo);
+        if (fastAddCart) {
+            return BaseRespVo.ok(null);
         } else {
             return BaseRespVo.fail();
         }
@@ -64,9 +64,12 @@ public class WxCartController {
 
     @RequestMapping("checked")
     public BaseRespVo checked(@RequestBody WxCartCheckedVo wxCartCheckedVo) {
-        wxCartService.checked(wxCartCheckedVo);
-        WxCartListVo index = wxCartService.getIndex();
-        return BaseRespVo.ok(index);
+        boolean checked = wxCartService.checked(wxCartCheckedVo);
+        if (checked) {
+            return BaseRespVo.ok(null);
+        } else {
+            return BaseRespVo.fail();
+        }
     }
 
     @RequestMapping("goodscount")
@@ -76,8 +79,8 @@ public class WxCartController {
     }
 
     @RequestMapping("checkout")
-    public BaseRespVo checkout(CartCheckOutVo cartCheckOutVo) {
-        CartCheckOutRespVo checkOutRespVo = wxCartService.checkOut(cartCheckOutVo);
-        return BaseRespVo.ok(checkOutRespVo);
+    public BaseRespVo checkout(WxCartCheckOutVo wxCartCheckOutVo) {
+        WxCartCheckoutReturnVo checkOut = wxCartService.checkOut(wxCartCheckOutVo);
+        return BaseRespVo.ok(checkOut);
     }
 }

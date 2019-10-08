@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,13 +28,14 @@ public class WxGoodsController {
     }
 
     @RequestMapping("list")
-    public BaseRespVo getList(String categoryId, String brandId, int page, int size) {
-        List<Goods> goodsList = new ArrayList<>();
+    public BaseRespVo getList(String brandId, String categoryId, int page, int size) {
+        List<Goods> goodsList = null;
+        if ("".equals(brandId) || brandId == null) {
+            goodsList = wxGoodsService.getGoodsList(Integer.valueOf(categoryId), page, size);
+
+        }
         if ("".equals(categoryId) || categoryId == null) {
             goodsList = wxGoodsService.getGoodsListByBrand(Integer.valueOf(brandId), page, size);
-        }
-        if ("".equals(brandId) || brandId == null) {
-            goodsList = wxGoodsService.getGoodsListByCategory(Integer.valueOf(categoryId), page, size);
         }
         return BaseRespVo.ok(goodsList);
     }
